@@ -1,0 +1,28 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* FULL HEIGHT */
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* 🔥 PAKSA BACKGROUND GLOBAL */
+html {
+  background: linear-gradient(
+    180deg,
+    #2e7d32 0%,
+    #43a047 40%,
+    #a5d6a7 100%
+  ) !important;
+}
+
+/* HILANGKAN HITAM DARI BODY */
+body {
+  background: transparent !important;
+}
