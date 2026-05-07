@@ -5,9 +5,7 @@
     <div class="topbar">
       <div class="menu-btn" @click="toggleSidebar">☰</div>
       <h3>🌱 Smart Compost</h3>
-      <div class="user">
-        👤 {{ user?.name || 'Loading...' }}
-      </div>
+      
     </div>
 
     <!-- SIDEBAR -->
@@ -47,7 +45,6 @@
 
   </div>
 </template>
-
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -61,50 +58,21 @@ import {
 
 const router = useRouter()
 
-// STATE
 const isOpen = ref(false)
 const user = ref(null)
 
-// TOGGLE SIDEBAR
 const toggleSidebar = () => {
   isOpen.value = !isOpen.value
 }
 
-// LOGOUT
 const logout = () => {
-  localStorage.removeItem('token')
   router.push('/')
 }
 
-// AUTH CHECK
-const checkAuth = async () => {
-  const token = localStorage.getItem('token')
-
-  if (!token) {
-    router.push('/')
-    return
-  }
-
-  try {
-    const res = await fetch('http://localhost:3000/dashboard', {
-      headers: { Authorization: token }
-    })
-
-    const data = await res.json()
-    user.value = data.user
-
-  } catch {
-    localStorage.removeItem('token')
-    router.push('/')
-  }
-}
-
-// INIT
 onMounted(() => {
-  checkAuth()
+  user.value = { name: "Guest" }
 })
 </script>
-
 <style scoped>
 
 /* ======================
