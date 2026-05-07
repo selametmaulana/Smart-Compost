@@ -1,78 +1,113 @@
 <template>
-  <div class="dashboard">
+  <div class="dashboard-layout">
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
+
       <div>
+
         <h1 class="logo">SmartCompost</h1>
 
         <nav class="menu">
+
           <div class="menu-item active">
-            <span>⬚</span>
-            Dashboard
+            <i class="ri-dashboard-line"></i>
+            <span>Dashboard</span>
           </div>
 
           <div class="menu-item">
-            <span>⚙</span>
-            Perangkat
+            <i class="ri-cpu-line"></i>
+            <span>Perangkat</span>
           </div>
 
           <div class="menu-item">
-            <span>📊</span>
-            Data & Riwayat
+            <i class="ri-bar-chart-line"></i>
+            <span>Data & Riwayat</span>
           </div>
 
           <div class="menu-item">
-            <span>🔔</span>
-            Notifikasi
+            <i class="ri-notification-3-line"></i>
+            <span>Notifikasi</span>
           </div>
 
           <div class="menu-item">
-            <span>⚙</span>
-            Pengaturan
+            <i class="ri-settings-3-line"></i>
+            <span>Pengaturan</span>
           </div>
+
         </nav>
+
       </div>
+
     </aside>
 
     <!-- MAIN -->
     <main class="main-content">
 
-      <!-- TOP -->
+      <!-- TOPBAR -->
       <div class="topbar">
-        <h1>Dashboard</h1>
-        <p>• Terakhir diperbarui: 10:30 WIB</p>
+
+        <div>
+          <h1>Dashboard</h1>
+          <p>Monitoring kondisi kompos secara realtime</p>
+        </div>
+
+        <div class="last-update">
+          <i class="ri-time-line"></i>
+          Terakhir diperbarui: 10:30 WIB
+        </div>
+
       </div>
 
-      <!-- CARD SENSOR -->
+      <!-- SENSOR -->
       <div class="sensor-grid">
 
         <div class="sensor-card">
-          <div class="icon">🌡</div>
-          <h3>Suhu</h3>
-          <h1>48.6°C</h1>
-          <p class="status">● Optimal</p>
+          <div class="sensor-icon temp">
+            <i class="ri-temp-hot-line"></i>
+          </div>
+
+          <div class="sensor-info">
+            <h4>Suhu</h4>
+            <h2>48.6°C</h2>
+            <p>Optimal</p>
+          </div>
         </div>
 
         <div class="sensor-card">
-          <div class="icon">💧</div>
-          <h3>Kelembapan</h3>
-          <h1>58%</h1>
-          <p class="status">● Optimal</p>
+          <div class="sensor-icon humidity">
+            <i class="ri-drop-line"></i>
+          </div>
+
+          <div class="sensor-info">
+            <h4>Kelembapan</h4>
+            <h2>58%</h2>
+            <p>Optimal</p>
+          </div>
         </div>
 
         <div class="sensor-card">
-          <div class="icon">⚗</div>
-          <h3>pH</h3>
-          <h1>7.2</h1>
-          <p class="status">● Optimal</p>
+          <div class="sensor-icon ph">
+            <i class="ri-flask-line"></i>
+          </div>
+
+          <div class="sensor-info">
+            <h4>pH</h4>
+            <h2>7.2</h2>
+            <p>Optimal</p>
+          </div>
         </div>
 
         <div class="sensor-card">
-          <div class="icon">💨</div>
-          <h3>Oksigen</h3>
-          <h1>18.6%</h1>
-          <p class="status">● Optimal</p>
+          <div class="sensor-icon oxygen">
+            <i class="ri-windy-line"></i>
+          </div>
+
+          <div class="sensor-info">
+            <h4>Oksigen</h4>
+            <h2>18.6%</h2>
+            <p>Optimal</p>
+          </div>
         </div>
 
       </div>
@@ -80,15 +115,18 @@
       <!-- BOTTOM -->
       <div class="bottom-grid">
 
-        <!-- GRAFIK -->
+        <!-- CHART -->
         <div class="chart-card">
 
-          <div class="chart-top">
-            <h3>Grafik Suhu (7 Hari)</h3>
+          <div class="chart-header">
 
-            <div class="day-btn">
-              7 Hari
+            <div>
+              <h3>Grafik Suhu</h3>
+              <p>Data 7 hari terakhir</p>
             </div>
+
+            <button>7 Hari</button>
+
           </div>
 
           <div class="chart-area">
@@ -98,15 +136,24 @@
               preserveAspectRatio="none"
               class="chart-svg"
             >
-              <line
-                x1="40"
-                y1="170"
-                x2="560"
-                y2="120"
+
+              <polyline
+                fill="none"
                 stroke="#4CAF50"
                 stroke-width="5"
                 stroke-linecap="round"
+                stroke-linejoin="round"
+                points="
+                  40,170
+                  120,150
+                  200,160
+                  280,120
+                  360,130
+                  440,90
+                  520,110
+                "
               />
+
             </svg>
 
           </div>
@@ -117,21 +164,23 @@
         <div class="status-card">
 
           <div class="status-circle">
-            ✓
+            <i class="ri-check-line"></i>
           </div>
 
           <h2>Optimal</h2>
 
-          <p class="status-text">
-            Proses berjalan dengan baik
+          <p class="status-desc">
+            Proses pengomposan berjalan dengan baik dan stabil.
           </p>
 
           <div class="recommend-box">
+
             <h4>Rekomendasi</h4>
 
             <p>
-              Pertahankan kelembapan dan aerasi untuk hasil optimal.
+              Pertahankan kelembapan dan aerasi untuk menjaga kualitas kompos.
             </p>
+
           </div>
 
         </div>
@@ -148,73 +197,78 @@
 
 <style scoped>
 
-/* IMPORT FONT */
+/* GOOGLE FONT */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+/* REMIX ICON */
+@import url('https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css');
 
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:'Poppins', sans-serif;
+  font-family:'Poppins',sans-serif;
 }
 
 body{
-  background:#EDEEEE;
+  background:#EEF2F1;
 }
 
 /* LAYOUT */
 .dashboard-layout{
-  width:100%;
-  min-height:100vh;
   display:flex;
+  min-height:100vh;
+  background:#EEF2F1;
+  padding:20px;
   gap:20px;
-  padding:18px;
-  background:#EDEEEE;
 }
 
 /* SIDEBAR */
 .sidebar{
   width:270px;
-  background:linear-gradient(180deg,#012C06,#083D0D,#114915);
-  border-radius:38px;
-  padding:36px 28px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
+  background:linear-gradient(180deg,#062B0C,#0E4717);
+  border-radius:28px;
+  padding:28px 20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
 .logo{
   color:white;
-  font-size:24px;
+  font-size:28px;
   font-weight:800;
-  margin-bottom:45px;
+  margin-bottom:40px;
 }
 
 .menu{
   display:flex;
   flex-direction:column;
-  gap:18px;
+  gap:12px;
 }
 
 .menu-item{
-  color:white;
   display:flex;
   align-items:center;
   gap:14px;
-  padding:16px 16px;
-  border-radius:18px;
-  font-size:18px;
-  font-weight:500;
+  padding:16px 18px;
+  color:#D9E8DC;
+  border-radius:16px;
   cursor:pointer;
-  transition:0.3s;
+  transition:0.3s ease;
+  font-size:16px;
+  font-weight:500;
 }
 
-.menu-item.active{
-  background:#52B84E;
+.menu-item i{
+  font-size:22px;
 }
 
 .menu-item:hover{
-  background:rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.08);
+}
+
+.menu-item.active{
+  background:#57C15A;
+  color:white;
 }
 
 /* MAIN */
@@ -222,6 +276,7 @@ body{
   flex:1;
   display:flex;
   flex-direction:column;
+  gap:20px;
 }
 
 /* TOPBAR */
@@ -229,104 +284,150 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:25px;
 }
 
 .topbar h1{
-  font-size:56px;
+  font-size:42px;
   font-weight:800;
-  color:#000;
+  color:#111;
 }
 
 .topbar p{
-  color:#777;
-  font-size:18px;
+  color:#666;
+  margin-top:5px;
+}
+
+.last-update{
+  background:white;
+  padding:12px 18px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#666;
+  font-size:14px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.05);
+}
+
+.last-update i{
+  color:#4CAF50;
 }
 
 /* SENSOR GRID */
 .sensor-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:18px;
-  margin-bottom:22px;
+  gap:20px;
 }
 
 .sensor-card{
-  background:#F4F4F4;
-  border-radius:28px;
-  padding:26px 22px;
-  min-height:220px;
+  background:white;
+  border-radius:24px;
+  padding:24px;
   display:flex;
-  flex-direction:column;
+  align-items:center;
+  gap:18px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.05);
+  transition:0.3s;
+}
+
+.sensor-card:hover{
+  transform:translateY(-5px);
+}
+
+.sensor-icon{
+  width:70px;
+  height:70px;
+  border-radius:20px;
+  display:flex;
+  align-items:center;
   justify-content:center;
+  font-size:34px;
+  color:white;
 }
 
-.icon{
-  font-size:28px;
-  margin-bottom:10px;
+.temp{
+  background:#FF7043;
 }
 
-.sensor-card h3{
-  font-size:20px;
-  color:#666;
-  margin-bottom:18px;
+.humidity{
+  background:#42A5F5;
+}
+
+.ph{
+  background:#AB47BC;
+}
+
+.oxygen{
+  background:#66BB6A;
+}
+
+.sensor-info h4{
+  color:#777;
+  font-size:16px;
+  margin-bottom:6px;
+}
+
+.sensor-info h2{
+  font-size:32px;
+  font-weight:700;
+  color:#111;
+}
+
+.sensor-info p{
+  color:#4CAF50;
   font-weight:600;
-}
-
-.sensor-card h1{
-  font-size:48px;
-  font-weight:800;
-  margin-bottom:18px;
-}
-
-.status{
-  color:#49AF4E;
-  font-size:22px;
-  font-weight:500;
+  margin-top:6px;
 }
 
 /* BOTTOM */
 .bottom-grid{
   display:grid;
-  grid-template-columns:2.2fr 1fr;
-  gap:18px;
-  flex:1;
+  grid-template-columns:2fr 1fr;
+  gap:20px;
 }
 
 /* CHART */
 .chart-card{
-  background:#F4F4F4;
-  border-radius:32px;
+  background:white;
+  border-radius:28px;
   padding:24px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.05);
 }
 
-.chart-top{
+.chart-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:24px;
+  margin-bottom:20px;
 }
 
-.chart-top h3{
-  font-size:28px;
-  font-weight:700;
+.chart-header h3{
+  font-size:24px;
+  color:#111;
 }
 
-.day-btn{
-  background:white;
-  padding:12px 18px;
-  border-radius:14px;
+.chart-header p{
+  color:#777;
+  margin-top:4px;
+}
+
+.chart-header button{
+  border:none;
+  background:#E8F5E9;
+  color:#2E7D32;
+  padding:10px 16px;
+  border-radius:12px;
   font-weight:600;
-  font-size:18px;
+  cursor:pointer;
 }
 
 .chart-area{
   width:100%;
-  height:420px;
-  background:#EDF4ED;
-  border-radius:28px;
-  overflow:hidden;
-  position:relative;
+  height:350px;
+  background:#F5FAF5;
+  border-radius:20px;
+  padding:20px;
 }
 
 .chart-svg{
@@ -336,56 +437,52 @@ body{
 
 /* STATUS */
 .status-card{
-  background:#F4F4F4;
-  border-radius:32px;
+  background:white;
+  border-radius:28px;
   padding:28px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,0.05);
 }
 
 .status-circle{
-  width:140px;
-  height:140px;
-  background:#52B84E;
+  width:120px;
+  height:120px;
+  background:#4CAF50;
   border-radius:50%;
+  margin:auto;
   display:flex;
   align-items:center;
   justify-content:center;
   color:white;
-  font-size:70px;
-  margin-top:8px;
-  margin-bottom:24px;
+  font-size:60px;
+  margin-bottom:20px;
 }
 
 .status-card h2{
-  font-size:42px;
-  font-weight:800;
-  margin-bottom:8px;
+  font-size:36px;
+  margin-bottom:10px;
 }
 
-.status-text{
-  text-align:center;
-  font-size:24px;
-  line-height:1.5;
-  margin-bottom:28px;
+.status-desc{
+  color:#666;
+  line-height:1.6;
+  margin-bottom:24px;
 }
 
 .recommend-box{
-  width:100%;
-  background:white;
-  border-radius:24px;
-  padding:22px;
+  background:#F7F7F7;
+  padding:20px;
+  border-radius:18px;
+  text-align:left;
 }
 
 .recommend-box h4{
-  font-size:28px;
-  font-weight:700;
-  margin-bottom:12px;
+  margin-bottom:10px;
+  font-size:18px;
 }
 
 .recommend-box p{
-  font-size:20px;
+  color:#666;
   line-height:1.6;
 }
 
@@ -412,18 +509,18 @@ body{
     width:100%;
   }
 
+  .topbar{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:15px;
+  }
+
   .sensor-grid{
     grid-template-columns:1fr;
   }
 
-  .topbar{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:10px;
-  }
-
   .topbar h1{
-    font-size:40px;
+    font-size:34px;
   }
 
 }
