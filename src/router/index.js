@@ -1,32 +1,52 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '../views/Login.vue'
-import Register from '../views/Register.vue'
 
-// ⬇️ PENTING
+// HOME
+import Home from '../views/home.vue'
+
+// LAYOUT
 import MainLayout from '../layouts/MainLayout.vue'
 
-// ⬇️ halaman dalam layout
+// HALAMAN DASHBOARD
 import Dashboard from '../views/Dashboard.vue'
 import Setting from '../views/setting.vue'
 import History from '../views/history.vue'
 
 const routes = [
-  // HALAMAN TANPA LOGIN
-  { path: '/', component: Login },
-  { path: '/register', component: Register },
+
+  // HOME LANDING PAGE
+  {
+    path: '/',
+    component: Home
+  },
 
   // HALAMAN DENGAN SIDEBAR
   {
-    path: '/',
+    path: '/dashboard',
     component: MainLayout,
     children: [
-      { path: 'dashboard', component: Dashboard },
-      { path: 'setting', component: Setting },
-      { path: 'history', component: History }
+
+      // default /dashboard
+      {
+        path: '',
+        component: Dashboard
+      },
+
+      // /dashboard/setting
+      {
+        path: 'setting',
+        component: Setting
+      },
+
+      // /dashboard/history
+      {
+        path: 'history',
+        component: History
+      }
+
     ]
   }
-]
 
+]
 
 const router = createRouter({
   history: createWebHistory(),

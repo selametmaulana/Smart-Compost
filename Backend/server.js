@@ -1,7 +1,5 @@
 import express from 'express'
 import cors from 'cors'
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import pool from './db.js'
 
@@ -11,28 +9,6 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-
-// =====================
-// 🔐 AUTH MIDDLEWARE (TARUH DI SINI)
-// =====================
-const auth = (req, res, next) => {
-  try {
-    let token = req.headers.authorization
-
-    if (!token) {
-      return res.status(401).json({ message: 'No token' })
-    }
-
-    if (token.startsWith('Bearer ')) {
-      token = token.replace('Bearer ', '')
-    }
-
-    req.user = jwt.verify(token, process.env.JWT_SECRET)
-    next()
-  } catch (err) {
-    return res.status(401).json({ message: 'Invalid token' })
-  }
-}
 
 // =====================
 // ROOT / HEALTH CHECK
@@ -148,151 +124,34 @@ app.delete('/history', async (req, res) => {
   }
 })
 
-// =====================
-// REGISTER
-// =====================
-app.post('/register', async (req, res) => {
-  try {
-
-    console.log('📩 REGISTER BODY:', req.body)
-
-    const { name, email, password } = req.body
-
-    const check = await pool.query(
-      'SELECT * FROM public.users WHERE email=$1',
-      [email]
-    )
-
-    console.log('👤 CHECK USER:', check.rows)
-
-    if (check.rows.length > 0) {
-      return res.status(400).json({
-        message: 'Email sudah terdaftar'
-      })
-    }
-
-    const hash = await bcrypt.hash(password, 10)
-
-    const result = await pool.query(
-      `INSERT INTO public.users
-      (name,email,password)
-      VALUES ($1,$2,$3)
-      RETURNING id,name,email`,
-      [name, email, hash]
-    )
-
-    res.json({
-      message: 'Register success',
-      user: result.rows[0]
-    })
-
-  } catch (err) {
-
-    console.error('❌ REGISTER ERROR:', err)
-
-    res.status(500).json({
-      error: err.message
-    })
-  }
-})
-
-// =====================
-// LOGIN
-// =====================
-app.post('/login', async (req, res) => {
-  try {
-    console.log('📩 LOGIN REQUEST:', req.body)
-
-    const { email, password } = req.body
-
-    const result = await pool.query(
-      'SELECT * FROM public.users WHERE email=$1',
-      [email]
-    )
-
-    console.log('👤 USER RESULT:', result.rows)
-
-    if (result.rows.length === 0) {
-      return res.status(400).json({
-        message: 'User tidak ditemukan'
-      })
-    }
-
-    const user = result.rows[0]
-
-    const valid = await bcrypt.compare(password, user.password)
-
-    if (!valid) {
-      return res.status(400).json({
-        message: 'Password salah'
-      })
-    }
-
-    const token = jwt.sign(
-      { id: user.id },
-      process.env.JWT_SECRET,
-      { expiresIn: '1d' }
-    )
-
-    res.json({ token })
-
-  } catch (err) {
-    console.error('❌ LOGIN ERROR:', err)
-
-    res.status(500).json({
-      error: err.message
-    })
-  }
-})
-
 
 // =====================
 // DASHBOARD (FIXED)
 // =====================
 app.get('/dashboard', async (req, res) => {
   try {
-    // =====================
-    // AMBIL TOKEN (FIX FORMAT BEARER)
-    // =====================
-    let token = req.headers.authorization
-
-    if (!token) {
-      return res.status(401).json({ message: 'Unauthorized: No token' })
-    }
-
-    // kalau pakai "Bearer xxx"
-    if (token.startsWith('Bearer ')) {
-      token = token.replace('Bearer ', '')
-    }
 
     // =====================
-    // VERIFY TOKEN
+    // DATA DASHBOARD
     // =====================
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-    // =====================
-    // AMBIL USER DARI DB
-    // =====================
-    const result = await pool.query(
-      'SELECT id, name, email FROM public.users WHERE id=$1',
-      [decoded.id]
-    )
+    res.json({
+      message: 'Dashboard Smart Compost aktif',
+      status: 'success',
 
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'User not found' })
-    }
+      app: 'Smart Compost Monitoring',
 
-    // =====================
-    // RETURN USER DATA (FIX FORMAT FRONTEND)
-    // =====================
-    res.json(result.rows[0])
+      developer: 'Selamet Maulana'
+    })
 
   } catch (err) {
+
     console.error('❌ DASHBOARD ERROR:', err.message)
 
-    res.status(401).json({
-      message: 'Invalid token'
+    res.status(500).json({
+      message: 'Server error'
     })
+
   }
 })
 

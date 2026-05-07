@@ -14,10 +14,6 @@
   <span v-if="needAduk" class="badge">!</span>
 </div>
 
-    <div class="user">
-      {{ user?.name || 'Loading...' }}
-    </div>
-
   </div>
 </div>
 
@@ -236,11 +232,9 @@ const router = useRouter()
 // =========================
 // STATE
 // =========================
-const user = ref(null)
+
 const activeMenu = ref('dashboard')
 
-const isTempOpen = ref(false)
-const isHumOpen = ref(false)
 const isOpen = ref(false)
 
 const temperature = ref(0)
@@ -269,10 +263,6 @@ const toggleSidebar = () => {
 const goSettings = () => router.push('/setting')
 const goHistory = () => router.push('/history')
 
-const logout = () => {
-  localStorage.removeItem('token')
-  router.push('/')
-}
 
 const toggleNotif = () => {
   showNotif.value = !showNotif.value
@@ -347,44 +337,6 @@ const createGauge = (color, unit) => ({
   stroke: { lineCap: 'round' },
   colors: [color]
 })
-
-
-// =========================
-// AUTH USER
-// =========================
-const checkAuth = async () => {
-  const token = localStorage.getItem('token')
-
-  console.log('CHECK TOKEN:', token) // DEBUG WAJIB
-
-  // ❌ kalau tidak ada token
-  if (!token) {
-    router.push('/')
-    return
-  }
-
-  try {
-    const res = await fetch(`${API}/dashboard`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-
-    // ❌ kalau token tidak valid
-    if (!res.ok) {
-      throw new Error('Invalid token')
-    }
-
-    const data = await res.json()
-    user.value = data
-
-  } catch (err) {
-    console.log('AUTH ERROR:', err)
-
-    localStorage.removeItem('token')
-    router.push('/')
-  }
-}
 
 // =========================
 // FETCH SENSOR DATA
