@@ -3,8 +3,7 @@ import cors from 'cors'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-import mqtt from 'mqtt'
-import mysql from 'mysql2/promise'
+import pool from './db.js'
 
 dotenv.config()
 
@@ -12,22 +11,9 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-// =========================
-// 🔥 MYSQL CONNECTION
-// =========================
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT
-})
-
-// =========================
-// 🔥 MQTT
-// =========================
-const client = mqtt.connect('mqtt://broker.hivemq.com:1883')
-
+// =====================
+// SENSOR STATE (REALTIME CACHE)
+// =====================
 let sensorData = {
   suhu_kompos: 0,
   suhu_udara: 0,
@@ -38,187 +24,149 @@ let sensorData = {
   fan: false
 }
 
-let lastSavedTime = 0
-
-client.on('connect', () => {
-  console.log('MQTT Connected')
-  client.subscribe('nayla/kompos/data')
-})
-
-// =========================
-// 🔥 MQTT RECEIVE
-// =========================
-client.on('message', async (topic, message) => {
+// =====================
+// SENSOR DATA (REALTIME UPDATE + SAVE DB)
+// =====================
+app.post('/sensor-data', async (req, res) => {
   try {
-    if (topic === 'nayla/kompos/data') {
-      const data = JSON.parse(message.toString())
+    const data = req.body
+    console.log('📩 SENSOR MASUK:', data)
 
-      sensorData = data
-      console.log("MQTT Data:", data)
+    // update realtime cache
+    sensorData = data
 
-      const now = Date.now()
-
-      // simpan tiap 1 menit
-      if (now - lastSavedTime >= 60000) {
-        await pool.query(`
-          INSERT INTO history_sensor
-          (suhu_ruang, suhu_material, kelembapan_udara, kelembapan_kompos, status)
-          VALUES (?, ?, ?, ?, ?)
-        `, [
-          data.suhu_udara,
-          data.suhu_kompos,
-          data.kelembapan_udara,
-          data.kelembapan_kompos,
-          data.status
-        ])
-
-        lastSavedTime = now
-        console.log("Data tersimpan ke MySQL")
-      }
-    }
-  } catch (err) {
-    console.error("MQTT Error:", err.message)
-  }
-})
-
-// =========================
-// 🔥 ADUK KOMPOS
-// =========================
-app.post('/aduk', async (req, res) => {
-  const token = req.headers.authorization
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
-
-    await pool.query(
-      'UPDATE users SET last_aduk = NOW() WHERE id=?',
-      [decoded.id]
-    )
-
-    res.json({ message: 'Aduk kompos berhasil dicatat 🌱' })
-  } catch (err) {
-    res.status(401).json({ message: 'Token tidak valid' })
-  }
-})
-
-app.get('/aduk-status', async (req, res) => {
-  const token = req.headers.authorization
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
-
-    const [rows] = await pool.query(
-      'SELECT last_aduk FROM users WHERE id=?',
-      [decoded.id]
-    )
-
-    const last = rows[0]?.last_aduk
-
-    if (!last) {
-      return res.json({ days: 0, needAduk: false })
-    }
-
-    const now = new Date()
-    const lastDate = new Date(last)
-    const diff = (now - lastDate) / (1000 * 60 * 60 * 24)
+    // simpan ke database langsung (tanpa delay ribet dulu)
+    await pool.query(`
+      INSERT INTO history_sensor (
+        suhu_ruang,
+        suhu_material,
+        kelembapan_udara,
+        kelembapan_kompos,
+        status
+      ) VALUES ($1,$2,$3,$4,$5)
+    `, [
+      data.suhu_udara,
+      data.suhu_kompos,
+      data.kelembapan_udara,
+      data.kelembapan_kompos,
+      data.mode || 'AUTO'
+    ])
 
     res.json({
-      days: Math.floor(diff),
-      needAduk: diff >= 3
+      success: true,
+      message: 'Data berhasil disimpan'
     })
 
   } catch (err) {
-    res.status(401).json({ message: 'Token tidak valid' })
+    console.error('❌ SENSOR ERROR:', err.message)
+
+    res.status(500).json({
+      success: false,
+      error: err.message
+    })
   }
 })
 
-// =========================
-// 🔥 SENSOR API
-// =========================
-app.post('/sensor-data', (req, res) => {
-  sensorData = req.body
-  console.log("Data dari Node-RED:", sensorData)
-  res.json({ message: 'Data diterima' })
-})
-
+// =====================
+// GET REALTIME SENSOR
+// =====================
 app.get('/sensor-data', (req, res) => {
   res.json(sensorData)
 })
 
-// =========================
-// 🔥 CONTROL DEVICE
-// =========================
-app.post('/control', async (req, res) => {
-  const { device, state } = req.body
-
+// =====================
+// HISTORY
+// =====================
+app.get('/history', async (req, res) => {
   try {
-    await fetch('http://localhost:1880/control', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ device, state })
-    })
+    const result = await pool.query(`
+      SELECT * FROM history_sensor
+      ORDER BY created_at DESC
+    `)
 
-    console.log('Kirim ke Node-RED:', { device, state })
-
-    res.json({ message: 'Perintah dikirim ke Node-RED' })
+    res.json(result.rows)
   } catch (err) {
-    console.error(err)
-    res.status(500).json({ message: 'Gagal kirim' })
+    res.status(500).json({ error: err.message })
   }
 })
 
-// =========================
-// 🔥 REGISTER
-// =========================
-app.post('/register', async (req, res) => {
-  const { name, email, password } = req.body
-
+// =====================
+// DELETE HISTORY
+// =====================
+app.delete('/history/:id', async (req, res) => {
   try {
+    await pool.query(
+      'DELETE FROM history_sensor WHERE id=$1',
+      [req.params.id]
+    )
+
+    res.json({ message: 'Deleted' })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+app.delete('/history', async (req, res) => {
+  try {
+    await pool.query('DELETE FROM history_sensor')
+    res.json({ message: 'All deleted' })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+// =====================
+// REGISTER
+// =====================
+app.post('/register', async (req, res) => {
+  try {
+    const { name, email, password } = req.body
+
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Semua field wajib diisi' })
     }
 
-    const [checkUser] = await pool.query(
-      'SELECT * FROM users WHERE email=?',
+    const check = await pool.query(
+      'SELECT * FROM public.users WHERE email=$1',
       [email]
     )
 
-    if (checkUser.length > 0) {
+    if (check.rows.length > 0) {
       return res.status(400).json({ message: 'Email sudah terdaftar' })
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const hash = await bcrypt.hash(password, 10)
 
-    await pool.query(
-      'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-      [name, email, hashedPassword]
+    const result = await pool.query(
+      'INSERT INTO public.users (name,email,password) VALUES ($1,$2,$3) RETURNING id,name,email',
+      [name, email, hash]
     )
 
-    res.json({ message: 'Register berhasil 🎉' })
+    res.json({ message: 'Register success', user: result.rows[0] })
 
   } catch (err) {
-    console.error(err)
-    res.status(500).json({ message: 'Server error' })
+    res.status(500).json({ error: err.message })
   }
 })
 
-// =========================
-// 🔥 LOGIN
-// =========================
+// =====================
+// LOGIN
+// =====================
 app.post('/login', async (req, res) => {
-  const { email, password } = req.body
-
   try {
-    const [rows] = await pool.query(
-      'SELECT * FROM users WHERE email=?',
+    const { email, password } = req.body
+
+    const result = await pool.query(
+      'SELECT * FROM public.users WHERE email=$1',
       [email]
     )
 
-    if (rows.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(400).json({ message: 'User tidak ditemukan' })
     }
 
-    const user = rows[0]
+    const user = result.rows[0]
+
     const valid = await bcrypt.compare(password, user.password)
 
     if (!valid) {
@@ -231,88 +179,39 @@ app.post('/login', async (req, res) => {
       { expiresIn: '1d' }
     )
 
-    res.json({ message: 'Login berhasil 🎉', token })
+    res.json({ token })
 
-  } catch (err) {
-    res.status(500).json({ message: 'Server error' })
-  }
-})
-
-// =========================
-// 🔥 HISTORY
-// =========================
-app.get('/history', async (req, res) => {
-  try {
-    const [rows] = await pool.query(`
-      SELECT * FROM history_sensor
-      ORDER BY created_at DESC
-    `)
-
-    res.json(rows)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
 })
 
-app.delete('/history/:id', async (req, res) => {
-  try {
-    await pool.query(
-      'DELETE FROM history_sensor WHERE id=?',
-      [req.params.id]
-    )
-
-    res.json({ message: 'Data berhasil dihapus' })
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
-})
-
-app.delete('/history', async (req, res) => {
-  try {
-    await pool.query('DELETE FROM history_sensor')
-    res.json({ message: 'Semua data berhasil dihapus' })
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
-})
-
-// =========================
-// 🔥 DASHBOARD
-// =========================
+// =====================
+// DASHBOARD
+// =====================
 app.get('/dashboard', async (req, res) => {
-  const token = req.headers.authorization
-
-  if (!token) {
-    return res.status(401).json({ message: 'Akses ditolak' })
-  }
-
   try {
+    const token = req.headers.authorization
+    if (!token) return res.status(401).json({ message: 'Unauthorized' })
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-    const [rows] = await pool.query(
-      'SELECT id, name, email FROM users WHERE id=?',
+    const result = await pool.query(
+      'SELECT id,name,email FROM public.users WHERE id=$1',
       [decoded.id]
     )
 
-    if (rows.length === 0) {
-      return res.status(404).json({ message: 'User tidak ditemukan' })
-    }
-
-    res.json({
-      message: 'Selamat datang 🎉',
-      user: rows[0]
-    })
-
+    res.json(result.rows[0])
   } catch (err) {
-    res.status(401).json({ message: 'Token tidak valid' })
+    res.status(401).json({ message: 'Invalid token' })
   }
 })
 
-// =========================
-// 🚀 RUN SERVER
-// =========================
+// =====================
+// START SERVER (RAILWAY SAFE)
+// =====================
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
-  console.log(`Server jalan di port ${PORT}`)
+  console.log(`🚀 Server running on port ${PORT}`)
 })
