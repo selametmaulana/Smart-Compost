@@ -154,6 +154,8 @@ app.post('/register', async (req, res) => {
 // =====================
 app.post('/login', async (req, res) => {
   try {
+    console.log('📩 LOGIN REQUEST:', req.body)
+
     const { email, password } = req.body
 
     const result = await pool.query(
@@ -161,8 +163,12 @@ app.post('/login', async (req, res) => {
       [email]
     )
 
+    console.log('👤 USER RESULT:', result.rows)
+
     if (result.rows.length === 0) {
-      return res.status(400).json({ message: 'User tidak ditemukan' })
+      return res.status(400).json({
+        message: 'User tidak ditemukan'
+      })
     }
 
     const user = result.rows[0]
@@ -170,7 +176,9 @@ app.post('/login', async (req, res) => {
     const valid = await bcrypt.compare(password, user.password)
 
     if (!valid) {
-      return res.status(400).json({ message: 'Password salah' })
+      return res.status(400).json({
+        message: 'Password salah'
+      })
     }
 
     const token = jwt.sign(
@@ -182,7 +190,11 @@ app.post('/login', async (req, res) => {
     res.json({ token })
 
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    console.error('❌ LOGIN ERROR:', err)
+
+    res.status(500).json({
+      error: err.message
+    })
   }
 })
 
