@@ -355,26 +355,35 @@ const createGauge = (color, unit) => ({
 const checkAuth = async () => {
   const token = localStorage.getItem('token')
 
-  console.log('TOKEN:', token) // DEBUG WAJIB
+  console.log('CHECK TOKEN:', token) // DEBUG WAJIB
 
+  // ❌ kalau tidak ada token
   if (!token) {
     router.push('/')
     return
   }
 
-  const res = await fetch(`${API}/dashboard`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
+  try {
+    const res = await fetch(`${API}/dashboard`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
 
-  if (!res.ok) {
+    // ❌ kalau token tidak valid
+    if (!res.ok) {
+      throw new Error('Invalid token')
+    }
+
+    const data = await res.json()
+    user.value = data
+
+  } catch (err) {
+    console.log('AUTH ERROR:', err)
+
     localStorage.removeItem('token')
     router.push('/')
-    return
   }
-
-  user.value = await res.json()
 }
 
 // =========================
