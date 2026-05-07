@@ -120,32 +120,46 @@ app.delete('/history', async (req, res) => {
 // =====================
 app.post('/register', async (req, res) => {
   try {
-    const { name, email, password } = req.body
 
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'Semua field wajib diisi' })
-    }
+    console.log('📩 REGISTER BODY:', req.body)
+
+    const { name, email, password } = req.body
 
     const check = await pool.query(
       'SELECT * FROM public.users WHERE email=$1',
       [email]
     )
 
+    console.log('👤 CHECK USER:', check.rows)
+
     if (check.rows.length > 0) {
-      return res.status(400).json({ message: 'Email sudah terdaftar' })
+      return res.status(400).json({
+        message: 'Email sudah terdaftar'
+      })
     }
 
     const hash = await bcrypt.hash(password, 10)
 
     const result = await pool.query(
-      'INSERT INTO public.users (name,email,password) VALUES ($1,$2,$3) RETURNING id,name,email',
+      `INSERT INTO public.users
+      (name,email,password)
+      VALUES ($1,$2,$3)
+      RETURNING id,name,email`,
       [name, email, hash]
     )
 
-    res.json({ message: 'Register success', user: result.rows[0] })
+    res.json({
+      message: 'Register success',
+      user: result.rows[0]
+    })
 
   } catch (err) {
-    res.status(500).json({ error: err.message })
+
+    console.error('❌ REGISTER ERROR:', err)
+
+    res.status(500).json({
+      error: err.message
+    })
   }
 })
 
