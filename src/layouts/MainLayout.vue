@@ -5,7 +5,9 @@
     <div class="topbar">
       <div class="menu-btn" @click="toggleSidebar">☰</div>
       <h3>🌱 Smart Compost</h3>
-      
+      <div class="user">
+        👤 {{ user?.name || 'Loading...' }}
+      </div>
     </div>
 
     <!-- SIDEBAR -->
@@ -91,7 +93,7 @@ onMounted(() => {
   left: 220px;
   right: 0;
   height: 60px;
-  background: #000000;
+  background: #1b5e20;
   color: white;
   display: flex;
   justify-content: space-between;
