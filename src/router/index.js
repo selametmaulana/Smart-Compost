@@ -4,7 +4,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/home.vue'
 
 // LAYOUT
-import MainLayout from '../layouts/MainLayout.vue'
 
 // HALAMAN DASHBOARD
 import Dashboard from '../views/Dashboard.vue'
@@ -22,7 +21,6 @@ const routes = [
   // HALAMAN DENGAN SIDEBAR
   {
     path: '/dashboard',
-    component: MainLayout,
     children: [
 
       // default /dashboard

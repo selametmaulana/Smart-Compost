@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-layout">
+  <div class="dashboard">
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
