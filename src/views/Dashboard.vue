@@ -62,55 +62,59 @@
       <!-- SENSOR -->
       <div class="sensor-grid">
 
-        <div class="sensor-card">
-          <div class="sensor-icon temp">
-            <i class="ri-temp-hot-line"></i>
-          </div>
+<!-- SUHU RUANG -->
+<div class="sensor-card">
+  <div class="sensor-icon temp">
+    <i class="ri-temp-hot-line"></i>
+  </div>
 
-          <div class="sensor-info">
-            <h4>Suhu</h4>
-            <h2>48.6°C</h2>
-            <p>Optimal</p>
-          </div>
-        </div>
+  <div class="sensor-info">
+    <h4>Suhu Ruang Komposter</h4>
+    <h2>30°C</h2>
+    <p>Optimal</p>
+  </div>
+</div>
 
-        <div class="sensor-card">
-          <div class="sensor-icon humidity">
-            <i class="ri-drop-line"></i>
-          </div>
+<!-- SUHU KOMPOS -->
+<div class="sensor-card">
+  <div class="sensor-icon temp">
+    <i class="ri-fire-line"></i>
+  </div>
 
-          <div class="sensor-info">
-            <h4>Kelembapan</h4>
-            <h2>58%</h2>
-            <p>Optimal</p>
-          </div>
-        </div>
+  <div class="sensor-info">
+    <h4>Suhu Material Kompos</h4>
+    <h2>48.6°C</h2>
+    <p>Optimal</p>
+  </div>
+</div>
 
-        <div class="sensor-card">
-          <div class="sensor-icon ph">
-            <i class="ri-flask-line"></i>
-          </div>
+<!-- KELEMBAPAN UDARA -->
+<div class="sensor-card">
+  <div class="sensor-icon humidity">
+    <i class="ri-cloud-line"></i>
+  </div>
 
-          <div class="sensor-info">
-            <h4>pH</h4>
-            <h2>7.2</h2>
-            <p>Optimal</p>
-          </div>
-        </div>
+  <div class="sensor-info">
+    <h4>Kelembapan Udara</h4>
+    <h2>58%</h2>
+    <p>Optimal</p>
+  </div>
+</div>
 
-        <div class="sensor-card">
-          <div class="sensor-icon oxygen">
-            <i class="ri-windy-line"></i>
-          </div>
+<!-- KELEMBAPAN KOMPOS -->
+<div class="sensor-card">
+  <div class="sensor-icon oxygen">
+    <i class="ri-drop-line"></i>
+  </div>
 
-          <div class="sensor-info">
-            <h4>Oksigen</h4>
-            <h2>18.6%</h2>
-            <p>Optimal</p>
-          </div>
-        </div>
+  <div class="sensor-info">
+    <h4>Kelembapan Kompos</h4>
+    <h2>65%</h2>
+    <p>Optimal</p>
+  </div>
+</div>
 
-      </div>
+</div>
 
       <!-- BOTTOM -->
       <div class="bottom-grid">
