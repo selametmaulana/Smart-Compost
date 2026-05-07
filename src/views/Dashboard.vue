@@ -62,7 +62,7 @@
       <!-- SENSOR -->
       <div class="sensor-grid">
 
-<!-- SUHU RUANG -->
+<!-- SUHU RUANG KOMPOSTER -->
 <div class="sensor-card">
   <div class="sensor-icon temp">
     <i class="ri-temp-hot-line"></i>
@@ -75,9 +75,9 @@
   </div>
 </div>
 
-<!-- SUHU KOMPOS -->
+<!-- SUHU MATERIAL KOMPOS -->
 <div class="sensor-card">
-  <div class="sensor-icon temp">
+  <div class="sensor-icon compost">
     <i class="ri-fire-line"></i>
   </div>
 
@@ -90,7 +90,7 @@
 
 <!-- KELEMBAPAN UDARA -->
 <div class="sensor-card">
-  <div class="sensor-icon humidity">
+  <div class="sensor-icon humidity-air">
     <i class="ri-cloud-line"></i>
   </div>
 
@@ -103,7 +103,7 @@
 
 <!-- KELEMBAPAN KOMPOS -->
 <div class="sensor-card">
-  <div class="sensor-icon oxygen">
+  <div class="sensor-icon humidity-compost">
     <i class="ri-drop-line"></i>
   </div>
 
@@ -453,6 +453,22 @@ body{
   font-size:18px;
   line-height:1.7;
   color:#333;
+}
+
+.temp{
+  background:#FF7043;
+}
+
+.compost{
+  background:#FF9800;
+}
+
+.humidity-air{
+  background:#42A5F5;
+}
+
+.humidity-compost{
+  background:#26A69A;
 }
 
 /* RESPONSIVE */
