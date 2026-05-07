@@ -1,13 +1,9 @@
-import mysql from 'mysql2'
+import pg from 'pg'
+const { Pool } = pg
 
-import mysql from 'mysql2/promise'
-
-const db = await mysql.createConnection({
-  host: process.env.MYSQLHOST,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  database: process.env.MYSQLDATABASE,
-  port: process.env.MYSQLPORT
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
 })
 
-console.log("✅ MySQL Connected")
+export default pool
