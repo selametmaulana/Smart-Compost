@@ -413,216 +413,442 @@ onMounted(() => {
   setInterval(fetchAdukStatus, 60000)
 })
 </script>
+/* =========================
+GLOBAL
+========================= */
 
-<style scoped>
-.layout { display: flex; }
-
-.topbar {
-  position: fixed;
-  top: 0;
-  left: 220px;
-  right: 0;
-  height: 60px;
-  background: #1b5e20;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  z-index: 1000; /* 🔥 penting */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
 }
 
-.top-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+body{
+  background:#f5f9f4;
 }
 
-/* ICON */
-.notif-wrapper {
-  position: relative;
-  cursor: pointer;
-  font-size: 20px;
+/* =========================
+LAYOUT
+========================= */
+
+.layout{
+  display:flex;
+  min-height:100vh;
+  background:
+  radial-gradient(circle at top right,#b8ffb830,transparent 30%),
+  radial-gradient(circle at bottom left,#7dff8c20,transparent 30%),
+  #f7faf7;
 }
 
-/* BADGE MERAH */
-.badge {
-  position: absolute;
-  top: -5px;
-  right: -8px;
-  background: red;
-  color: white;
-  font-size: 10px;
-  padding: 2px 5px;
-  border-radius: 50%;
+/* =========================
+TOPBAR
+========================= */
+
+.topbar{
+  position:fixed;
+  top:0;
+  left:260px;
+  right:0;
+  height:85px;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(12px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 35px;
+  z-index:1000;
+  border-bottom:1px solid rgba(0,0,0,0.05);
 }
 
-/* DROPDOWN */
-.notif-dropdown {
-  position: fixed;   /* 🔥 ganti absolute → fixed */
-  right: 20px;
-  top: 70px;
-  width: 250px;
-  background: white;
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-  z-index: 2000; /* 🔥 biar di atas semua */
+.topbar h3{
+  font-size:28px;
+  font-weight:700;
+  color:#1b1b1b;
 }
 
-.notif-item {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
+.top-right{
+  display:flex;
+  align-items:center;
+  gap:20px;
 }
 
-.notif-item.warning {
-  color: red;
-  font-weight: bold;
+/* =========================
+NOTIFICATION
+========================= */
+
+.notif-wrapper{
+  width:50px;
+  height:50px;
+  border-radius:16px;
+  background:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  position:relative;
+  box-shadow:0 10px 30px rgba(0,0,0,0.06);
+  transition:0.3s;
 }
 
-.menu-btn {
-  display: none;
-  font-size: 22px;
-  cursor: pointer;
+.notif-wrapper:hover{
+  transform:translateY(-3px);
 }
 
-.sidebar {
-  width: 220px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background: linear-gradient(#1b5e20, #66bb6a);
-  color: white;
-  padding: 20px;
-  transition: 0.3s;
+.badge{
+  position:absolute;
+  top:-5px;
+  right:-5px;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:red;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+  font-weight:bold;
 }
 
-.sidebar li {
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-  cursor: pointer;
+.notif-dropdown{
+  position:fixed;
+  top:95px;
+  right:30px;
+  width:300px;
+  background:white;
+  border-radius:25px;
+  padding:20px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.1);
+  z-index:2000;
 }
 
-.submenu { padding-left: 20px; }
-
-.main {
-  margin-left: 1px; 
-  margin-top: 0px;   
-  padding: 20px;
-  width: 200%;
-  height: 100%;
-  box-sizing: border-box;
-
-  transition: all 0.3s ease; /* smooth saat sidebar toggle */
+.notif-dropdown h4{
+  margin-bottom:15px;
+  font-size:20px;
 }
 
-/* HEADER */
-.monitoring-header {
-  margin-bottom: 15px;
+.notif-item{
+  padding:15px;
+  border-radius:15px;
+  background:#f7f7f7;
+  line-height:1.6;
 }
 
-.monitoring-header h1 {
-  font-size: 50px;
-  margin-top: -20px;
+.notif-item.warning{
+  background:#fff1f1;
+  color:#e53935;
 }
 
-.monitoring-header p {
-  color: #666;
-  font-size: 30px;
+/* =========================
+SIDEBAR
+========================= */
+
+.sidebar{
+  width:260px;
+  position:fixed;
+  top:0;
+  left:0;
+  height:100vh;
+  background:
+  linear-gradient(180deg,#0c220f,#183d1a);
+  color:white;
+  padding:30px 20px;
+  z-index:1001;
+}
+
+.logo{
+  font-size:30px;
+  margin-bottom:50px;
+  font-weight:700;
+}
+
+.sidebar ul{
+  list-style:none;
+}
+
+.sidebar li{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:18px;
+  border-radius:18px;
+  margin-bottom:15px;
+  cursor:pointer;
+  font-weight:500;
+  transition:0.3s;
+}
+
+.sidebar li:hover{
+  background:#4CAF50;
+  transform:translateX(5px);
+}
+
+.icon{
+  width:20px;
+  height:20px;
+}
+
+/* =========================
+MAIN
+========================= */
+
+.main{
+  margin-left:260px;
+  width:100%;
+  padding:120px 35px 40px;
+}
+
+/* =========================
+HEADER
+========================= */
+
+.monitoring-header{
+  margin-bottom:35px;
+}
+
+.monitoring-header h1{
+  font-size:58px;
+  line-height:1.1;
+  color:#111;
+  margin-bottom:15px;
+}
+
+.monitoring-header p{
+  font-size:22px;
+  color:#666;
 }
 
 .status{
-  font-size: 20px;
+  margin-top:15px;
+  display:inline-block;
+  background:#e9f7e9;
+  color:#2e7d32;
+  padding:12px 22px;
+  border-radius:30px;
+  font-weight:600;
 }
 
-.charts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
-  gap: 20px;
+/* =========================
+CHARTS
+========================= */
+
+.charts{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:25px;
+  margin-top:40px;
 }
 
-
-.chart-box {
-  background: white;
-  padding: 25px;
-  border-radius: 20px;
-  text-align: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+.chart-box{
+  background:rgba(255,255,255,0.8);
+  backdrop-filter:blur(12px);
+  border-radius:30px;
+  padding:30px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,0.06);
+  transition:0.3s;
 }
 
-.chart-box p {
-  margin-top: 10px;
-  font-weight: 500;
-  color: #444;
+.chart-box:hover{
+  transform:translateY(-6px);
 }
 
-.sensor-card {
-  background: white;
-  padding: 40px;
-  text-align: center;
+.chart-box p{
+  margin-top:15px;
+  font-size:18px;
+  font-weight:600;
+  color:#333;
 }
 
-.overlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
+/* =========================
+DEVICE STATUS
+========================= */
+
+.device-status{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:25px;
+  margin-top:40px;
 }
 
-@media (max-width:768px){
-  .topbar { left:0 }
-  .menu-btn { display:block }
-  .sidebar { left:-250px }
-  .sidebar.show { left:0 }
-  .main { margin-left:0 }
+/* =========================
+DEVICE CARD
+========================= */
+
+.device-card,
+.device-kipas,
+.aduk-card{
+  background:white;
+  border-radius:30px;
+  padding:30px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.06);
 }
 
-.btn-group {
-  margin-top: 10px;
-  display: flex;
-  gap: 10px;
+.device-card h3,
+.device-kipas h3,
+.aduk-card h3{
+  font-size:26px;
+  margin-bottom:20px;
+  color:#111 !important;
 }
 
-.btn-group button {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  background: #1b5e20;
-  color: white;
-  font-size: 12px;
+/* =========================
+STATUS ON OFF
+========================= */
+
+.on{
+  display:inline-block;
+  background:#e8f5e9;
+  color:#2e7d32;
+  padding:10px 18px;
+  border-radius:30px;
+  font-weight:600;
 }
 
-
-
-.btn-group button:hover {
-  background: #2e7d32;
+.off{
+  display:inline-block;
+  background:#ffebee;
+  color:#d32f2f;
+  padding:10px 18px;
+  border-radius:30px;
+  font-weight:600;
 }
 
-.aduk-card {
-  background: #fff;
-  padding: 20px;
-  border-radius: 15px;
-  margin-top: 20px;
+/* =========================
+BUTTONS
+========================= */
+
+.btn-group,
+.btn-group-kipas{
+  display:flex;
+  gap:15px;
+  margin-top:25px;
 }
 
-.warning {
-  color: red;
-  font-weight: bold;
+.btn-group button,
+.btn-group-kipas button,
+.aduk-card button{
+  border:none !important;
+  background:#4CAF50 !important;
+  color:white !important;
+  padding:12px 20px !important;
+  border-radius:14px !important;
+  cursor:pointer;
+  font-size:15px !important;
+  font-weight:600;
+  transition:0.3s;
+  margin:0 !important;
 }
 
-.notif-wrapper {
-  position: relative;
+.btn-group button:hover,
+.btn-group-kipas button:hover,
+.aduk-card button:hover{
+  background:#2e7d32 !important;
+  transform:translateY(-2px);
 }
 
-.badge {
-  position: absolute;
-  top: -5px;
-  right: -8px;
-  background: red;
-  color: white;
+/* =========================
+ADUK
+========================= */
+
+.aduk-card p{
+  margin-bottom:15px;
+  color:#666;
+  font-size:17px;
 }
 
-</style>
+.warning{
+  color:#e53935 !important;
+  font-weight:700;
+}
+
+/* =========================
+SENSOR DETAIL
+========================= */
+
+.sensor-card{
+  background:white;
+  border-radius:30px;
+  padding:50px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,0.06);
+}
+
+.sensor-card h2{
+  font-size:34px;
+  margin-bottom:15px;
+}
+
+.sensor-card h1{
+  font-size:70px;
+  color:#4CAF50;
+}
+
+/* =========================
+MENU BUTTON MOBILE
+========================= */
+
+.menu-btn{
+  display:none;
+  font-size:28px;
+  cursor:pointer;
+}
+
+/* =========================
+OVERLAY
+========================= */
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  z-index:999;
+}
+
+/* =========================
+RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+  .topbar{
+    left:0;
+    padding:0 20px;
+  }
+
+  .menu-btn{
+    display:block;
+  }
+
+  .sidebar{
+    left:-280px;
+    transition:0.3s;
+  }
+
+  .sidebar.show{
+    left:0;
+  }
+
+  .main{
+    margin-left:0;
+    padding:110px 20px 40px;
+  }
+
+  .monitoring-header h1{
+    font-size:42px;
+  }
+
+  .monitoring-header p{
+    font-size:18px;
+  }
+
+  .charts{
+    grid-template-columns:1fr;
+  }
+
+  .device-status{
+    grid-template-columns:1fr;
+  }
+
+}
