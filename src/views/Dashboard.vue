@@ -348,28 +348,37 @@ const createGauge = (color, unit) => ({
   colors: [color]
 })
 
+
+
 // =========================
 // AUTH USER
 // =========================
+const isAuthLoading = ref(true)
+
 const checkAuth = async () => {
-  const token = localStorage.getItem('token')
-
-  if (!token) {
-    router.push('/')
-    return
-  }
-
   try {
+    const token = localStorage.getItem('token')
+
+    if (!token) {
+      router.push('/')
+      return
+    }
+
     const res = await fetch(`${API}/dashboard`, {
-      headers: { Authorization: token }
+      headers: { Authorization: `Bearer ${token}` }
     })
 
-    const data = await res.json()
-    user.value = data
-  } catch (error) {
-    console.error('Auth gagal:', error)
+    if (!res.ok) {
+      throw new Error('Invalid token')
+    }
+
+    user.value = await res.json()
+
+  } catch (err) {
     localStorage.removeItem('token')
     router.push('/')
+  } finally {
+    isAuthLoading.value = false
   }
 }
 
