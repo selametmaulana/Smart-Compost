@@ -12,6 +12,16 @@ app.use(cors())
 app.use(express.json())
 
 // =====================
+// ROOT / HEALTH CHECK
+// =====================
+app.get('/', (req, res) => {
+  res.json({
+    message: "🚀 Smart Compost API is running",
+    status: "OK"
+  });
+})
+
+// =====================
 // SENSOR STATE (REALTIME CACHE)
 // =====================
 let sensorData = {
