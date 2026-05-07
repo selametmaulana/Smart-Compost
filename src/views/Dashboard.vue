@@ -349,37 +349,32 @@ const createGauge = (color, unit) => ({
 })
 
 
-
 // =========================
 // AUTH USER
 // =========================
-const isAuthLoading = ref(true)
-
 const checkAuth = async () => {
-  try {
-    const token = localStorage.getItem('token')
+  const token = localStorage.getItem('token')
 
-    if (!token) {
-      router.push('/')
-      return
+  console.log('TOKEN:', token) // DEBUG WAJIB
+
+  if (!token) {
+    router.push('/')
+    return
+  }
+
+  const res = await fetch(`${API}/dashboard`, {
+    headers: {
+      Authorization: `Bearer ${token}`
     }
+  })
 
-    const res = await fetch(`${API}/dashboard`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-
-    if (!res.ok) {
-      throw new Error('Invalid token')
-    }
-
-    user.value = await res.json()
-
-  } catch (err) {
+  if (!res.ok) {
     localStorage.removeItem('token')
     router.push('/')
-  } finally {
-    isAuthLoading.value = false
+    return
   }
+
+  user.value = await res.json()
 }
 
 // =========================
