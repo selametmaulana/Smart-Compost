@@ -1,953 +1,431 @@
 <template>
-  <div class="layout">
+  <div class="dashboard-layout">
 
-    <!-- =========================
-    TOPBAR
-    ========================== -->
-    <div class="topbar">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div>
+        <h1 class="logo">SmartCompost</h1>
 
-      <div class="menu-btn" @click="toggleSidebar">
-        ☰
+        <nav class="menu">
+          <div class="menu-item active">
+            <span>⬚</span>
+            Dashboard
+          </div>
+
+          <div class="menu-item">
+            <span>⚙</span>
+            Perangkat
+          </div>
+
+          <div class="menu-item">
+            <span>📊</span>
+            Data & Riwayat
+          </div>
+
+          <div class="menu-item">
+            <span>🔔</span>
+            Notifikasi
+          </div>
+
+          <div class="menu-item">
+            <span>⚙</span>
+            Pengaturan
+          </div>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+      <!-- TOP -->
+      <div class="topbar">
+        <h1>Dashboard</h1>
+        <p>• Terakhir diperbarui: 10:30 WIB</p>
       </div>
 
-      <h3>🌱 Smart Compost</h3>
+      <!-- CARD SENSOR -->
+      <div class="sensor-grid">
 
-      <div class="top-right">
+        <div class="sensor-card">
+          <div class="icon">🌡</div>
+          <h3>Suhu</h3>
+          <h1>48.6°C</h1>
+          <p class="status">● Optimal</p>
+        </div>
 
-        <!-- NOTIFICATION -->
-        <div class="notif-wrapper" @click="toggleNotif">
+        <div class="sensor-card">
+          <div class="icon">💧</div>
+          <h3>Kelembapan</h3>
+          <h1>58%</h1>
+          <p class="status">● Optimal</p>
+        </div>
 
-          <Bell />
+        <div class="sensor-card">
+          <div class="icon">⚗</div>
+          <h3>pH</h3>
+          <h1>7.2</h1>
+          <p class="status">● Optimal</p>
+        </div>
 
-          <span v-if="needAduk" class="badge">
-            !
-          </span>
-
+        <div class="sensor-card">
+          <div class="icon">💨</div>
+          <h3>Oksigen</h3>
+          <h1>18.6%</h1>
+          <p class="status">● Optimal</p>
         </div>
 
       </div>
 
-    </div>
+      <!-- BOTTOM -->
+      <div class="bottom-grid">
 
-    <!-- =========================
-    NOTIFICATION DROPDOWN
-    ========================== -->
-    <div v-if="showNotif" class="notif-dropdown">
+        <!-- GRAFIK -->
+        <div class="chart-card">
 
-      <h4>Notifikasi</h4>
+          <div class="chart-top">
+            <h3>Grafik Suhu (7 Hari)</h3>
 
-      <div
-        v-if="needAduk"
-        class="notif-item warning"
-      >
-        🚨 Saatnya aduk kompos!
-        <br>
+            <div class="day-btn">
+              7 Hari
+            </div>
+          </div>
 
-        <small>
-          {{ adukDays }} hari sejak terakhir aduk
-        </small>
+          <div class="chart-area">
 
-      </div>
-
-      <div v-else class="notif-item">
-        ✅ Kompos masih aman
-      </div>
-
-    </div>
-
-    <!-- =========================
-    SIDEBAR
-    ========================== -->
-    <div :class="['sidebar', { show: isOpen }]">
-
-      <h2 class="logo">
-        🌱 Smart Compost
-      </h2>
-
-      <ul>
-
-        <li @click="activeMenu = 'dashboard'">
-
-          <LayoutDashboard class="icon" />
-
-          Dashboard
-
-        </li>
-
-        <li @click="goSettings">
-
-          <Settings class="icon" />
-
-          Settings
-
-        </li>
-
-        <li @click="goHistory">
-
-          <History class="icon" />
-
-          History
-
-        </li>
-
-      </ul>
-
-    </div>
-
-    <!-- =========================
-    OVERLAY
-    ========================== -->
-    <div
-      v-if="isOpen"
-      class="overlay"
-      @click="toggleSidebar"
-    ></div>
-
-    <!-- =========================
-    MAIN CONTENT
-    ========================== -->
-    <div class="main">
-
-      <!-- =========================
-      HEADER
-      ========================== -->
-      <div class="monitoring-header">
-
-        <h1>
-          Monitoring Kondisi Kompos
-        </h1>
-
-        <p>
-          Waktu pembuatan kompos anda tinggal:
-          <b>{{ countdown }}</b>
-        </p>
-
-        <div class="status">
-          Status: {{ compostStatus }}
-        </div>
-
-      </div>
-
-      <!-- =========================
-      CHARTS
-      ========================== -->
-      <div class="charts">
-
-        <!-- SUHU RUANG -->
-        <div class="chart-box">
-
-          <apexchart
-            type="radialBar"
-            height="250"
-            :options="createGauge('#42a5f5', '°C')"
-            :series="[temperature]"
-          />
-
-          <p>
-            🌡 Suhu Ruang Kompos
-          </p>
-
-        </div>
-
-        <!-- SUHU MATERIAL -->
-        <div class="chart-box">
-
-          <apexchart
-            type="radialBar"
-            height="250"
-            :options="createGauge('#ef5350', '°C')"
-            :series="[materialTemp]"
-          />
-
-          <p>
-            🔥 Suhu Material Kompos
-          </p>
-
-        </div>
-
-        <!-- KELEMBAPAN -->
-        <div class="chart-box">
-
-          <apexchart
-            type="radialBar"
-            height="250"
-            :options="createGauge('#29b6f6', '%')"
-            :series="[humidity]"
-          />
-
-          <p>
-            💧 Kelembapan Udara
-          </p>
-
-        </div>
-
-        <!-- KELEMBAPAN KOMPOS -->
-        <div class="chart-box">
-
-          <apexchart
-            type="radialBar"
-            height="250"
-            :options="createGauge('#66bb6a', '%')"
-            :series="[compostHumidity]"
-          />
-
-          <p>
-            🌱 Kelembapan Kompos
-          </p>
-
-        </div>
-
-      </div>
-
-      <!-- =========================
-      DEVICE STATUS
-      ========================== -->
-      <div class="device-status">
-
-        <!-- POMPA -->
-        <div class="device-card">
-
-          <h3>💧 Pompa Air</h3>
-
-          <span :class="pompa ? 'on' : 'off'">
-
-            {{ pompa ? 'ON' : 'OFF' }}
-
-          </span>
-
-          <div class="btn-group">
-
-            <button @click="controlDevice('pompa', true)">
-              ON
-            </button>
-
-            <button @click="controlDevice('pompa', false)">
-              OFF
-            </button>
+            <svg
+              viewBox="0 0 600 250"
+              preserveAspectRatio="none"
+              class="chart-svg"
+            >
+              <line
+                x1="40"
+                y1="170"
+                x2="560"
+                y2="120"
+                stroke="#4CAF50"
+                stroke-width="5"
+                stroke-linecap="round"
+              />
+            </svg>
 
           </div>
 
         </div>
 
-        <!-- FAN -->
-        <div class="device-kipas">
+        <!-- STATUS -->
+        <div class="status-card">
 
-          <h3>🌀 Kipas</h3>
-
-          <span :class="fan ? 'on' : 'off'">
-
-            {{ fan ? 'ON' : 'OFF' }}
-
-          </span>
-
-          <div class="btn-group-kipas">
-
-            <button @click="controlDevice('fan', true)">
-              ON
-            </button>
-
-            <button @click="controlDevice('fan', false)">
-              OFF
-            </button>
-
+          <div class="status-circle">
+            ✓
           </div>
 
-        </div>
+          <h2>Optimal</h2>
 
-        <!-- ADUK -->
-        <div class="aduk-card">
-
-          <h3>
-            🌱 Aduk Kompos
-          </h3>
-
-          <p>
-            Terakhir aduk:
-            {{ adukDays }} hari lalu
+          <p class="status-text">
+            Proses berjalan dengan baik
           </p>
 
-          <p
-            v-if="needAduk"
-            class="warning"
-          >
-            🚨 Saatnya aduk kompos!
-          </p>
+          <div class="recommend-box">
+            <h4>Rekomendasi</h4>
 
-          <button @click="submitAduk">
-
-            ✅ Sudah Aduk
-
-          </button>
+            <p>
+              Pertahankan kelembapan dan aerasi untuk hasil optimal.
+            </p>
+          </div>
 
         </div>
 
       </div>
 
-    </div>
+    </main>
 
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-
-import { useRouter } from 'vue-router'
-
-import {
-  Bell,
-  LayoutDashboard,
-  Settings,
-  History
-} from 'lucide-vue-next'
-
-const API = import.meta.env.VITE_API_URL
-
-const router = useRouter()
-
-/* =========================
-STATE
-========================= */
-
-const activeMenu = ref('dashboard')
-
-const isOpen = ref(false)
-
-const showNotif = ref(false)
-
-const temperature = ref(48)
-
-const materialTemp = ref(56)
-
-const humidity = ref(65)
-
-const compostHumidity = ref(72)
-
-const countdown = ref('3 Hari Lagi')
-
-const compostStatus = ref('Optimal')
-
-const pompa = ref(false)
-
-const fan = ref(true)
-
-const adukDays = ref(2)
-
-const needAduk = ref(true)
-
-/* =========================
-SIDEBAR
-========================= */
-
-const toggleSidebar = () => {
-  isOpen.value = !isOpen.value
-}
-
-const toggleNotif = () => {
-  showNotif.value = !showNotif.value
-}
-
-/* =========================
-NAVIGATION
-========================= */
-
-const goSettings = () => {
-  router.push('/setting')
-}
-
-const goHistory = () => {
-  router.push('/history')
-}
-
-/* =========================
-CONTROL DEVICE
-========================= */
-
-const controlDevice = async (device, value) => {
-
-  try {
-
-    await fetch(`${API}/control`, {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json'
-      },
-      body:JSON.stringify({
-        device,
-        state:value
-      })
-    })
-
-    if(device === 'pompa'){
-      pompa.value = value
-    }
-
-    if(device === 'fan'){
-      fan.value = value
-    }
-
-  } catch (err) {
-
-    console.log(err)
-
-  }
-
-}
-
-/* =========================
-SUBMIT ADUK
-========================= */
-
-const submitAduk = () => {
-
-  adukDays.value = 0
-
-  needAduk.value = false
-
-}
-
-/* =========================
-GAUGE CHART
-========================= */
-
-const createGauge = (color, unit) => ({
-
-  chart:{
-    type:'radialBar'
-  },
-
-  plotOptions:{
-    radialBar:{
-      startAngle:-135,
-      endAngle:135,
-
-      hollow:{
-        size:'68%'
-      },
-
-      track:{
-        background:'#f0f0f0',
-        strokeWidth:'100%'
-      },
-
-      dataLabels:{
-
-        name:{
-          show:false
-        },
-
-        value:{
-          fontSize:'30px',
-          fontWeight:'700',
-
-          formatter:(val) => {
-            return val + unit
-          }
-        }
-
-      }
-    }
-  },
-
-  fill:{
-    type:'gradient',
-
-    gradient:{
-      shade:'light',
-      type:'horizontal',
-      gradientToColors:[color],
-      opacityFrom:1,
-      opacityTo:1,
-      stops:[0,100]
-    }
-  },
-
-  stroke:{
-    lineCap:'round'
-  },
-
-  colors:[color]
-
-})
-
-/* =========================
-FETCH SENSOR
-========================= */
-
-const fetchSensorData = async () => {
-
-  try {
-
-    const res = await fetch(`${API}/sensor-data`)
-
-    const data = await res.json()
-
-    temperature.value = data.suhu_udara || 0
-
-    materialTemp.value = data.suhu_kompos || 0
-
-    humidity.value = data.kelembapan_udara || 0
-
-    compostHumidity.value = data.kelembapan_kompos || 0
-
-    compostStatus.value = data.status || 'Optimal'
-
-    pompa.value = Boolean(data.pompa)
-
-    fan.value = Boolean(data.fan)
-
-  } catch (err) {
-
-    console.log(err)
-
-  }
-
-}
-
-onMounted(() => {
-
-  fetchSensorData()
-
-  setInterval(fetchSensorData,3000)
-
-})
 </script>
 
-/* =========================
-GLOBAL
-========================= */
+<style scoped>
+
+/* IMPORT FONT */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
+  font-family:'Poppins', sans-serif;
 }
 
 body{
-  background:#f5f9f4;
+  background:#EDEEEE;
 }
 
-/* =========================
-LAYOUT
-========================= */
-
-.layout{
-  display:flex;
+/* LAYOUT */
+.dashboard-layout{
+  width:100%;
   min-height:100vh;
-  background:
-  radial-gradient(circle at top right,#b8ffb830,transparent 30%),
-  radial-gradient(circle at bottom left,#7dff8c20,transparent 30%),
-  #f7faf7;
-}
-
-/* =========================
-TOPBAR
-========================= */
-
-.topbar{
-  position:fixed;
-  top:0;
-  left:260px;
-  right:0;
-  height:85px;
-  background:rgba(255,255,255,0.75);
-  backdrop-filter:blur(12px);
   display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 35px;
-  z-index:1000;
-  border-bottom:1px solid rgba(0,0,0,0.05);
-}
-
-.topbar h3{
-  font-size:28px;
-  font-weight:700;
-  color:#1b1b1b;
-}
-
-.top-right{
-  display:flex;
-  align-items:center;
   gap:20px;
+  padding:18px;
+  background:#EDEEEE;
 }
 
-/* =========================
-NOTIFICATION
-========================= */
-
-.notif-wrapper{
-  width:50px;
-  height:50px;
-  border-radius:16px;
-  background:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  position:relative;
-  box-shadow:0 10px 30px rgba(0,0,0,0.06);
-  transition:0.3s;
-}
-
-.notif-wrapper:hover{
-  transform:translateY(-3px);
-}
-
-.badge{
-  position:absolute;
-  top:-5px;
-  right:-5px;
-  width:20px;
-  height:20px;
-  border-radius:50%;
-  background:red;
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:11px;
-  font-weight:bold;
-}
-
-.notif-dropdown{
-  position:fixed;
-  top:95px;
-  right:30px;
-  width:300px;
-  background:white;
-  border-radius:25px;
-  padding:20px;
-  box-shadow:0 20px 50px rgba(0,0,0,0.1);
-  z-index:2000;
-}
-
-.notif-dropdown h4{
-  margin-bottom:15px;
-  font-size:20px;
-}
-
-.notif-item{
-  padding:15px;
-  border-radius:15px;
-  background:#f7f7f7;
-  line-height:1.6;
-}
-
-.notif-item.warning{
-  background:#fff1f1;
-  color:#e53935;
-}
-
-/* =========================
-SIDEBAR
-========================= */
-
+/* SIDEBAR */
 .sidebar{
-  width:260px;
-  position:fixed;
-  top:0;
-  left:0;
-  height:100vh;
-  background:
-  linear-gradient(180deg,#0c220f,#183d1a);
-  color:white;
-  padding:30px 20px;
-  z-index:1001;
+  width:270px;
+  background:linear-gradient(180deg,#012C06,#083D0D,#114915);
+  border-radius:38px;
+  padding:36px 28px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
 }
 
 .logo{
-  font-size:30px;
-  margin-bottom:50px;
-  font-weight:700;
+  color:white;
+  font-size:24px;
+  font-weight:800;
+  margin-bottom:45px;
 }
 
-.sidebar ul{
-  list-style:none;
+.menu{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
 }
 
-.sidebar li{
+.menu-item{
+  color:white;
   display:flex;
   align-items:center;
-  gap:12px;
-  padding:18px;
+  gap:14px;
+  padding:16px 16px;
   border-radius:18px;
-  margin-bottom:15px;
-  cursor:pointer;
+  font-size:18px;
   font-weight:500;
+  cursor:pointer;
   transition:0.3s;
 }
 
-.sidebar li:hover{
-  background:#4CAF50;
-  transform:translateX(5px);
+.menu-item.active{
+  background:#52B84E;
+}
+
+.menu-item:hover{
+  background:rgba(255,255,255,0.1);
+}
+
+/* MAIN */
+.main-content{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+/* TOPBAR */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
+}
+
+.topbar h1{
+  font-size:56px;
+  font-weight:800;
+  color:#000;
+}
+
+.topbar p{
+  color:#777;
+  font-size:18px;
+}
+
+/* SENSOR GRID */
+.sensor-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+  margin-bottom:22px;
+}
+
+.sensor-card{
+  background:#F4F4F4;
+  border-radius:28px;
+  padding:26px 22px;
+  min-height:220px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 
 .icon{
-  width:20px;
-  height:20px;
+  font-size:28px;
+  margin-bottom:10px;
 }
 
-/* =========================
-MAIN
-========================= */
-
-.main{
-  margin-left:260px;
-  width:100%;
-  padding:120px 35px 40px;
-}
-
-/* =========================
-HEADER
-========================= */
-
-.monitoring-header{
-  margin-bottom:35px;
-}
-
-.monitoring-header h1{
-  font-size:58px;
-  line-height:1.1;
-  color:#111;
-  margin-bottom:15px;
-}
-
-.monitoring-header p{
-  font-size:22px;
+.sensor-card h3{
+  font-size:20px;
   color:#666;
-}
-
-.status{
-  margin-top:15px;
-  display:inline-block;
-  background:#e9f7e9;
-  color:#2e7d32;
-  padding:12px 22px;
-  border-radius:30px;
+  margin-bottom:18px;
   font-weight:600;
-}
-
-/* =========================
-CHARTS
-========================= */
-
-.charts{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
-  gap:25px;
-  margin-top:40px;
-}
-
-.chart-box{
-  background:rgba(255,255,255,0.8);
-  backdrop-filter:blur(12px);
-  border-radius:30px;
-  padding:30px;
-  text-align:center;
-  box-shadow:0 20px 40px rgba(0,0,0,0.06);
-  transition:0.3s;
-}
-
-.chart-box:hover{
-  transform:translateY(-6px);
-}
-
-.chart-box p{
-  margin-top:15px;
-  font-size:18px;
-  font-weight:600;
-  color:#333;
-}
-
-/* =========================
-DEVICE STATUS
-========================= */
-
-.device-status{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:25px;
-  margin-top:40px;
-}
-
-/* =========================
-DEVICE CARD
-========================= */
-
-.device-card,
-.device-kipas,
-.aduk-card{
-  background:white;
-  border-radius:30px;
-  padding:30px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.06);
-}
-
-.device-card h3,
-.device-kipas h3,
-.aduk-card h3{
-  font-size:26px;
-  margin-bottom:20px;
-  color:#111 !important;
-}
-
-/* =========================
-STATUS ON OFF
-========================= */
-
-.on{
-  display:inline-block;
-  background:#e8f5e9;
-  color:#2e7d32;
-  padding:10px 18px;
-  border-radius:30px;
-  font-weight:600;
-}
-
-.off{
-  display:inline-block;
-  background:#ffebee;
-  color:#d32f2f;
-  padding:10px 18px;
-  border-radius:30px;
-  font-weight:600;
-}
-
-/* =========================
-BUTTONS
-========================= */
-
-.btn-group,
-.btn-group-kipas{
-  display:flex;
-  gap:15px;
-  margin-top:25px;
-}
-
-.btn-group button,
-.btn-group-kipas button,
-.aduk-card button{
-  border:none !important;
-  background:#4CAF50 !important;
-  color:white !important;
-  padding:12px 20px !important;
-  border-radius:14px !important;
-  cursor:pointer;
-  font-size:15px !important;
-  font-weight:600;
-  transition:0.3s;
-  margin:0 !important;
-}
-
-.btn-group button:hover,
-.btn-group-kipas button:hover,
-.aduk-card button:hover{
-  background:#2e7d32 !important;
-  transform:translateY(-2px);
-}
-
-/* =========================
-ADUK
-========================= */
-
-.aduk-card p{
-  margin-bottom:15px;
-  color:#666;
-  font-size:17px;
-}
-
-.warning{
-  color:#e53935 !important;
-  font-weight:700;
-}
-
-/* =========================
-SENSOR DETAIL
-========================= */
-
-.sensor-card{
-  background:white;
-  border-radius:30px;
-  padding:50px;
-  text-align:center;
-  box-shadow:0 20px 40px rgba(0,0,0,0.06);
-}
-
-.sensor-card h2{
-  font-size:34px;
-  margin-bottom:15px;
 }
 
 .sensor-card h1{
-  font-size:70px;
-  color:#4CAF50;
+  font-size:48px;
+  font-weight:800;
+  margin-bottom:18px;
 }
 
-/* =========================
-MENU BUTTON MOBILE
-========================= */
+.status{
+  color:#49AF4E;
+  font-size:22px;
+  font-weight:500;
+}
 
-.menu-btn{
-  display:none;
+/* BOTTOM */
+.bottom-grid{
+  display:grid;
+  grid-template-columns:2.2fr 1fr;
+  gap:18px;
+  flex:1;
+}
+
+/* CHART */
+.chart-card{
+  background:#F4F4F4;
+  border-radius:32px;
+  padding:24px;
+}
+
+.chart-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:24px;
+}
+
+.chart-top h3{
   font-size:28px;
-  cursor:pointer;
+  font-weight:700;
 }
 
-/* =========================
-OVERLAY
-========================= */
-
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.4);
-  z-index:999;
+.day-btn{
+  background:white;
+  padding:12px 18px;
+  border-radius:14px;
+  font-weight:600;
+  font-size:18px;
 }
 
-/* =========================
-RESPONSIVE
-========================= */
+.chart-area{
+  width:100%;
+  height:420px;
+  background:#EDF4ED;
+  border-radius:28px;
+  overflow:hidden;
+  position:relative;
+}
 
-@media(max-width:900px){
+.chart-svg{
+  width:100%;
+  height:100%;
+}
 
-  .topbar{
-    left:0;
-    padding:0 20px;
+/* STATUS */
+.status-card{
+  background:#F4F4F4;
+  border-radius:32px;
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.status-circle{
+  width:140px;
+  height:140px;
+  background:#52B84E;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:70px;
+  margin-top:8px;
+  margin-bottom:24px;
+}
+
+.status-card h2{
+  font-size:42px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.status-text{
+  text-align:center;
+  font-size:24px;
+  line-height:1.5;
+  margin-bottom:28px;
+}
+
+.recommend-box{
+  width:100%;
+  background:white;
+  border-radius:24px;
+  padding:22px;
+}
+
+.recommend-box h4{
+  font-size:28px;
+  font-weight:700;
+  margin-bottom:12px;
+}
+
+.recommend-box p{
+  font-size:20px;
+  line-height:1.6;
+}
+
+/* RESPONSIVE */
+@media(max-width:1200px){
+
+  .sensor-grid{
+    grid-template-columns:repeat(2,1fr);
   }
 
-  .menu-btn{
-    display:block;
+  .bottom-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:768px){
+
+  .dashboard-layout{
+    flex-direction:column;
   }
 
   .sidebar{
-    left:-280px;
-    transition:0.3s;
+    width:100%;
   }
 
-  .sidebar.show{
-    left:0;
-  }
-
-  .main{
-    margin-left:0;
-    padding:110px 20px 40px;
-  }
-
-  .monitoring-header h1{
-    font-size:42px;
-  }
-
-  .monitoring-header p{
-    font-size:18px;
-  }
-
-  .charts{
+  .sensor-grid{
     grid-template-columns:1fr;
   }
 
-  .device-status{
-    grid-template-columns:1fr;
+  .topbar{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+  }
+
+  .topbar h1{
+    font-size:40px;
   }
 
 }
+
+</style>
