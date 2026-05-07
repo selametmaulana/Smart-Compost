@@ -91,7 +91,7 @@ onMounted(() => {
   left: 220px;
   right: 0;
   height: 60px;
-  background: #1b5e20;
+  background: #000000;
   color: white;
   display: flex;
   justify-content: space-between;
