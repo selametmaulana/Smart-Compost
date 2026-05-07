@@ -455,21 +455,7 @@ body{
   color:#333;
 }
 
-.temp{
-  background:#FF7043;
-}
 
-.compost{
-  background:#FF9800;
-}
-
-.humidity-air{
-  background:#42A5F5;
-}
-
-.humidity-compost{
-  background:#26A69A;
-}
 
 /* RESPONSIVE */
 @media(max-width:1200px){
