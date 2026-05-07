@@ -365,7 +365,7 @@ const checkAuth = async () => {
     })
 
     const data = await res.json()
-    user.value = data.user
+    user.value = data
   } catch (error) {
     console.error('Auth gagal:', error)
     localStorage.removeItem('token')

@@ -11,6 +11,29 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+
+// =====================
+// 🔐 AUTH MIDDLEWARE (TARUH DI SINI)
+// =====================
+const auth = (req, res, next) => {
+  try {
+    let token = req.headers.authorization
+
+    if (!token) {
+      return res.status(401).json({ message: 'No token' })
+    }
+
+    if (token.startsWith('Bearer ')) {
+      token = token.replace('Bearer ', '')
+    }
+
+    req.user = jwt.verify(token, process.env.JWT_SECRET)
+    next()
+  } catch (err) {
+    return res.status(401).json({ message: 'Invalid token' })
+  }
+}
+
 // =====================
 // ROOT / HEALTH CHECK
 // =====================
@@ -222,24 +245,54 @@ app.post('/login', async (req, res) => {
   }
 })
 
+
 // =====================
-// DASHBOARD
+// DASHBOARD (FIXED)
 // =====================
 app.get('/dashboard', async (req, res) => {
   try {
-    const token = req.headers.authorization
-    if (!token) return res.status(401).json({ message: 'Unauthorized' })
+    // =====================
+    // AMBIL TOKEN (FIX FORMAT BEARER)
+    // =====================
+    let token = req.headers.authorization
 
+    if (!token) {
+      return res.status(401).json({ message: 'Unauthorized: No token' })
+    }
+
+    // kalau pakai "Bearer xxx"
+    if (token.startsWith('Bearer ')) {
+      token = token.replace('Bearer ', '')
+    }
+
+    // =====================
+    // VERIFY TOKEN
+    // =====================
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
+    // =====================
+    // AMBIL USER DARI DB
+    // =====================
     const result = await pool.query(
-      'SELECT id,name,email FROM public.users WHERE id=$1',
+      'SELECT id, name, email FROM public.users WHERE id=$1',
       [decoded.id]
     )
 
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    // =====================
+    // RETURN USER DATA (FIX FORMAT FRONTEND)
+    // =====================
     res.json(result.rows[0])
+
   } catch (err) {
-    res.status(401).json({ message: 'Invalid token' })
+    console.error('❌ DASHBOARD ERROR:', err.message)
+
+    res.status(401).json({
+      message: 'Invalid token'
+    })
   }
 })
 
