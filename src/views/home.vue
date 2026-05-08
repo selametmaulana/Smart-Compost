@@ -1,295 +1,233 @@
 <template>
     <div class="home">
-  
-      <!-- BLUR -->
-      <div class="bg-blur blur-1"></div>
-      <div class="bg-blur blur-2"></div>
-  
-      <!-- NAVBAR -->
-      <nav class="navbar">
-  
+
+    <!-- BLUR -->
+    <div class="bg-blur blur-1"></div>
+    <div class="bg-blur blur-2"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
         <!-- LOGO -->
         <div class="logo-section">
-  
-          <div class="logo-icon">
+
+        <div class="logo-icon">
             <Leaf class="leaf-icon" />
-          </div>
-  
-          <div class="logo-text">
-            <h2>
-              Smart<span>Compost</span>
-            </h2>
-  
-            <p>MONITORING</p>
-          </div>
-  
         </div>
-  
+
+        <div class="logo-text">
+            <h2>
+            Smart<span>Compost</span>
+            </h2>
+
+            <p>MONITORING</p>
+        </div>
+
+        </div>
+
         <!-- MENU -->
         <ul class="nav-menu">
-  
-          <li class="active">
+
+        <li class="active">
             <House size="18" />
             Beranda
-          </li>
-  
-          <li>
-            <LayoutDashboard size="18" />
-            Dashboard
-          </li>
-  
-          <li>
-            <Cpu size="18" />
-            Perangkat
-          </li>
-  
-          <li>
-            <BarChart3 size="18" />
-            Data & Riwayat
-          </li>
-  
-          <li>
-            <Bell size="18" />
-            Notifikasi
-          </li>
-  
-          <li>
-            <Info size="18" />
-            Tentang
-          </li>
-  
+        </li>
+
+        <li @click="showAboutAlert = true">
+        <Info size="18" />
+        Tentang Website Kami
+        </li>
         </ul>
-  
+
         <!-- BUTTON -->
         <router-link to="/dashboard" class="dashboard-btn">
-  
-          <LayoutDashboard size="18" />
-  
-          Masuk Dashboard
-  
+        <LayoutDashboard size="18" />
+        Masuk Dashboard
         </router-link>
-  
-      </nav>
-  
-      <!-- HERO -->
-      <section class="hero">
-  
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
         <!-- LEFT -->
         <div class="hero-left">
-  
-          <div class="badge">
-  
-            <Activity size="16" />
-  
-            Monitoring Real-time • Data Akurat • Kompos Berkualitas
-  
-          </div>
-  
-          <h1>
+        <div class="badge">
+        <Activity size="16" />
+        Monitoring Real-time • Data Akurat • Kompos Berkualitas
+    </div>
+
+        <h1>
             Pantau Proses Kompos
             Secara <span>Real-time,</span>
             Hasil Lebih Optimal
-          </h1>
-  
-          <p>
+        </h1>
+        <p>
             Smart Compost Monitoring membantu Anda memantau kondisi
             kompos secara real-time melalui sensor pintar dan dashboard
             modern yang mudah digunakan.
-          </p>
-  
-          <!-- BUTTONS -->
-          <div class="hero-buttons">
-  
+        </p>
+        <!-- BUTTONS -->
+        <div class="hero-buttons">
             <router-link to="/dashboard" class="btn-primary">
-  
-              <LayoutDashboard size="20" />
-  
-              Lihat Dashboard
-  
+
+            <LayoutDashboard size="20" />
+            Lihat Dashboard
             </router-link>
-  
             <button class="btn-secondary">
-  
-              <PlayCircle size="20" />
-  
-              Cara Kerja Sistem
-  
+            <PlayCircle size="20" />
+            Cara Kerja Sistem
             </button>
-  
-          </div>
-  
-          <!-- FEATURES -->
-          <div class="mini-features">
-  
+        </div>
+
+        <!-- FEATURES -->
+        <div class="mini-features">
             <div class="feature">
-  
-              <div class="feature-icon">
+            <div class="feature-icon">
                 <Wifi size="24" />
-              </div>
-  
-              <div>
+        </div>
+
+            <div>
                 <h4>Monitoring Real-time</h4>
                 <p>Pantau kondisi kompos kapan saja</p>
-              </div>
-  
             </div>
-  
+            </div>
+
             <div class="feature">
-  
-              <div class="feature-icon">
+            <div class="feature-icon">
                 <BarChart3 size="24" />
-              </div>
-  
-              <div>
+            </div>
+
+            <div>
                 <h4>Data Akurat</h4>
                 <p>Sensor pintar terpercaya</p>
-              </div>
-  
             </div>
-  
+
+            </div>
             <div class="feature">
-  
-              <div class="feature-icon">
+            <div class="feature-icon">
                 <BellRing size="24" />
-              </div>
-  
-              <div>
+            </div>
+
+            <div>
                 <h4>Notifikasi Cerdas</h4>
                 <p>Peringatan otomatis</p>
-              </div>
-  
             </div>
-  
+
+            </div>
+
             <div class="feature">
-  
-              <div class="feature-icon">
+
+            <div class="feature-icon">
                 <Leaf size="24" />
-              </div>
-  
-              <div>
+            </div>
+
+            <div>
                 <h4>Kualitas Terjaga</h4>
                 <p>Kontrol proses kompos</p>
-              </div>
-  
             </div>
-  
-          </div>
-  
+
+            </div>
+
         </div>
-  
+
+        </div>
+
         <!-- RIGHT -->
         <div class="hero-right">
-  
-          <!-- DASHBOARD -->
-          <div class="dashboard-preview">
-  
+
+        <!-- DASHBOARD -->
+        <div class="dashboard-preview">
+
             <!-- SIDEBAR -->
             <div class="dashboard-sidebar">
-  
-              <div class="sidebar-logo">
-  
+            <div class="sidebar-logo">
                 <Leaf size="22" />
-  
                 SmartCompost
-  
-              </div>
-  
-              <ul>
-  
-                <li class="active-menu">
-                  <LayoutDashboard size="18" />
-                  Dashboard
-                </li>
-  
-                <li>
-                  <Cpu size="18" />
-                  Perangkat
-                </li>
-  
-                <li>
-                  <BarChart3 size="18" />
-                  Data & Riwayat
-                </li>
-  
-                <li>
-                  <Bell size="18" />
-                  Notifikasi
-                </li>
-  
-                <li>
-                  <Settings size="18" />
-                  Pengaturan
-                </li>
-  
-              </ul>
-  
             </div>
-  
+            
+            <ul>
+
+                <li class="active-menu">
+                <LayoutDashboard size="18" />
+                Dashboard
+                </li>
+
+                <li>
+                <Cpu size="18" />
+                Perangkat
+                </li>
+
+                <li>
+                <BarChart3 size="18" />
+                Data & Riwayat
+                </li>
+
+                <li>
+                <Bell size="18" />
+                Notifikasi
+                </li>
+
+                <li>
+                <Settings size="18" />
+                Pengaturan
+                </li>
+            </ul>
+
+            </div>
+
             <!-- CONTENT -->
             <div class="dashboard-content">
-  
-              <div class="dashboard-top">
-  
+
+            <div class="dashboard-top">
+
                 <h2>Dashboard</h2>
-  
+
                 <span>
-                  ● Terakhir diperbarui: 10:30 WIB
+                ● Terakhir diperbarui: 10:30 WIB
                 </span>
-  
-              </div>
-  
-              <!-- SENSOR -->
-              <div class="sensor-grid">
-  
+
+            </div>
+            <!-- SENSOR -->
+            <div class="sensor-grid">
+
                 <div class="sensor-card">
+
+                <Thermometer size="22" />
+                <h4>Suhu</h4>
+                <h2>48.6°C</h2>
+                <p>● Optimal</p>
+
+                </div>
+
+                <div class="sensor-card">
+
+                <Droplets size="22" />
+
+                <h4>Kelembapan</h4>
+
+                <h2>58%</h2>
+
+                <p>● Optimal</p>
+                </div>
+
+                <div class="sensor-card">
+
+                <FlaskConical size="22" />
+
+                <h4>pH</h4>
+                <h2>7.2</h2>
+                <p>● Optimal</p>
+                </div>
+
+                <div class="sensor-card">
+
+                <Wind size="22" />
   
-                  <Thermometer size="22" />
-  
-                  <h4>Suhu</h4>
-  
-                  <h2>48.6°C</h2>
-  
-                  <p>● Optimal</p>
-  
+                <h4>Oksigen</h4>
+                <h2>18.6%</h2>
+                <p>● Optimal</p>
                 </div>
   
-                <div class="sensor-card">
-  
-                  <Droplets size="22" />
-  
-                  <h4>Kelembapan</h4>
-  
-                  <h2>58%</h2>
-  
-                  <p>● Optimal</p>
-  
-                </div>
-  
-                <div class="sensor-card">
-  
-                  <FlaskConical size="22" />
-  
-                  <h4>pH</h4>
-  
-                  <h2>7.2</h2>
-  
-                  <p>● Optimal</p>
-  
-                </div>
-  
-                <div class="sensor-card">
-  
-                  <Wind size="22" />
-  
-                  <h4>Oksigen</h4>
-  
-                  <h2>18.6%</h2>
-  
-                  <p>● Optimal</p>
-  
-                </div>
-  
-              </div>
+            </div>
   
               <!-- GRAPH -->
               <div class="graph-section">
@@ -349,31 +287,115 @@
         </div>
   
       </section>
+
+    <!-- ALERT MODAL -->
+<div
+  v-if="showAboutAlert"
+  class="alert-overlay"
+  @click="showAboutAlert = false"
+>
+
+  <div
+    class="alert-modal"
+    @click.stop
+  >
+
+    <!-- CLOSE -->
+    <button
+      class="close-btn"
+      @click="showAboutAlert = false"
+    >
+      <X size="20" />
+    </button>
+
+    <!-- TITLE -->
+    <div class="alert-title">
+
+      <TriangleAlert size="34" />
+
+      <h2>TENTANG WEBSITE</h2>
+
+    </div>
+
+    <!-- CONTENT -->
+    <div class="alert-content">
+
+      <p>
+        <strong>SmartCompost Monitoring</strong>
+        merupakan sistem monitoring kompos berbasis IoT
+        yang membantu pengguna memantau kondisi kompos
+        secara real-time menggunakan sensor pintar.
+      </p>
+
+      <p>
+        Website ini menyediakan fitur monitoring suhu,
+        kelembapan, pH, oksigen, notifikasi otomatis,
+        serta dashboard modern untuk analisis data kompos.
+      </p>
+
+      <p>
+        Sistem dibuat untuk membantu rumah tangga,
+        komunitas, UMKM, dan industri dalam menghasilkan
+        kompos berkualitas secara efisien dan modern.
+      </p>
+
+      <div class="alert-box">
+
+        <h4>Fitur Utama</h4>
+
+        <ul>
+          <li>✔ Monitoring real-time</li>
+          <li>✔ Dashboard interaktif</li>
+          <li>✔ Sensor IoT pintar</li>
+          <li>✔ Data & riwayat monitoring</li>
+          <li>✔ Notifikasi otomatis</li>
+        </ul>
+
+      </div>
+
+      <button
+        class="alert-confirm"
+        @click="showAboutAlert = false"
+      >
+        Ya, Saya Mengerti
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
   
     </div>
   </template>
   
   <script setup>
-  import {
-    Leaf,
-    House,
-    LayoutDashboard,
-    Cpu,
-    BarChart3,
-    Bell,
-    Info,
-    Activity,
-    PlayCircle,
-    Wifi,
-    BellRing,
-    Settings,
-    Thermometer,
-    Droplets,
-    FlaskConical,
-    Wind,
-    Check
-  } from 'lucide-vue-next'
-  </script>
+import { ref } from 'vue'
+
+import {
+  Leaf,
+  House,
+  LayoutDashboard,
+  Cpu,
+  BarChart3,
+  Bell,
+  Info,
+  Activity,
+  PlayCircle,
+  Wifi,
+  BellRing,
+  Settings,
+  Thermometer,
+  Droplets,
+  FlaskConical,
+  Wind,
+  Check,
+  TriangleAlert,
+  X
+} from 'lucide-vue-next'
+
+const showAboutAlert = ref(false)
+</script>
   
   <style scoped>
   
@@ -485,7 +507,7 @@
   }
   
   .nav-menu li:hover{
-    color:#4CAF50;
+    color:#000000;
   }
   
   .active{
@@ -890,5 +912,196 @@
     }
   
   }
-  
+
+  /* ALERT OVERLAY */
+  /* OVERLAY */
+
+.alert-overlay{
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(5px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  z-index: 9999;
+}
+
+/* MODAL */
+
+.alert-modal{
+  width: min(680px, 92vw);
+
+  max-height: 88vh;
+  overflow-y: auto;
+
+  background: white;
+
+  border-radius: 26px;
+
+  padding: 32px;
+
+  position: relative;
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+
+  animation: popup 0.3s ease;
+}
+
+/* TITLE */
+
+.alert-title{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  color: #4CAF50;
+}
+
+.alert-title h2{
+  font-size: clamp(26px, 2vw, 34px);
+  font-weight: 800;
+}
+
+/* CONTENT */
+
+.alert-content{
+  background: #fff5f5;
+
+  border-radius: 22px;
+
+  padding: 24px;
+}
+
+.alert-content p{
+  font-size: clamp(15px, 1vw, 18px);
+
+  line-height: 1.8;
+
+  color: #333;
+
+  margin-bottom: 20px;
+}
+
+/* FEATURE BOX */
+
+.alert-box{
+  background: white;
+
+  border-radius: 18px;
+
+  padding: 20px;
+
+  margin-top: 20px;
+}
+
+.alert-box h4{
+  margin-bottom: 14px;
+
+  color: #4CAF50;
+
+  font-size: 22px;
+}
+
+.alert-box ul{
+  list-style: none;
+}
+
+.alert-box li{
+  margin-bottom: 12px;
+
+  color: #555;
+
+  font-size: 16px;
+}
+
+/* BUTTON */
+
+.alert-confirm{
+  width: 100%;
+
+  border: none;
+
+  margin-top: 26px;
+
+  padding: 16px;
+
+  border-radius: 16px;
+
+  background: #1f6fff;
+
+  color: white;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.alert-confirm:hover{
+  transform: translateY(-2px);
+}
+
+/* CLOSE BUTTON */
+
+.close-btn{
+  position: absolute;
+
+  top: 16px;
+  right: 16px;
+
+  width: 40px;
+  height: 40px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #f2f2f2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.close-btn:hover{
+  background: #e7e7e7;
+}
+
+/* SCROLLBAR */
+
+.alert-modal::-webkit-scrollbar{
+  width: 8px;
+}
+
+.alert-modal::-webkit-scrollbar-thumb{
+  background: #d6d6d6;
+  border-radius: 20px;
+}
+
+/* ANIMATION */
+
+@keyframes popup{
+  from{
+    opacity: 0;
+    transform: scale(.92) translateY(20px);
+  }
+
+  to{
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
   </style>
