@@ -55,7 +55,7 @@
 
           <!-- PENGATURAN -->
           <router-link
-            to="/dashboard/setting"
+            to="/dashboard/pengaturan"
             class="menu-item"
             active-class="active"
           >
@@ -92,14 +92,17 @@
   background:#f5f7fb;
 }
 
-/* SIDEBAR */
 
+
+/* SIDEBAR */
 .sidebar{
   width:260px;
-  min-height:100vh;
-  background:linear-gradient(180deg,#031b08,#0d3b1c);
-  padding:30px 20px;
-  color:white;
+  background:linear-gradient(180deg,#012B07,#063A0D,#0A4A12);
+  border-radius:38px;
+  padding:36px 22px;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
 .logo{
