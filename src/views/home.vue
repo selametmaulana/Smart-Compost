@@ -872,47 +872,62 @@ const showAboutAlert = ref(false)
     }
   
   }
-  
   @media(max-width:900px){
-  
-    .home{
-      padding:20px;
-    }
-  
-    .nav-menu{
-      display:none;
-    }
-  
-    .hero-left h1{
-      font-size:46px;
-    }
-  
-    .dashboard-preview{
-      flex-direction:column;
-    }
-  
-    .dashboard-sidebar{
-      width:100%;
-    }
-  
-    .sensor-grid{
-      grid-template-columns:repeat(2,1fr);
-    }
-  
-    .graph-section{
-      flex-direction:column;
-    }
-  
-    .status-card{
-      width:100%;
-    }
-  
-    .mini-features{
-      grid-template-columns:1fr;
-    }
-  
-  }
 
+.home{
+  padding:20px;
+}
+
+.navbar{
+  flex-direction:column;
+  align-items:flex-start;
+  gap:20px;
+}
+
+.nav-menu{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+}
+
+.nav-menu li{
+  font-size:14px;
+}
+
+.dashboard-btn{
+  width:100%;
+  justify-content:center;
+}
+
+.hero-left h1{
+  font-size:46px;
+}
+
+.dashboard-preview{
+  flex-direction:column;
+}
+
+.dashboard-sidebar{
+  width:100%;
+}
+
+.sensor-grid{
+  grid-template-columns:repeat(2,1fr);
+}
+
+.graph-section{
+  flex-direction:column;
+}
+
+.status-card{
+  width:100%;
+}
+
+.mini-features{
+  grid-template-columns:1fr;
+}
+
+}
   /* ALERT OVERLAY */
   /* OVERLAY */
 
@@ -936,20 +951,13 @@ const showAboutAlert = ref(false)
 
 .alert-modal{
   width: min(680px, 92vw);
-
   max-height: 88vh;
   overflow-y: auto;
-
   background: white;
-
   border-radius: 26px;
-
   padding: 32px;
-
   position: relative;
-
   box-shadow: 0 20px 60px rgba(0,0,0,0.18);
-
   animation: popup 0.3s ease;
 }
 
@@ -972,19 +980,14 @@ const showAboutAlert = ref(false)
 
 .alert-content{
   background: #fff5f5;
-
   border-radius: 22px;
-
   padding: 24px;
 }
 
 .alert-content p{
   font-size: clamp(15px, 1vw, 18px);
-
   line-height: 1.8;
-
   color: #333;
-
   margin-bottom: 20px;
 }
 
@@ -992,19 +995,14 @@ const showAboutAlert = ref(false)
 
 .alert-box{
   background: white;
-
   border-radius: 18px;
-
   padding: 20px;
-
   margin-top: 20px;
 }
 
 .alert-box h4{
   margin-bottom: 14px;
-
   color: #4CAF50;
-
   font-size: 22px;
 }
 
@@ -1014,9 +1012,7 @@ const showAboutAlert = ref(false)
 
 .alert-box li{
   margin-bottom: 12px;
-
   color: #555;
-
   font-size: 16px;
 }
 
@@ -1024,24 +1020,15 @@ const showAboutAlert = ref(false)
 
 .alert-confirm{
   width: 100%;
-
   border: none;
-
   margin-top: 26px;
-
   padding: 16px;
-
   border-radius: 16px;
-
   background: #1f6fff;
-
   color: white;
-
   font-size: 17px;
   font-weight: 700;
-
   cursor: pointer;
-
   transition: 0.3s;
 }
 
