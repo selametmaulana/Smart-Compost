@@ -325,109 +325,157 @@
     </div>
 
     <!-- STEPS -->
-    <div class="steps-container">
+    <!-- STEPS -->
+<div class="steps-container">
 
-      <!-- STEP -->
-      <div class="step-card">
+<!-- STEP -->
+<div class="step-card">
 
-        <div class="step-number">
-          1
-        </div>
+  <div class="step-number">
+    1
+  </div>
 
-        <div class="step-content">
+  <div class="step-content">
 
-          <h3>Sensor Membaca Data</h3>
+    <h3>Masuk ke Dashboard</h3>
 
-          <p>
-            Sensor IoT membaca suhu, kelembapan,
-            pH, dan oksigen pada kompos secara realtime.
-          </p>
+    <p>
+      Klik tombol <strong>Masuk Dashboard</strong>
+      untuk membuka halaman monitoring utama
+      SmartCompost Monitoring.
+    </p>
 
-        </div>
+  </div>
 
-      </div>
+</div>
 
-      <!-- STEP -->
-      <div class="step-card">
+<!-- STEP -->
+<div class="step-card">
 
-        <div class="step-number">
-          2
-        </div>
+  <div class="step-number">
+    2
+  </div>
 
-        <div class="step-content">
+  <div class="step-content">
 
-          <h3>Data Dikirim ke Server</h3>
+    <h3>Monitoring Sensor Real-time</h3>
 
-          <p>
-            ESP32 mengirim data sensor ke server
-            menggunakan koneksi internet.
-          </p>
+    <p>
+      Dashboard akan menampilkan data sensor
+      seperti suhu, kelembapan, pH, dan oksigen
+      secara realtime dari perangkat IoT.
+    </p>
 
-        </div>
+  </div>
 
-      </div>
+</div>
 
-      <!-- STEP -->
-      <div class="step-card">
+<!-- STEP -->
+<div class="step-card">
 
-        <div class="step-number">
-          3
-        </div>
+  <div class="step-number">
+    3
+  </div>
 
-        <div class="step-content">
+  <div class="step-content">
 
-          <h3>Database Menyimpan Data</h3>
+    <h3>Melihat Grafik Monitoring</h3>
 
-          <p>
-            PostgreSQL menyimpan seluruh data monitoring
-            untuk analisis dan riwayat proses kompos.
-          </p>
+    <p>
+      Pengguna dapat melihat grafik perubahan
+      kondisi kompos harian, mingguan,
+      maupun bulanan untuk analisis proses kompos.
+    </p>
 
-        </div>
+  </div>
 
-      </div>
+</div>
 
-      <!-- STEP -->
-      <div class="step-card">
+<!-- STEP -->
+<div class="step-card">
 
-        <div class="step-number">
-          4
-        </div>
+  <div class="step-number">
+    4
+  </div>
 
-        <div class="step-content">
+  <div class="step-content">
 
-          <h3>Dashboard Menampilkan Monitoring</h3>
+    <h3>Riwayat Data Sensor</h3>
 
-          <p>
-            Website menampilkan grafik dan status
-            kompos secara realtime kepada pengguna.
-          </p>
+    <p>
+      Semua data monitoring tersimpan otomatis
+      di database PostgreSQL sehingga pengguna
+      dapat melihat riwayat monitoring sebelumnya.
+    </p>
 
-        </div>
+  </div>
 
-      </div>
+</div>
 
-      <!-- STEP -->
-      <div class="step-card">
+<!-- STEP -->
+<div class="step-card">
 
-        <div class="step-number">
-          5
-        </div>
+  <div class="step-number">
+    5
+  </div>
 
-        <div class="step-content">
+  <div class="step-content">
 
-          <h3>Notifikasi Otomatis</h3>
+    <h3>Notifikasi Kondisi Kompos</h3>
 
-          <p>
-            Sistem memberikan notifikasi apabila
-            kondisi kompos tidak optimal.
-          </p>
+    <p>
+      Sistem akan memberikan notifikasi otomatis
+      apabila suhu, kelembapan, atau pH berada
+      di luar kondisi optimal.
+    </p>
 
-        </div>
+  </div>
 
-      </div>
+</div>
 
-    </div>
+<!-- STEP -->
+<div class="step-card">
+
+  <div class="step-number">
+    6
+  </div>
+
+  <div class="step-content">
+
+    <h3>Status Proses Kompos</h3>
+
+    <p>
+      Dashboard menampilkan status proses kompos
+      seperti optimal, warning, atau tidak stabil
+      berdasarkan hasil pembacaan sensor.
+    </p>
+
+  </div>
+
+</div>
+
+<!-- STEP -->
+<div class="step-card">
+
+  <div class="step-number">
+    7
+  </div>
+
+  <div class="step-content">
+
+    <h3>Akses dari Mana Saja</h3>
+
+    <p>
+      Website dapat diakses melalui laptop,
+      tablet, maupun smartphone selama
+      terhubung ke internet.
+    </p>
+
+  </div>
+
+</div>
+
+</div>
 
     <!-- BUTTON -->
     <button
