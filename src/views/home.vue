@@ -317,10 +317,6 @@
 
       <h2>Panduan Penggunaan Dashboard</h2>
 
-        <p>
-        Pelajari fitur dan cara menggunakan SmartCompost Monitoring
-        </p>
-
     </div>
 
     <!-- STEPS -->
