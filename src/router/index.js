@@ -3,42 +3,64 @@ import { createRouter, createWebHistory } from 'vue-router'
 // HOME
 import Home from '../views/home.vue'
 
-// LAYOUT
-
-// HALAMAN DASHBOARD
+// DASHBOARD PAGES
 import Dashboard from '../views/Dashboard.vue'
-import Setting from '../views/setting.vue'
+import Perangkat from '../views/perangkat.vue'
 import History from '../views/history.vue'
+import Notifikasi from '../views/notifikasi.vue'
+import Pengaturan from '../views/pengaturan.vue'
+import Setting from '../views/setting.vue'
 
 const routes = [
 
+  // =========================
   // HOME LANDING PAGE
+  // =========================
   {
     path: '/',
     component: Home
   },
 
-  // HALAMAN DENGAN SIDEBAR
+  // =========================
+  // DASHBOARD ROUTES
+  // =========================
   {
     path: '/dashboard',
     children: [
 
-      // default /dashboard
+      // /dashboard
       {
         path: '',
         component: Dashboard
       },
 
-      // /dashboard/setting
+      // /dashboard/perangkat
       {
-        path: 'setting',
-        component: Setting
+        path: 'perangkat',
+        component: Perangkat
       },
 
       // /dashboard/history
       {
         path: 'history',
         component: History
+      },
+
+      // /dashboard/notifikasi
+      {
+        path: 'notifikasi',
+        component: Notifikasi
+      },
+
+      {
+        path: 'pengaturan',
+        component: Pengaturan
+      },
+
+      // /dashboard/setting
+      {
+        path: 'setting',
+        component: Setting
       }
 
     ]
