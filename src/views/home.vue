@@ -356,7 +356,8 @@
 
     <p>
       Dashboard akan menampilkan data sensor
-      seperti suhu, kelembapan, pH, dan oksigen
+      seperti suhu ruang komposter, suhu material kompos , 
+      kelembapan udara, dan kelembapan kompos
       secara realtime dari perangkat IoT.
     </p>
 
@@ -398,7 +399,7 @@
 
     <p>
       Semua data monitoring tersimpan otomatis
-      di database PostgreSQL sehingga pengguna
+      di tabel history sehingga pengguna
       dapat melihat riwayat monitoring sebelumnya.
     </p>
 
