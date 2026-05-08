@@ -26,43 +26,28 @@ const routes = [
   // =========================
   {
     path: '/dashboard',
+    component: Layout,
     children: [
-
-      // /dashboard
       {
         path: '',
         component: Dashboard
       },
-
-      // /dashboard/perangkat
       {
         path: 'perangkat',
         component: Perangkat
       },
-
-      // /dashboard/history
       {
         path: 'history',
         component: History
       },
-
-      // /dashboard/notifikasi
       {
         path: 'notifikasi',
         component: Notifikasi
       },
-
       {
         path: 'pengaturan',
         component: Pengaturan
-      },
-
-      // /dashboard/setting
-      {
-        path: 'setting',
-        component: Setting
       }
-
     ]
   }
 
