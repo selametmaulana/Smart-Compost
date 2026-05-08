@@ -315,16 +315,14 @@
         <PlayCircle size="34" />
       </div>
 
-      <div>
-        <h2>Cara Kerja Sistem</h2>
+      <h2>Panduan Penggunaan Dashboard</h2>
+
         <p>
-          Alur monitoring SmartCompost Monitoring
+        Pelajari fitur dan cara menggunakan SmartCompost Monitoring
         </p>
-      </div>
 
     </div>
 
-    <!-- STEPS -->
     <!-- STEPS -->
 <div class="steps-container">
 
