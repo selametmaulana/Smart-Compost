@@ -72,7 +72,9 @@
             <LayoutDashboard size="20" />
             Lihat Dashboard
             </router-link>
-            <button class="btn-secondary">
+            <button
+            class="btn-secondary"
+            @click="showHowItWorks = true">
             <PlayCircle size="20" />
             Cara Kerja Sistem
             </button>
@@ -283,6 +285,161 @@
             </div>
   
           </div>
+
+
+          <!-- HOW IT WORKS MODAL -->
+
+<div
+  v-if="showHowItWorks"
+  class="alert-overlay"
+  @click="showHowItWorks = false"
+>
+
+  <div
+    class="how-modal"
+    @click.stop
+  >
+
+    <!-- CLOSE -->
+    <button
+      class="close-btn"
+      @click="showHowItWorks = false"
+    >
+      <X size="20" />
+    </button>
+
+    <!-- HEADER -->
+    <div class="how-header">
+
+      <div class="how-icon">
+        <PlayCircle size="34" />
+      </div>
+
+      <div>
+        <h2>Cara Kerja Sistem</h2>
+        <p>
+          Alur monitoring SmartCompost Monitoring
+        </p>
+      </div>
+
+    </div>
+
+    <!-- STEPS -->
+    <div class="steps-container">
+
+      <!-- STEP -->
+      <div class="step-card">
+
+        <div class="step-number">
+          1
+        </div>
+
+        <div class="step-content">
+
+          <h3>Sensor Membaca Data</h3>
+
+          <p>
+            Sensor IoT membaca suhu, kelembapan,
+            pH, dan oksigen pada kompos secara realtime.
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- STEP -->
+      <div class="step-card">
+
+        <div class="step-number">
+          2
+        </div>
+
+        <div class="step-content">
+
+          <h3>Data Dikirim ke Server</h3>
+
+          <p>
+            ESP32 mengirim data sensor ke server
+            menggunakan koneksi internet.
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- STEP -->
+      <div class="step-card">
+
+        <div class="step-number">
+          3
+        </div>
+
+        <div class="step-content">
+
+          <h3>Database Menyimpan Data</h3>
+
+          <p>
+            PostgreSQL menyimpan seluruh data monitoring
+            untuk analisis dan riwayat proses kompos.
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- STEP -->
+      <div class="step-card">
+
+        <div class="step-number">
+          4
+        </div>
+
+        <div class="step-content">
+
+          <h3>Dashboard Menampilkan Monitoring</h3>
+
+          <p>
+            Website menampilkan grafik dan status
+            kompos secara realtime kepada pengguna.
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- STEP -->
+      <div class="step-card">
+
+        <div class="step-number">
+          5
+        </div>
+
+        <div class="step-content">
+
+          <h3>Notifikasi Otomatis</h3>
+
+          <p>
+            Sistem memberikan notifikasi apabila
+            kondisi kompos tidak optimal.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- BUTTON -->
+    <button
+      class="how-btn"
+      @click="showHowItWorks = false"
+    >
+      Saya Mengerti
+    </button>
+
+  </div>
+
+</div>
   
         </div>
   
@@ -395,6 +552,7 @@ import {
 } from 'lucide-vue-next'
 
 const showAboutAlert = ref(false)
+const showHowItWorks = ref(false)
 </script>
   
   <style scoped>
@@ -1089,6 +1247,174 @@ const showAboutAlert = ref(false)
     opacity: 1;
     transform: scale(1) translateY(0);
   }
+}
+
+/* HOW MODAL */
+
+.how-modal{
+  width: min(760px, 94vw);
+
+  max-height: 88vh;
+  overflow-y: auto;
+
+  background: white;
+
+  border-radius: 30px;
+
+  padding: 32px;
+
+  position: relative;
+
+  animation: popup 0.3s ease;
+
+  box-shadow: 0 25px 70px rgba(0,0,0,0.18);
+}
+
+/* HEADER */
+
+.how-header{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  margin-bottom: 35px;
+}
+
+.how-icon{
+  width: 75px;
+  height: 75px;
+
+  border-radius: 22px;
+
+  background: #4CAF50;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.how-header h2{
+  font-size: 34px;
+  font-weight: 800;
+}
+
+.how-header p{
+  color: #777;
+  margin-top: 5px;
+}
+
+/* STEPS */
+
+.steps-container{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.step-card{
+  display: flex;
+  gap: 20px;
+
+  background: #f7faf7;
+
+  border-radius: 22px;
+
+  padding: 22px;
+
+  transition: 0.3s;
+}
+
+.step-card:hover{
+  transform: translateY(-3px);
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.step-number{
+  min-width: 60px;
+  height: 60px;
+
+  border-radius: 18px;
+
+  background: #4CAF50;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.step-content h3{
+  margin-bottom: 10px;
+
+  font-size: 22px;
+}
+
+.step-content p{
+  color: #666;
+
+  line-height: 1.8;
+}
+
+/* BUTTON */
+
+.how-btn{
+  width: 100%;
+
+  margin-top: 30px;
+
+  border: none;
+
+  background: #4CAF50;
+  color: white;
+
+  padding: 18px;
+
+  border-radius: 18px;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.how-btn:hover{
+  transform: translateY(-2px);
+
+  box-shadow: 0 15px 35px rgba(76,175,80,0.3);
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+  .how-modal{
+    padding: 22px;
+  }
+
+  .how-header{
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .how-header h2{
+    font-size: 28px;
+  }
+
+  .step-card{
+    flex-direction: column;
+  }
+
+  .step-number{
+    width: 60px;
+  }
+
 }
 
   </style>
