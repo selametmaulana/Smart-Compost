@@ -65,14 +65,22 @@ let sensorData = {
 // SENSOR DATA (REALTIME UPDATE + SAVE DB)
 // =====================
 app.post('/sensor-data', async (req, res) => {
-  try {
-    const data = req.body
-    console.log('📩 SENSOR MASUK:', data)
 
-    // update realtime cache
+  try {
+
+    console.log('BODY:', req.body)
+
+    const data = req.body || {}
+
+    if (!data.suhu_udara) {
+      return res.status(400).json({
+        success: false,
+        error: 'Payload kosong'
+      })
+    }
+
     sensorData = data
 
-    // simpan ke database langsung (tanpa delay ribet dulu)
     await pool.query(`
       INSERT INTO history_sensor (
         suhu_ruang,
@@ -86,7 +94,7 @@ app.post('/sensor-data', async (req, res) => {
       data.suhu_kompos,
       data.kelembapan_udara,
       data.kelembapan_kompos,
-      data.mode || 'AUTO'
+      data.status || 'AUTO'
     ])
 
     res.json({
@@ -95,13 +103,16 @@ app.post('/sensor-data', async (req, res) => {
     })
 
   } catch (err) {
-    console.error('❌ SENSOR ERROR:', err.message)
+
+    console.error(err)
 
     res.status(500).json({
       success: false,
       error: err.message
     })
+
   }
+
 })
 
 // =====================
