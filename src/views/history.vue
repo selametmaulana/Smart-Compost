@@ -1,6 +1,8 @@
 <template>
   <div class="history-page">
 
+  
+
     <!-- MAIN -->
     <main class="main-content">
 

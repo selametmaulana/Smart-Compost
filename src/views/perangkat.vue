@@ -31,17 +31,7 @@
               </div>
   
             </div>
-  
-            <div class="profile">
-  
-              <div class="avatar"></div>
-  
-              <span>Admin</span>
-  
-            </div>
-  
           </div>
-  
         </div>
   
         <!-- DEVICE STATUS -->

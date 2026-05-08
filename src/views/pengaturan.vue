@@ -31,21 +31,10 @@
               <div class="notif-badge">
                 3
               </div>
-  
             </div>
-  
-            <div class="profile">
-  
-              <div class="avatar"></div>
-  
-              <span>Admin</span>
-  
-            </div>
-  
-          </div>
-  
         </div>
-  
+    </div>
+
         <!-- CONTENT -->
         <div class="settings-grid">
   
