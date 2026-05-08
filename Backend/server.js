@@ -194,24 +194,6 @@ app.get('/dashboard', async (req, res) => {
   }
 })
 
-let token = req.headers.authorization
 
-if (!token) {
-  return res.status(401).json({ message: 'Unauthorized' })
-}
-
-if (token.startsWith('Bearer ')) {
-  token = token.slice(7)
-}
-
-// =====================
-// START SERVER (RAILWAY SAFE)
-// =====================
-const PORT = process.env.PORT || 3000
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`)
-
-})
 
 
