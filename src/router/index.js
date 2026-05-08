@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import Layout from '../layouts/MainLayout.vue'
 
 // HOME
 import Home from '../views/home.vue'
@@ -33,19 +34,19 @@ const routes = [
         component: Dashboard
       },
       {
-        path: 'perangkat',
+        path: '/dashboard/perangkat',
         component: Perangkat
       },
       {
-        path: 'history',
+        path: '/dashboard/history',
         component: History
       },
       {
-        path: 'notifikasi',
+        path: '/dashboard/notifikasi',
         component: Notifikasi
       },
       {
-        path: 'pengaturan',
+        path: '/dashboard/pengaturan',
         component: Pengaturan
       }
     ]

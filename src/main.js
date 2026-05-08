@@ -4,6 +4,7 @@ import router from './router'
 import { createPinia } from 'pinia'
 import './style.css'   // 🔥 INI YANG KURANG
 import VueApexCharts from 'vue3-apexcharts'
+import 'remixicon/fonts/remixicon.css'
 
 
 const app = createApp(App)
