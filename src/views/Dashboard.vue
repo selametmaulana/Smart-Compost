@@ -76,7 +76,8 @@
 
           <div class="sensor-info">
             <h4>Suhu Material Kompos</h4>
-            
+            <h2>{{ sensor.suhu_kompos }}°C</h2>
+            <p>{{ sensor.status }}</p>
           </div>
         </div>
 
