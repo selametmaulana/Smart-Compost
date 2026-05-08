@@ -87,11 +87,13 @@
 <style scoped>
 
 .layout{
-  display:flex;
+  width:100%;
   min-height:100vh;
-  background:#f5f7fb;
+  display:flex;
+  gap:20px;
+  padding:18px;
+  background:#E9ECE8;
 }
-
 
 
 /* SIDEBAR */
@@ -106,25 +108,26 @@
 }
 
 .logo{
-  font-size:32px;
+  color:white;
+  font-size:24px;
   font-weight:800;
-  margin-bottom:40px;
+  margin-bottom:42px;
 }
 
 .menu{
   display:flex;
   flex-direction:column;
-  gap:12px;
+  gap:14px;
 }
 
 .menu-item{
   display:flex;
   align-items:center;
   gap:14px;
-  padding:15px 18px;
-  border-radius:16px;
   color:white;
-  text-decoration:none;
+  padding:16px 18px;
+  border-radius:18px;
+  cursor:pointer;
   transition:0.3s;
   font-size:17px;
   font-weight:500;
@@ -139,16 +142,14 @@
 }
 
 .menu-item.active{
-  background:#36a536;
-  box-shadow:0 10px 25px rgba(54,165,54,0.3);
+  background:#52B84E;
 }
 
-/* CONTENT */
-
+/* MAIN */
 .main-content{
   flex:1;
-  padding:25px;
-  overflow:auto;
+  display:flex;
+  flex-direction:column;
 }
 
 </style>
