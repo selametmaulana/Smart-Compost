@@ -10,6 +10,34 @@ app.use(cors())
 app.use(express.json())
 
 
+const client = mqtt.connect({
+  host: '405ddc32b5914dc29655d90f79fac3c4.s1.eu.hivemq.cloud',
+  port: 8883,
+  protocol: 'mqtts',
+  username: 'Smart_Compost',
+  password: 'Kompos123',
+  clientId: 'node_backend_' + Math.random().toString(16).substr(2, 8),
+  clean: true,
+  reconnectPeriod: 1000
+})
+
+client.on('connect', () => {
+  console.log('✅ MQTT Connected')
+})
+
+client.on('error', (err) => {
+  console.error('❌ MQTT Error:', err.message)
+})
+
+client.on('offline', () => {
+  console.log('⚠️ MQTT Offline')
+})
+
+client.on('reconnect', () => {
+  console.log('🔄 MQTT Reconnecting...')
+})
+
+
 // =====================
 // ROOT / HEALTH CHECK
 // =====================

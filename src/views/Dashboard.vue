@@ -5,11 +5,8 @@
     <aside class="sidebar">
 
       <div>
-
         <h1 class="logo">SmartCompost</h1>
-
         <nav class="menu">
-
           <div class="menu-item active">
             <i class="ri-dashboard-line"></i>
             <span>Dashboard</span>
@@ -34,11 +31,8 @@
             <i class="ri-settings-3-line"></i>
             <span>Pengaturan</span>
           </div>
-
         </nav>
-
       </div>
-
     </aside>
 
     <!-- MAIN -->
@@ -46,7 +40,6 @@
 
       <!-- TOPBAR -->
       <div class="topbar">
-
         <div>
           <h1>Dashboard</h1>
           <p>Monitoring kondisi kompos secara realtime</p>
@@ -56,83 +49,78 @@
           <i class="ri-time-line"></i>
           Terakhir diperbarui: 10:30 WIB
         </div>
-
       </div>
 
       <!-- SENSOR -->
       <div class="sensor-grid">
+        
 
-<!-- SUHU RUANG KOMPOSTER -->
-<div class="sensor-card">
-  <div class="sensor-icon temp">
-    <i class="ri-temp-hot-line"></i>
-  </div>
+        <!-- SUHU RUANG -->
+        <div class="sensor-card">
+          <div class="sensor-icon temp">
+            <i class="ri-temp-hot-line"></i>
+          </div>
 
-  <div class="sensor-info">
-    <h4>Suhu Ruang Komposter</h4>
-    <h2>30°C</h2>
-    <p>Optimal</p>
-  </div>
-</div>
+          <div class="sensor-info">
+            <h4>Suhu Ruang Komposter</h4>
+            <h2>{{ sensor.suhu_udara }}°C</h2>
+            <p>{{ sensor.status }}</p>
+          </div>
+        </div>
 
-<!-- SUHU MATERIAL KOMPOS -->
-<div class="sensor-card">
-  <div class="sensor-icon compost">
-    <i class="ri-fire-line"></i>
-  </div>
+        <!-- SUHU KOMPOS -->
+        <div class="sensor-card">
+          <div class="sensor-icon compost">
+            <i class="ri-fire-line"></i>
+          </div>
 
-  <div class="sensor-info">
-    <h4>Suhu Material Kompos</h4>
-    <h2>48.6°C</h2>
-    <p>Optimal</p>
-  </div>
-</div>
+          <div class="sensor-info">
+            <h4>Suhu Material Kompos</h4>
+            <h2>{{ sensor.suhu_kompos }}°C</h2>
+            <p>{{ sensor.status }}</p>
+          </div>
+        </div>
 
-<!-- KELEMBAPAN UDARA -->
-<div class="sensor-card">
-  <div class="sensor-icon humidity-air">
-    <i class="ri-cloud-line"></i>
-  </div>
+        <!-- KELEMBAPAN UDARA -->
+        <div class="sensor-card">
+          <div class="sensor-icon humidity-air">
+            <i class="ri-cloud-line"></i>
+          </div>
 
-  <div class="sensor-info">
-    <h4>Kelembapan Udara</h4>
-    <h2>58%</h2>
-    <p>Optimal</p>
-  </div>
-</div>
+          <div class="sensor-info">
+            <h4>Kelembapan Udara</h4>
+            <h2>{{ sensor.kelembapan_udara }}%</h2>
+            <p>{{ sensor.status }}</p>
+          </div>
+        </div>
 
-<!-- KELEMBAPAN KOMPOS -->
-<div class="sensor-card">
-  <div class="sensor-icon humidity-compost">
-    <i class="ri-drop-line"></i>
-  </div>
+        <!-- KELEMBAPAN KOMPOS -->
+        <div class="sensor-card">
+          <div class="sensor-icon humidity-compost">
+            <i class="ri-drop-line"></i>
+          </div>
 
-  <div class="sensor-info">
-    <h4>Kelembapan Kompos</h4>
-    <h2>65%</h2>
-    <p>Optimal</p>
-  </div>
-</div>
+          <div class="sensor-info">
+            <h4>Kelembapan Kompos</h4>
+            <h2>{{ sensor.kelembapan_kompos }}%</h2>
+            <p>{{ sensor.status }}</p>
+          </div>
+        </div>
 
 </div>
 
       <!-- BOTTOM -->
       <div class="bottom-grid">
-
         <!-- CHART -->
         <div class="chart-card">
-
           <div class="chart-header">
 
             <div>
               <h3>Grafik Suhu</h3>
               <p>Data 7 hari terakhir</p>
             </div>
-
             <button>7 Hari</button>
-
           </div>
-
           <div class="chart-area">
 
             <svg
@@ -157,11 +145,8 @@
                   520,110
                 "
               />
-
             </svg>
-
           </div>
-
         </div>
 
         <!-- STATUS -->
@@ -184,19 +169,73 @@
             <p>
               Pertahankan kelembapan dan aerasi untuk menjaga kualitas kompos.
             </p>
-
           </div>
-
         </div>
-
       </div>
-
     </main>
-
   </div>
 </template>
 
 <script setup>
+
+import { ref, onMounted, onUnmounted } from 'vue'
+import axios from 'axios'
+
+const sensor = ref({
+  suhu_udara: 0,
+  suhu_kompos: 0,
+  kelembapan_udara: 0,
+  kelembapan_kompos: 0,
+  status: 'Waiting...'
+})
+
+const lastUpdate = ref('Menunggu data...')
+let interval = null
+
+const fetchSensorData = async () => {
+
+  try {
+
+    const res = await axios.get(
+      'https://smart-compost-production.up.railway.app/sensor-data'
+    )
+
+    sensor.value = res.data
+
+    const now = new Date()
+
+    lastUpdate.value =
+      'Terakhir diperbarui: ' +
+      now.toLocaleTimeString('id-ID')
+
+    console.log('✅ DATA SENSOR:', res.data)
+
+  } catch (err) {
+
+    console.error('❌ Gagal ambil data:', err)
+
+  }
+
+}
+
+onMounted(() => {
+
+  fetchSensorData()
+
+  interval = setInterval(() => {
+
+    fetchSensorData()
+
+  }, 2000)
+
+})
+
+onUnmounted(() => {
+
+  clearInterval(interval)
+
+})
+
 </script>
 
 <style scoped>
