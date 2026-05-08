@@ -1,71 +1,6 @@
 <template>
   <div class="history-page">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-
-      <div class="sidebar-top">
-
-        <!-- LOGO -->
-        <div class="logo">
-
-          <div class="logo-icon">
-            <Leaf size="28" />
-          </div>
-
-          <div>
-            <h2>Smart<span>Compost</span></h2>
-            <p>MONITORING</p>
-          </div>
-
-        </div>
-
-        <!-- MENU -->
-        <ul class="menu">
-
-          <li>
-            <LayoutDashboard size="20" />
-            Dashboard
-          </li>
-
-          <li>
-            <Cpu size="20" />
-            Perangkat
-          </li>
-
-          <li class="active">
-            <Files size="20" />
-            Data & Riwayat
-          </li>
-
-          <li>
-            <Bell size="20" />
-            Notifikasi
-          </li>
-
-          <li>
-            <Settings size="20" />
-            Pengaturan
-          </li>
-
-        </ul>
-
-      </div>
-
-      <!-- BOTTOM CARD -->
-      <div class="sidebar-card">
-
-        <Leaf size="28" />
-
-        <div>
-          <h3>Kompos Berkualitas</h3>
-          <p>Lingkungan Terjaga</p>
-        </div>
-
-      </div>
-
-    </aside>
-
     <!-- MAIN -->
     <main class="main-content">
 
@@ -517,11 +452,8 @@ body{
 
 .sidebar-card{
   background:rgba(255,255,255,0.08);
-
   border-radius:24px;
-
   padding:24px;
-
   display:flex;
   gap:15px;
   align-items:center;

@@ -65,6 +65,17 @@
 
         </nav>
 
+        <div class="sidebar-card">
+
+<Leaf size="28" />
+
+<div>
+  <h3>Kompos Berkualitas</h3>
+  <p>Lingkungan Terjaga</p>
+</div>
+
+</div>
+
       </div>
 
     </aside>
@@ -99,7 +110,7 @@
 /* SIDEBAR */
 .sidebar{
   width:260px;
-  background:linear-gradient(180deg,#012B07,#063A0D,#0A4A12);
+  background:linear-gradient(180deg,#08240d,#123c18);
   border-radius:38px;
   padding:36px 22px;
   display:flex;
@@ -131,6 +142,7 @@
   transition:0.3s;
   font-size:17px;
   font-weight:500;
+  text-decoration:none;
 }
 
 .menu-item i{
@@ -150,6 +162,15 @@
   flex:1;
   display:flex;
   flex-direction:column;
+}
+
+.sidebar-card{
+  background:rgba(255,255,255,0.08);
+  border-radius:24px;
+  padding:24px;
+  display:flex;
+  gap:15px;
+  align-items:center;
 }
 
 </style>

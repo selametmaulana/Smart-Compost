@@ -1,9 +1,6 @@
 <template>
   <div class="dashboard-layout">
 
-    <!-- SIDEBAR -->
-
-
 
     <!-- MAIN -->
     <main class="main-content">

@@ -1,84 +1,20 @@
 <template>
     <div class="notification-page">
-  
-      <!-- SIDEBAR -->
-      <aside class="sidebar">
-  
-        <div>
-  
-          <!-- LOGO -->
-          <div class="logo">
-  
-            <div class="logo-icon">
-              <Leaf size="28" />
-            </div>
-  
-            <div>
-              <h2>Smart<span>Compost</span></h2>
-              <p>MONITORING</p>
-            </div>
-  
-          </div>
-  
-          <!-- MENU -->
-          <ul class="menu">
-  
-            <li>
-              <LayoutDashboard size="20" />
-              Dashboard
-            </li>
-  
-            <li>
-              <Cpu size="20" />
-              Perangkat
-            </li>
-  
-            <li>
-              <Files size="20" />
-              Data & Riwayat
-            </li>
-  
-            <li class="active">
-              <Bell size="20" />
-              Notifikasi
-            </li>
-  
-            <li>
-              <Settings size="20" />
-              Pengaturan
-            </li>
-  
-          </ul>
-  
-        </div>
-  
-        <!-- SIDEBAR CARD -->
-        <div class="sidebar-card">
-  
-          <Leaf size="28" />
-  
-          <div>
-            <h3>Kompos Berkualitas</h3>
-            <p>Lingkungan Terjaga</p>
-          </div>
-  
-        </div>
-  
-      </aside>
-  
-      <!-- MAIN -->
-      <main class="main-content">
-  
+
+
+    <!-- MAIN -->
+    <main class="main-content">
+
         <!-- TOPBAR -->
         <div class="topbar">
-  
-          <div>
+
+        <div>
             <h1>Notifikasi</h1>
             <p>Pusat notifikasi dan peringatan sistem</p>
-          </div>
-  
-          <div class="top-right">
-  
+        </div>
+
+        <div class="top-right">
+
             <span class="update-text">
               ● Terakhir diperbarui: 10:30 WIB
             </span>
