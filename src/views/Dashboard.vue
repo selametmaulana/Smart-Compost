@@ -2,71 +2,8 @@
   <div class="dashboard-layout">
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
 
-<div>
 
-  <h1 class="logo">
-    SmartCompost
-  </h1>
-
-  <nav class="menu">
-
-    <!-- DASHBOARD -->
-    <router-link
-      to="/dashboard"
-      class="menu-item"
-      active-class="active"
-    >
-      <i class="ri-dashboard-line"></i>
-      <span>Dashboard</span>
-    </router-link>
-
-    <!-- PERANGKAT -->
-    <router-link
-      to="/perangkat"
-      class="menu-item"
-      active-class="active"
-    >
-      <i class="ri-cpu-line"></i>
-      <span>Perangkat</span>
-    </router-link>
-
-    <!-- HISTORY -->
-    <router-link
-      to="/history"
-      class="menu-item"
-      active-class="active"
-    >
-      <i class="ri-bar-chart-line"></i>
-      <span>History</span>
-    </router-link>
-
-    <!-- NOTIFIKASI -->
-    <router-link
-      to="notifikasi"
-      class="menu-item"
-      active-class="active"
-    >
-      <i class="ri-notification-3-line"></i>
-      <span>Notifikasi</span>
-    </router-link>
-
-    <!-- PENGATURAN -->
-    <router-link
-      to="/pengaturan"
-      class="menu-item"
-      active-class="active"
-    >
-      <i class="ri-settings-3-line"></i>
-      <span>Pengaturan</span>
-    </router-link>
-
-  </nav>
-
-</div>
-
-</aside>
 
     <!-- MAIN -->
     <main class="main-content">
