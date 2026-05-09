@@ -248,8 +248,10 @@ body{
 
 /* LAYOUT */
 .dashboard-layout{
-  width:100%;
-  padding:0;
+  min-height:100vh;
+    display:flex;
+    gap:20px;
+    padding:20px;
 }
 
 
