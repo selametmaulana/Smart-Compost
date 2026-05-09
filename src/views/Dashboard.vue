@@ -254,10 +254,6 @@ body{
   gap:20px;
   padding:18px;
   background:#E9ECE8;
-
-  position:sticky;
-  top:18px;
-  height:calc(100vh - 36px);
 }
 
 /* SIDEBAR */

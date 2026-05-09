@@ -2,9 +2,6 @@
 
   <div class="layout">
 
-
-
-
     <!-- SIDEBAR -->
     <!-- SIDEBAR -->
     <aside  class="sidebar">
@@ -109,7 +106,9 @@
   display:flex; 
   gap:20px; 
   padding:18px; 
-  background:#E9ECE8; }
+  background:#E9ECE8;
+  overflow-x:hidden;
+}
 
 /* SIDEBAR */
 .sidebar{
@@ -200,5 +199,36 @@
   font-size:13px;
   opacity:0.8;
 }
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media(max-width:768px){
+
+.layout{
+  display:block;
+  padding:0;
+  gap:0;
+  background:#F4F4F4;
+  overflow-x:hidden;
+}
+
+/* SIDEBAR HILANG */
+.sidebar{
+  display:none;
+}
+
+/* MAIN FULL WIDTH */
+.main-content{
+  width:100%;
+  min-height:100vh;
+  padding:0;
+  margin:0;
+  background:#F4F4F4;
+}
+
+}
+
+
 
 </style>
