@@ -225,11 +225,11 @@
 
   <!-- DELETE ALL -->
   <button
-    class="delete-btn"
-    @click="deleteAllHistory"
-  >
-    Hapus Semua
-  </button>
+  class="delete-all-btn"
+  @click="deleteAllHistory"
+>
+  Hapus Semua
+</button>
 
 </div>
 
@@ -1203,7 +1203,6 @@ tbody tr{
   border-radius:14px;
   font-weight:700;
   cursor:pointer;
-  transition:.3s;
 }
 
 .delete-all-btn:hover{
