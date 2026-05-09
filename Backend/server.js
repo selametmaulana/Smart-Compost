@@ -82,7 +82,10 @@ client.on('message', async (topic, message) => {
     // REALTIME CACHE
     sensorData = data
 
-    // SIMPAN DATABASE
+    // =====================
+    // SIMPAN HISTORY SENSOR
+    // =====================
+
     await pool.query(`
       INSERT INTO history_sensor (
         suhu_ruang,
@@ -98,6 +101,58 @@ client.on('message', async (topic, message) => {
       data.kelembapan_kompos,
       data.status || 'AUTO'
     ])
+
+    // =====================
+    // AUTO NOTIFICATION
+    // =====================
+
+    // SUHU TINGGI
+    if (data.suhu_kompos > 50) {
+
+      await pool.query(`
+        INSERT INTO notifications (
+          title,
+          message,
+          type,
+          category
+        )
+        VALUES ($1,$2,$3,$4)
+      `, [
+
+        'Suhu Tinggi Terdeteksi',
+        `Suhu kompos mencapai ${data.suhu_kompos}°C`,
+        'danger',
+        'temperature'
+
+      ])
+
+      console.log('🔥 Notifikasi suhu tinggi dibuat')
+
+    }
+
+    // KELEMBAPAN RENDAH
+    if (data.kelembapan_kompos < 40) {
+
+      await pool.query(`
+        INSERT INTO notifications (
+          title,
+          message,
+          type,
+          category
+        )
+        VALUES ($1,$2,$3,$4)
+      `, [
+
+        'Kelembapan Rendah',
+        `Kelembapan kompos ${data.kelembapan_kompos}%`,
+        'warning',
+        'humidity'
+
+      ])
+
+      console.log('💧 Notifikasi kelembapan dibuat')
+
+    }
 
     console.log('✅ Data masuk PostgreSQL')
 
@@ -255,6 +310,250 @@ app.get('/dashboard', async (req, res) => {
     })
 
   }
+})
+
+
+/* ======================================
+   GET ALL NOTIFICATIONS
+====================================== */
+app.get('/notifications', async (req, res) => {
+
+  try {
+
+    const result = await pool.query(`
+      SELECT *
+      FROM notifications
+      ORDER BY created_at DESC
+    `)
+
+    res.json(result.rows)
+
+  } catch (err) {
+
+    console.log(err)
+
+    res.status(500).json({
+      success: false,
+      error: err.message
+    })
+
+  }
+
+})
+
+/* ======================================
+   GET SINGLE NOTIFICATION
+====================================== */
+app.get('/notifications/:id', async (req, res) => {
+
+  try {
+
+    const result = await pool.query(`
+      SELECT *
+      FROM notifications
+      WHERE id = $1
+    `, [req.params.id])
+
+    if (result.rows.length === 0) {
+
+      return res.status(404).json({
+        success: false,
+        message: 'Notification not found'
+      })
+
+    }
+
+    res.json(result.rows[0])
+
+  } catch (err) {
+
+    res.status(500).json({
+      success: false,
+      error: err.message
+    })
+
+  }
+
+})
+
+/* ======================================
+   CREATE NOTIFICATION
+====================================== */
+app.post('/notifications', async (req, res) => {
+
+  try {
+
+    const {
+      title,
+      message,
+      type,
+      category,
+      device_id
+    } = req.body
+
+    if (!title || !message || !type) {
+
+      return res.status(400).json({
+        success: false,
+        message: 'title, message, dan type wajib diisi'
+      })
+
+    }
+
+    const result = await pool.query(`
+      INSERT INTO notifications
+      (
+        title,
+        message,
+        type,
+        category,
+        device_id
+      )
+      VALUES ($1,$2,$3,$4,$5)
+      RETURNING *
+    `, [
+      title,
+      message,
+      type,
+      category || null,
+      device_id || null
+    ])
+
+    res.json({
+      success: true,
+      message: 'Notification created',
+      data: result.rows[0]
+    })
+
+  } catch (err) {
+
+    console.log(err)
+
+    res.status(500).json({
+      success: false,
+      error: err.message
+    })
+
+  }
+
+})
+
+/* ======================================
+   MARK AS READ
+====================================== */
+app.put('/notifications/:id/read', async (req, res) => {
+
+  try {
+
+    const result = await pool.query(`
+      UPDATE notifications
+      SET
+        is_read = TRUE,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = $1
+      RETURNING *
+    `, [req.params.id])
+
+    res.json({
+      success: true,
+      message: 'Notification marked as read',
+      data: result.rows[0]
+    })
+
+  } catch (err) {
+
+    res.status(500).json({
+      success: false,
+      error: err.message
+    })
+
+  }
+
+})
+
+/* ======================================
+   MARK ALL AS READ
+====================================== */
+app.put('/notifications/read-all', async (req, res) => {
+
+  try {
+
+    await pool.query(`
+      UPDATE notifications
+      SET
+        is_read = TRUE,
+        updated_at = CURRENT_TIMESTAMP
+    `)
+
+    res.json({
+      success: true,
+      message: 'All notifications marked as read'
+    })
+
+  } catch (err) {
+
+    res.status(500).json({
+      success: false,
+      error: err.message
+    })
+
+  }
+
+})
+
+/* ======================================
+   DELETE NOTIFICATION
+====================================== */
+app.delete('/notifications/:id', async (req, res) => {
+
+  try {
+
+    await pool.query(`
+      DELETE FROM notifications
+      WHERE id = $1
+    `, [req.params.id])
+
+    res.json({
+      success: true,
+      message: 'Notification deleted'
+    })
+
+  } catch (err) {
+
+    res.status(500).json({
+      success: false,
+      error: err.message
+    })
+
+  }
+
+})
+
+/* ======================================
+   DELETE ALL NOTIFICATIONS
+====================================== */
+app.delete('/notifications', async (req, res) => {
+
+  try {
+
+    await pool.query(`
+      DELETE FROM notifications
+    `)
+
+    res.json({
+      success: true,
+      message: 'All notifications deleted'
+    })
+
+  } catch (err) {
+
+    res.status(500).json({
+      success: false,
+      error: err.message
+    })
+
+  }
+
 })
 
 app.get('/', (req, res) => {

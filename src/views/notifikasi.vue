@@ -123,36 +123,48 @@
             </div>
   
             <!-- ITEM -->
-            <div class="notification-item">
+            <div
+  class="notification-item"
+  v-for="item in notifications"
+  :key="item.id"
+>
   
-              <div class="notif-left">
+<div class="notif-left">
+
+<div class="notif-icon-box red-bg">
+  <Bell size="24" />
+</div>
+
+<div>
+
+  <h4>
+    {{ item.title }}
+  </h4>
+
+  <p>
+    {{ item.message }}
+  </p>
+
+</div>
+
+</div>
+
+<div class="notif-right">
+
+<span>
+  {{
+    new Date(item.created_at)
+    .toLocaleTimeString('id-ID')
+  }}
+</span>
+
+<label class="danger-label">
+  {{ item.type }}
+</label>
+
+</div>
   
-                <div class="notif-icon-box red-bg">
-                  <TriangleAlert size="24" />
-                </div>
-  
-                <div>
-                  <h4 class="red-text">
-                    Suhu Tinggi Terdeteksi
-                  </h4>
-  
-                  <p>
-                    Suhu kompos mencapai 52.6°C,
-                    melebihi batas optimal (50°C)
-                  </p>
-                </div>
-  
-              </div>
-  
-              <div class="notif-right">
-  
-                <span>10:30 WIB</span>
-  
-                <label class="danger-label">
-                  Peringatan
-                </label>
-  
-              </div>
+    
   
             </div>
   
@@ -450,6 +462,40 @@
     Monitor,
     Info
   } from 'lucide-vue-next'
+
+  import {
+  ref,
+  computed,
+  onMounted
+} from 'vue'
+
+const notifications = ref([])
+
+const fetchNotifications = async () => {
+
+try {
+
+  const res = await fetch(
+    'https://smart-compost-production.up.railway.app/notifications'
+  )
+
+  const data = await res.json()
+
+  notifications.value = data
+
+} catch (err) {
+
+  console.log(err)
+
+}
+
+}
+
+onMounted(() => {
+
+fetchNotifications()
+
+})
   </script>
   
   <style scoped>
