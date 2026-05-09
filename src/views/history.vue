@@ -1035,18 +1035,14 @@ body{
   margin-bottom:25px;
 }
 
-.table-header button{
+.table-header .download-btn{
   border:none;
   background:white;
-
   padding:12px 18px;
-
   border-radius:14px;
-
   display:flex;
   align-items:center;
   gap:10px;
-
   font-weight:600;
 }
 
