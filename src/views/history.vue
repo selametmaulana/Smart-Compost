@@ -330,7 +330,6 @@
 
 <script setup>
 import {
-  Chart as ChartJS,
   Bell,
   Database,
   Thermometer,
@@ -341,7 +340,19 @@ import {
   Download
 } from 'lucide-vue-next'
 
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement
+} from 'chart.js'
+
 import { Line } from 'vue-chartjs'
+
 ChartJS.register(
   Title,
   Tooltip,
@@ -542,9 +553,9 @@ onMounted(() => {
 ========================= */
 const totalPages = computed(() => {
 
-  return Math.ceil(
-    histories.value.length / itemsPerPage
-  )
+return Math.ceil(
+  filteredHistories.value.length / itemsPerPage
+)
 
 })
 
@@ -553,13 +564,13 @@ const totalPages = computed(() => {
 ========================= */
 const paginatedData = computed(() => {
 
-  const start =
-    (currentPage.value - 1) * itemsPerPage
+const start =
+  (currentPage.value - 1) * itemsPerPage
 
-  const end =
-    start + itemsPerPage
+const end =
+  start + itemsPerPage
 
-  return filteredHistories.value.length
+return filteredHistories.value.slice(start, end)
 
 })
 
