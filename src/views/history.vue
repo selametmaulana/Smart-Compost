@@ -1185,7 +1185,7 @@ tbody tr{
 
 .download-btn{
   border:none;
-  background:white;
+  background:rgb(193, 9, 9);
   padding:12px 18px;
   border-radius:14px;
   display:flex;
