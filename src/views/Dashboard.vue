@@ -252,20 +252,6 @@ body{
   padding:0;
 }
 
-/* SIDEBAR */
-.sidebar{
-  width:260px;
-  background:linear-gradient(180deg,#012B07,#063A0D,#0A4A12);
-  border-radius:38px;
-  padding:36px 22px;
-  display:flex;
-  flex-direction:column;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
-
-  position:sticky;
-  top:18px;
-  height:calc(100vh - 36px);
-}
 
 .logo{
   color:white;

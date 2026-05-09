@@ -124,6 +124,12 @@
   flex-direction:column;
   justify-content:space-between;
   box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  flex-shrink:0; /* TAMBAHAN PENTING */
+}
+
+.main-content{
+  flex:1;
+  min-width:0; /* TAMBAHAN PENTING */
 }
 
 /* BAGIAN ATAS */
