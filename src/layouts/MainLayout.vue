@@ -99,9 +99,6 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
-const showSidebar = ref(false)
 </script>
 
 <style scoped>
@@ -118,15 +115,11 @@ const showSidebar = ref(false)
 .sidebar{
   width:260px;
   height:calc(100vh - 36px);
-
   position:sticky;
   top:18px;
-
   background:linear-gradient(180deg,#08240d,#123c18);
   border-radius:38px;
-
   padding:36px 22px;
-
   display:flex;
   flex-direction:column;
   justify-content:space-between;

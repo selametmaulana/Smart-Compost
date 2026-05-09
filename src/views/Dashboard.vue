@@ -153,6 +153,10 @@
 
 <script setup>
 
+import { ref } from 'vue'
+
+const showSidebar = ref(false)
+
 import { ref, onMounted, onUnmounted } from 'vue'
 import mqtt from 'mqtt'
 
