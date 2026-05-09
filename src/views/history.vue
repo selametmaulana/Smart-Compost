@@ -1,8 +1,6 @@
 <template>
   <div class="history-page">
 
-  
-
     <!-- MAIN -->
     <main class="main-content">
 
@@ -31,17 +29,7 @@
             </div>
 
           </div>
-
-          <div class="profile">
-
-            <div class="avatar"></div>
-
-            <span>Admin</span>
-
-          </div>
-
         </div>
-
       </div>
 
       <!-- STATS -->
@@ -365,7 +353,7 @@ body{
 
 .history-page{
   min-height:100vh;
-  background:#f5f7f5;
+  background:#000000;
   display:flex;
   padding:20px;
   gap:20px;
@@ -377,13 +365,9 @@ body{
 .sidebar{
   width:290px;
   background:linear-gradient(180deg,#08240d,#123c18);
-
   border-radius:35px;
-
   padding:30px 22px;
-
   color:white;
-
   display:flex;
   flex-direction:column;
   justify-content:space-between;
@@ -430,15 +414,10 @@ body{
   display:flex;
   align-items:center;
   gap:14px;
-
   padding:18px;
-
   border-radius:18px;
-
   margin-bottom:12px;
-
   cursor:pointer;
-
   transition:0.3s;
 }
 
@@ -503,11 +482,9 @@ body{
   height:52px;
   border-radius:50%;
   background:#f5f5f5;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   position:relative;
 }
 
@@ -515,17 +492,13 @@ body{
   position:absolute;
   top:-2px;
   right:-2px;
-
   width:24px;
   height:24px;
-
   border-radius:50%;
   background:#4CAF50;
   color:white;
-
   font-size:12px;
   font-weight:700;
-
   display:flex;
   align-items:center;
   justify-content:center;
