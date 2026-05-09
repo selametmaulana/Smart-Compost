@@ -146,7 +146,7 @@
 <script setup>
 
 import { ref, onMounted, onUnmounted } from 'vue'
-import axios from 'axios'
+import mqtt from 'mqtt'
 
 const sensor = ref({
   suhu_udara: 0,
@@ -156,34 +156,45 @@ const sensor = ref({
   status: 'Waiting...'
 })
 
-const lastUpdate = ref('Menunggu data...')
-let interval = null
+let client = null
 
-const fetchSensorData = async () => {
+onMounted(() => {
 
-  try {
+  client = mqtt.connect(
+    'wss://405ddc32b5914dc29655d90f79fac3c4.s1.eu.hivemq.cloud:8884/mqtt',
+    {
+      username: 'Smart_Compost',
+      password: 'Kompos123'
+    }
+  )
 
-    const res = await axios.get(
-      'https://smart-compost-production.up.railway.app/sensor-data'
-    )
+  client.on('connect', () => {
 
-    sensor.value = res.data
+    console.log('✅ MQTT Connected')
 
-    const now = new Date()
+    client.subscribe('iot/kompos/ta/device1/data')
 
-    lastUpdate.value =
-      'Terakhir diperbarui: ' +
-      now.toLocaleTimeString('id-ID')
+  })
 
-    console.log('✅ DATA SENSOR:', res.data)
+  client.on('message', (topic, message) => {
 
-  } catch (err) {
+    const data = JSON.parse(message.toString())
 
-    console.error('❌ Gagal ambil data:', err)
+    sensor.value = data
 
+    console.log('📡 DATA:', data)
+
+  })
+
+})
+
+onUnmounted(() => {
+
+  if (client) {
+    client.end()
   }
 
-}
+})
 
 onMounted(() => {
 
