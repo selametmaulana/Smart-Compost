@@ -249,11 +249,7 @@ body{
 /* LAYOUT */
 .dashboard-layout{
   width:100%;
-  min-height:100vh;
-  display:flex;
-  gap:20px;
-  padding:18px;
-  background:#E9ECE8;
+  padding:0;
 }
 
 /* SIDEBAR */
