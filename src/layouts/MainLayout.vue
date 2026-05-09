@@ -3,85 +3,71 @@
   <div class="layout">
 
     <!-- SIDEBAR -->
-    <!-- SIDEBAR -->
-    <aside  class="sidebar">
+    <aside class="sidebar">
 
-<!-- ATAS -->
-<div class="sidebar-top">
+      <div>
 
-  <h1 class="logo">
-    SmartCompost
-  </h1>
+        <h1 class="logo">
+          SmartCompost
+        </h1>
 
-  <nav class="menu">
+        <nav class="menu">
 
-    <!-- DASHBOARD -->
-    <router-link
-      to="/dashboard"
-      class="menu-item"
-      active-class="active"
-    >
-      <i class="ri-dashboard-line"></i>
-      <span>Dashboard</span>
-    </router-link>
+          <!-- DASHBOARD -->
+          <router-link
+            to="/dashboard"
+            class="menu-item"
+            active-class="active"
+          >
+            <i class="ri-dashboard-line"></i>
+            <span>Dashboard</span>
+          </router-link>
 
-    <!-- PERANGKAT -->
-    <router-link
-      to="/dashboard/perangkat"
-      class="menu-item"
-      active-class="active"
-    >
-      <i class="ri-cpu-line"></i>
-      <span>Perangkat</span>
-    </router-link>
+          <!-- PERANGKAT -->
+          <router-link
+            to="/dashboard/perangkat"
+            class="menu-item"
+            active-class="active"
+          >
+            <i class="ri-cpu-line"></i>
+            <span>Perangkat</span>
+          </router-link>
 
-    <!-- HISTORY -->
-    <router-link
-      to="/dashboard/history"
-      class="menu-item"
-      active-class="active"
-    >
-      <i class="ri-bar-chart-line"></i>
-      <span>History</span>
-    </router-link>
+          <!-- HISTORY -->
+          <router-link
+            to="/dashboard/history"
+            class="menu-item"
+            active-class="active"
+          >
+            <i class="ri-bar-chart-line"></i>
+            <span>History</span>
+          </router-link>
 
-    <!-- NOTIFIKASI -->
-    <router-link
-      to="/dashboard/notifikasi"
-      class="menu-item"
-      active-class="active"
-    >
-      <i class="ri-notification-3-line"></i>
-      <span>Notifikasi</span>
-    </router-link>
+          <!-- NOTIFIKASI -->
+          <router-link
+            to="/dashboard/notifikasi"
+            class="menu-item"
+            active-class="active"
+          >
+            <i class="ri-notification-3-line"></i>
+            <span>Notifikasi</span>
+          </router-link>
 
-    <!-- PENGATURAN -->
-    <router-link
-      to="/dashboard/pengaturan"
-      class="menu-item"
-      active-class="active"
-    >
-      <i class="ri-settings-3-line"></i>
-      <span>Pengaturan</span>
-    </router-link>
+          <!-- PENGATURAN -->
+          <router-link
+            to="/dashboard/pengaturan"
+            class="menu-item"
+            active-class="active"
+          >
+            <i class="ri-settings-3-line"></i>
+            <span>Pengaturan</span>
+          </router-link>
 
-  </nav>
+        </nav>
 
-</div>
+      </div>
 
-<!-- PALING BAWAH -->
-<div class="sidebar-card">
-
-  <Leaf size="28" />
-
-  <div>
-    <h3>Kompos Berkualitas</h3>
-    <p>Lingkungan Terjaga</p>
-  </div>
-
-</div>
-
-</aside>
+    </aside>
 
     <!-- CONTENT -->
     <main class="main-content">
@@ -100,67 +86,42 @@
 
 <style scoped>
 
-.layout{ 
-  min-height:100vh;
+.layout{
   display:flex;
-  gap:20px;
-  padding:20px;
+  min-height:100vh;
+  background:#f5f7fb;
 }
 
 /* SIDEBAR */
+
 .sidebar{
   width:260px;
-  min-height:calc(100vh - 36px);
-  position:sticky;
-  top:18px;
-  background:linear-gradient(180deg,#08240d,#123c18);
-  border-radius:38px;
-  padding:36px 22px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
-  flex-shrink:0; /* TAMBAHAN PENTING */
-}
-
-
-.main-content{
-  flex:1;
-  min-width:0;
-
-  background:#E9ECE8; /* TAMBAHAN */
-  min-height:100vh;   /* TAMBAHAN */
-}
-
-/* BAGIAN ATAS */
-.sidebar-top{
-  display:flex;
-  flex-direction:column;
-}
-
-/* LOGO */
-.logo{
+  min-height:100vh;
+  background:linear-gradient(180deg,#031b08,#0d3b1c);
+  padding:30px 20px;
   color:white;
-  font-size:24px;
-  font-weight:800;
-  margin-bottom:42px;
 }
 
-/* MENU */
+.logo{
+  font-size:32px;
+  font-weight:800;
+  margin-bottom:40px;
+}
+
 .menu{
   display:flex;
   flex-direction:column;
-  gap:14px;
+  gap:12px;
 }
 
 .menu-item{
   display:flex;
   align-items:center;
   gap:14px;
+  padding:15px 18px;
+  border-radius:16px;
   color:white;
   text-decoration:none;
-  padding:16px 18px;
-  border-radius:18px;
   transition:0.3s;
   font-size:17px;
   font-weight:500;
@@ -175,62 +136,16 @@
 }
 
 .menu-item.active{
-  background:#52B84E;
+  background:#36a536;
+  box-shadow:0 10px 25px rgba(54,165,54,0.3);
 }
 
-/* CARD PALING BAWAH */
-.sidebar-card{
-  background:rgba(255,255,255,0.08);
-  border-radius:24px;
+/* CONTENT */
 
-  padding:24px;
-
-  display:flex;
-  gap:15px;
-  align-items:center;
-
-  color:white;
-}
-
-.sidebar-card h3{
-  font-size:16px;
-  margin-bottom:4px;
-}
-
-.sidebar-card p{
-  font-size:13px;
-  opacity:0.8;
-}
-
-/* =========================
-   MOBILE RESPONSIVE
-========================= */
-@media(max-width:768px){
-
-.layout{
-  display:block;
-  padding:0;
-  gap:0;
-  background:#F4F4F4;
-  overflow-x:hidden;
-}
-
-/* SIDEBAR HILANG */
-.sidebar{
-  display:none;
-}
-
-/* MAIN FULL WIDTH */
 .main-content{
-  width:100%;
-  min-height:100vh;
-  padding:0;
-  margin:0;
-  background:#F4F4F4;
+  flex:1;
+  padding:25px;
+  overflow:auto;
 }
-
-}
-
-
 
 </style>

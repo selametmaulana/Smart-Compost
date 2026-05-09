@@ -2,9 +2,6 @@
   <div class="dashboard-layout">
 
 
-    <!-- MOBILE MENU BUTTON -->
-
-
     <!-- MAIN -->
     <main class="main-content">
 
@@ -223,6 +220,7 @@ onUnmounted(() => {
 
 </script>
 
+
 <style scoped>
 
 /* GOOGLE FONT */
@@ -238,17 +236,30 @@ onUnmounted(() => {
   font-family:'Poppins',sans-serif;
 }
 
-.dashboard-layout{
-  width:100%;
-  min-height:100vh;
-  background:#E9ECE8;
-}
-
 body{
   background:#E9ECE8;
 }
 
 /* LAYOUT */
+.dashboard-layout{
+  width:100%;
+  min-height:100vh;
+  display:flex;
+  gap:20px;
+  padding:18px;
+  background:#E9ECE8;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:260px;
+  background:linear-gradient(180deg,#012B07,#063A0D,#0A4A12);
+  border-radius:38px;
+  padding:36px 22px;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
 
 .logo{
   color:white;
@@ -468,9 +479,7 @@ body{
 
 
 
-/* =========================
-   RESPONSIVE TABLET
-========================= */
+/* RESPONSIVE */
 @media(max-width:1200px){
 
   .sensor-grid{
@@ -483,232 +492,28 @@ body{
 
 }
 
-/* =========================
-   MOBILE RESPONSIVE
-========================= */
-@media (max-width: 768px){
+@media(max-width:768px){
 
   .dashboard-layout{
-  padding:0;
-  display:block;
-  background:#E9ECE8;
-  min-height:100vh;
-}
+    flex-direction:column;
+  }
 
-/* MOBILE HEADER */
-.main-content{
-  width:100%;
-}
+  .sidebar{
+    width:100%;
+  }
 
-.topbar{
-  background:linear-gradient(180deg,#012B07,#063A0D,#0A4A12);
-  padding:26px 22px 28px;
-  border-bottom-left-radius:0;
-  border-bottom-right-radius:0;
-  margin-bottom:0;
-  position:relative;
-  overflow:hidden;
-}
+  .sensor-grid{
+    grid-template-columns:1fr;
+  }
 
-.topbar::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:radial-gradient(circle at center,
-  rgba(76,175,80,0.35),
-  transparent 60%);
-}
+  .topbar{
+    flex-direction:column;
+    gap:10px;
+  }
 
-.topbar h1{
-  font-size:52px;
-  color:#000;
-  margin-top:36px;
-  position:relative;
-  z-index:2;
-}
-
-.topbar p{
-  display:none;
-}
-
-.last-update{
-  position:absolute;
-  right:20px;
-  top:95px;
-  font-size:15px;
-  color:#777;
-  z-index:2;
-}
-
-/* MOBILE TOP GREEN BAR */
-.mobile-menu-btn{
-  position:fixed;
-  top:28px;
-  left:22px;
-  z-index:999;
-  width:50px;
-  height:50px;
-  border:none;
-  border-radius:14px;
-  background:transparent;
-  color:white;
-  font-size:36px;
-}
-
-/* LOGO TEXT */
-.topbar::after{
-  content:'SmartCompost';
-  position:absolute;
-  top:34px;
-  left:82px;
-  color:white;
-  font-size:24px;
-  font-weight:700;
-  z-index:2;
-}
-
-/* SENSOR GRID */
-.sensor-grid{
-  grid-template-columns:repeat(2,1fr);
-  gap:16px;
-  padding:18px;
-  margin-top:-10px;
-}
-
-.sensor-card{
-  min-height:200px;
-  border-radius:28px;
-  padding:22px;
-  background:#F7F7F7;
-  box-shadow:
-    0 4px 18px rgba(0,0,0,0.03);
-}
-
-.sensor-card i{
-  font-size:34px;
-  margin-bottom:18px;
-}
-
-.sensor-info h4{
-  font-size:17px;
-  line-height:1.4;
-  color:#666;
-  margin-bottom:16px;
-}
-
-.sensor-info h2{
-  font-size:46px;
-  font-weight:800;
-  margin-bottom:10px;
-  color:#000;
-}
-
-.sensor-info p{
-  font-size:16px;
-  color:#4CAF50;
-  font-weight:500;
-}
-
-/* CHART */
-.bottom-grid{
-  grid-template-columns:1fr;
-  gap:18px;
-  padding:0 18px 30px;
-}
-
-.chart-card{
-  border-radius:30px;
-  padding:22px;
-  background:#F7F7F7;
-}
-
-.chart-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  margin-bottom:20px;
-}
-
-.chart-header h3{
-  font-size:20px;
-  font-weight:800;
-  margin-bottom:6px;
-}
-
-.chart-header p{
-  font-size:14px;
-  color:#666;
-}
-
-.chart-header button{
-  border:none;
-  background:white;
-  padding:10px 16px;
-  border-radius:14px;
-  font-weight:700;
-  font-size:14px;
-}
-
-.chart-area{
-  height:260px;
-  border-radius:24px;
-  background:#EEF6EC;
-}
-
-/* STATUS */
-.status-card{
-  border-radius:32px;
-  padding:34px 24px;
-  background:#F7F7F7;
-}
-
-.status-circle{
-  width:110px;
-  height:110px;
-  font-size:52px;
-  margin-bottom:20px;
-}
-
-.status-card h2{
-  font-size:34px;
-  margin-bottom:10px;
-}
-
-.status-desc{
-  text-align:center;
-  font-size:18px;
-  line-height:1.6;
-  margin-bottom:26px;
-}
-
-.recommend-box{
-  border-radius:24px;
-  padding:24px;
-  background:white;
-}
-
-.recommend-box h4{
-  font-size:20px;
-  margin-bottom:14px;
-}
-
-.recommend-box p{
-  font-size:17px;
-  line-height:1.8;
-}
-
-/* HIDE SIDEBAR */
-.sidebar{
-  display:none;
-}
+  .topbar h1{
+    font-size:40px;
+  }
 
 }
-
-html,
-body,
-#app{
-  background:#E9ECE8;
-  min-height:100%;
-}
-
 </style>
