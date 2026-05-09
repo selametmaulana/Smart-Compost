@@ -224,58 +224,109 @@
 
         <table>
 
-          <thead>
+<thead>
 
-            <tr>
-              <th>Waktu</th>
-              <th>Suhu Ruang Komposter</th>
-              <th>Suhu Material kompos</th>
-              <th>Kelembapan Kompos</th>
-              <th>Kelembapan Udara</th>
-              <th>Status</th>
-              <th>Keterangan</th>
-            </tr>
+  <tr>
+    <th>No</th>
+    <th>Waktu</th>
+    <th>Suhu Ruang</th>
+    <th>Suhu Kompos</th>
+    <th>Kelembapan Kompos</th>
+    <th>Kelembapan Udara</th>
+    <th>Status</th>
+    <th>Keterangan</th>
+    <th>Aksi</th>
+  </tr>
 
-          </thead>
+</thead>
 
-          <tbody>
+<tbody>
 
-            <tr
-  v-for="item in histories"
-  :key="item.id"
+  <tr
+    v-for="(item, index) in paginatedData"
+    :key="item.id"
+  >
+
+    <!-- NOMOR -->
+    <td>
+      {{ (currentPage - 1) * itemsPerPage + index + 1 }}
+    </td>
+
+    <!-- WAKTU -->
+    <td>
+      {{ formatDate(item.created_at) }}
+    </td>
+
+    <!-- SUHU RUANG -->
+    <td class="green-text">
+      {{ item.suhu_ruang }}°C
+    </td>
+
+    <!-- SUHU KOMPOS -->
+    <td class="blue-text">
+      {{ item.suhu_material }}°C
+    </td>
+
+    <!-- KELEMBAPAN KOMPOS -->
+    <td class="orange-text">
+      {{ item.kelembapan_kompos }}%
+    </td>
+
+    <!-- KELEMBAPAN UDARA -->
+    <td class="purple-text">
+      {{ item.kelembapan_udara }}%
+    </td>
+
+    <!-- STATUS -->
+    <td class="status">
+      ● {{ item.status }}
+    </td>
+
+    <!-- KETERANGAN -->
+    <td>
+      Kondisi kompos stabil
+    </td>
+
+    <!-- AKSI -->
+    <td>
+
+      <button
+        class="delete-btn"
+        @click="deleteHistory(item.id)"
+      >
+        Hapus
+      </button>
+
+    </td>
+
+  </tr>
+
+</tbody>
+
+</table>
+
+<!-- PAGINATION -->
+<div class="pagination">
+
+<button
+  @click="prevPage"
+  :disabled="currentPage === 1"
 >
+  Prev
+</button>
 
-  <td>{{ item.time }}</td>
+<span>
+  Halaman {{ currentPage }}
+</span>
 
-  <td class="green-text">
-    {{ item.temp_ruang }}
-  </td>
+<button
+  @click="nextPage"
+  :disabled="currentPage >= totalPages"
+>
+  Next
+</button>
 
-  <td class="blue-text">
-    {{ item.temp_kompos }}
-  </td>
-
-  <td class="orange-text">
-    {{ item.hum_kompos }}
-  </td>
-
-  <td class="purple-text">
-    {{ item.hum_udara }}
-  </td>
-
-  <td class="status">
-    ● {{ item.status }}
-  </td>
-
-  <td>
-    Kondisi kompos stabil
-  </td>
-
-</tr>
-
-          </tbody>
-
-        </table>
+</div>
 
       </div>
 
@@ -370,6 +421,72 @@ onUnmounted(() => {
   }
 
 })
+
+// PAGINATION
+const totalPages = computed(() => {
+  return Math.ceil(histories.value.length / itemsPerPage)
+})
+
+const paginatedData = computed(() => {
+
+  const start =
+    (currentPage.value - 1) * itemsPerPage
+
+  const end = start + itemsPerPage
+
+  return histories.value.slice(start, end)
+
+})
+
+// NEXT PAGE
+const nextPage = () => {
+
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++
+  }
+
+}
+
+// PREV PAGE
+const prevPage = () => {
+
+  if (currentPage.value > 1) {
+    currentPage.value--
+  }
+
+}
+
+// DELETE
+const deleteHistory = async (id) => {
+
+  if (!confirm('Hapus data ini?')) return
+
+  try {
+
+    await fetch(
+      `http://localhost:3000/history/${id}`,
+      {
+        method: 'DELETE'
+      }
+    )
+
+    fetchHistory()
+
+  } catch (err) {
+
+    console.log(err)
+
+  }
+
+}
+
+// FORMAT DATE
+const formatDate = (date) => {
+
+  return new Date(date)
+    .toLocaleString('id-ID')
+
+}
 
 /* =========================
    TOTAL DATA
