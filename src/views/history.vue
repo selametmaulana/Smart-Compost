@@ -41,7 +41,7 @@
 
           <div>
             <h4>Total Data</h4>
-            <h2>12.458</h2>
+            <h2>{{ totalData }}</h2>
             <p>Data tersimpan</p>
           </div>
 
@@ -52,8 +52,8 @@
           <Thermometer size="30" />
 
           <div>
-            <h4>Rata-rata Suhu</h4>
-            <h2>45.2 °C</h2>
+            <h4>Rata-rata Suhu Ruang Komposter</h4>
+            <h2>{{ avgSuhuRuang }} °C</h2>
             <p>30 hari terakhir</p>
           </div>
 
@@ -64,8 +64,8 @@
           <Droplets size="30" />
 
           <div>
-            <h4>Rata-rata Kelembapan</h4>
-            <h2>56.8 %</h2>
+            <h4>Rata-rata Suhu Material Kompos</h4>
+            <h2>{{ avgSuhuKompos }} °C</h2>
             <p>30 hari terakhir</p>
           </div>
 
@@ -76,8 +76,8 @@
           <FlaskConical size="30" />
 
           <div>
-            <h4>Rata-rata pH</h4>
-            <h2>7.1</h2>
+            <h4>Rata-rata Kelembapan Kompos</h4>
+            <h2>{{ avgHumKompos }} %</h2>
             <p>30 hari terakhir</p>
           </div>
 
@@ -88,8 +88,8 @@
           <Wind size="30" />
 
           <div>
-            <h4>Rata-rata Oksigen</h4>
-            <h2>18.2 %</h2>
+            <h4>Rata-rata Kelembapan Udara</h4>
+            <h2>{{ avgHumUdara }} %</h2>
             <p>30 hari terakhir</p>
           </div>
 
@@ -228,10 +228,10 @@
 
             <tr>
               <th>Waktu</th>
-              <th>Suhu</th>
-              <th>Kelembapan</th>
-              <th>pH</th>
-              <th>Oksigen</th>
+              <th>Suhu Ruang Komposter</th>
+              <th>Suhu Material kompos</th>
+              <th>Kelembapan Kompos</th>
+              <th>Kelembapan Udara</th>
               <th>Status</th>
               <th>Keterangan</th>
             </tr>
@@ -241,37 +241,37 @@
           <tbody>
 
             <tr
-              v-for="item in histories"
-              :key="item.id"
-            >
+  v-for="item in histories"
+  :key="item.id"
+>
 
-              <td>{{ item.time }}</td>
+  <td>{{ item.time }}</td>
 
-              <td class="green-text">
-                {{ item.temp }}
-              </td>
+  <td class="green-text">
+    {{ item.temp_ruang }}
+  </td>
 
-              <td class="blue-text">
-                {{ item.humidity }}
-              </td>
+  <td class="blue-text">
+    {{ item.temp_kompos }}
+  </td>
 
-              <td class="orange-text">
-                {{ item.ph }}
-              </td>
+  <td class="orange-text">
+    {{ item.hum_kompos }}
+  </td>
 
-              <td class="purple-text">
-                {{ item.oxygen }}
-              </td>
+  <td class="purple-text">
+    {{ item.hum_udara }}
+  </td>
 
-              <td class="status">
-                ● Optimal
-              </td>
+  <td class="status">
+    ● {{ item.status }}
+  </td>
 
-              <td>
-                Kondisi kompos baik
-              </td>
+  <td>
+    Kondisi kompos stabil
+  </td>
 
-            </tr>
+</tr>
 
           </tbody>
 
@@ -285,56 +285,151 @@
 </template>
 
 <script setup>
-import {
-  Leaf,
-  LayoutDashboard,
-  Cpu,
-  Files,
-  Bell,
-  Settings,
-  Database,
-  Thermometer,
-  Droplets,
-  FlaskConical,
-  Wind,
-  Filter,
-  Download
-} from 'lucide-vue-next'
 
-const histories = [
-  {
-    id: 1,
-    time: '20 Mei 2024, 10:30',
-    temp: '48.6°C',
-    humidity: '58%',
-    ph: '7.2',
-    oxygen: '18.6%'
-  },
-  {
-    id: 2,
-    time: '20 Mei 2024, 10:20',
-    temp: '47.8°C',
-    humidity: '57%',
-    ph: '7.1',
-    oxygen: '18.3%'
-  },
-  {
-    id: 3,
-    time: '20 Mei 2024, 10:10',
-    temp: '46.9°C',
-    humidity: '56%',
-    ph: '7.2',
-    oxygen: '18.1%'
-  },
-  {
-    id: 4,
-    time: '20 Mei 2024, 10:00',
-    temp: '46.3°C',
-    humidity: '55%',
-    ph: '7.1',
-    oxygen: '17.9%'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import mqtt from 'mqtt'
+
+/* =========================
+   DATA SENSOR TERBARU
+========================= */
+const sensor = ref({
+  suhu_udara: 0,
+  suhu_kompos: 0,
+  kelembapan_udara: 0,
+  kelembapan_kompos: 0,
+  status: 'Waiting...'
+})
+
+/* =========================
+   HISTORY DATA
+========================= */
+const histories = ref([])
+
+/* =========================
+   MQTT
+========================= */
+let client = null
+
+onMounted(() => {
+
+  client = mqtt.connect(
+    'wss://405ddc32b5914dc29655d90f79fac3c4.s1.eu.hivemq.cloud:8884/mqtt',
+    {
+      username: 'Smart_Compost',
+      password: 'Kompos123'
+    }
+  )
+
+  client.on('connect', () => {
+
+    console.log('✅ MQTT Connected')
+
+    client.subscribe('iot/kompos/ta/device1/data')
+
+  })
+
+  client.on('message', (topic, message) => {
+
+    const data = JSON.parse(message.toString())
+
+    console.log('📡 DATA:', data)
+
+    /* DATA TERBARU */
+    sensor.value = data
+
+    /* MASUKKAN KE HISTORY */
+    histories.value.unshift({
+      id: Date.now(),
+
+      time: new Date().toLocaleString('id-ID'),
+
+      temp_ruang: data.suhu_udara + '°C',
+
+      temp_kompos: data.suhu_kompos + '°C',
+
+      hum_udara: data.kelembapan_udara + '%',
+
+      hum_kompos: data.kelembapan_kompos + '%',
+
+      status: data.status
+    })
+
+    /* BATASI DATA HISTORY */
+    if (histories.value.length > 50) {
+      histories.value.pop()
+    }
+
+  })
+
+})
+
+onUnmounted(() => {
+
+  if(client){
+    client.end()
   }
-]
+
+})
+
+/* =========================
+   TOTAL DATA
+========================= */
+const totalData = computed(() => {
+  return histories.value.length
+})
+
+/* =========================
+   RATA-RATA
+========================= */
+
+const avgSuhuRuang = computed(() => {
+
+  if(histories.value.length === 0) return 0
+
+  const total = histories.value.reduce((sum, item) => {
+    return sum + parseFloat(item.temp_ruang)
+  }, 0)
+
+  return (total / histories.value.length).toFixed(1)
+
+})
+
+const avgSuhuKompos = computed(() => {
+
+  if(histories.value.length === 0) return 0
+
+  const total = histories.value.reduce((sum, item) => {
+    return sum + parseFloat(item.temp_kompos)
+  }, 0)
+
+  return (total / histories.value.length).toFixed(1)
+
+})
+
+const avgHumUdara = computed(() => {
+
+  if(histories.value.length === 0) return 0
+
+  const total = histories.value.reduce((sum, item) => {
+    return sum + parseFloat(item.hum_udara)
+  }, 0)
+
+  return (total / histories.value.length).toFixed(1)
+
+})
+
+const avgHumKompos = computed(() => {
+
+  if(histories.value.length === 0) return 0
+
+  const total = histories.value.reduce((sum, item) => {
+    return sum + parseFloat(item.hum_kompos)
+  }, 0)
+
+  return (total / histories.value.length).toFixed(1)
+
+})
+
 </script>
 
 <style scoped>
