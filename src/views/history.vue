@@ -1101,4 +1101,36 @@ tbody tr{
 
 }
 
+.delete-btn{
+  border:none;
+  background:#ef4444;
+  color:white;
+  padding:8px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.pagination{
+  margin-top:20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:20px;
+}
+
+.pagination button{
+  border:none;
+  background:#4CAF50;
+  color:white;
+  padding:10px 18px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.pagination button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
 </style>
