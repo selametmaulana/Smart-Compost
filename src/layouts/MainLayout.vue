@@ -3,17 +3,11 @@
   <div class="layout">
 
 
-    <button
-  class="mobile-menu-btn"
-  @click="showSidebar = true"
->
-  <i class="ri-menu-line"></i>
-</button>
+
 
     <!-- SIDEBAR -->
     <!-- SIDEBAR -->
-    <aside  class="sidebar"
-    :class="{ active: showSidebar }">
+    <aside  class="sidebar">
 
 <!-- ATAS -->
 <div class="sidebar-top">
@@ -121,24 +115,7 @@ const showSidebar = ref(false)
   background:#E9ECE8; }
 
 /* SIDEBAR */
-.sidebar{
-  width:260px;
-  height:calc(100vh - 36px);
 
-  position:sticky;
-  top:18px;
-
-  background:linear-gradient(180deg,#08240d,#123c18);
-  border-radius:38px;
-
-  padding:36px 22px;
-
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
-}
 
 /* BAGIAN ATAS */
 .sidebar-top{
