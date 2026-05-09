@@ -38,7 +38,7 @@
   
             <div>
               <h4>Total Notifikasi</h4>
-              <h2>128</h2>
+              <h2>{{ totalNotifications }}</h2>
               <p>Semua waktu</p>
             </div>
   
@@ -52,7 +52,7 @@
   
             <div>
               <h4>Peringatan</h4>
-              <h2>8</h2>
+              <h2>{{ totalDanger }}</h2>
               <p>Perlu perhatian</p>
             </div>
   
@@ -66,7 +66,7 @@
   
             <div>
               <h4>Informasi</h4>
-              <h2>112</h2>
+              <h2>{{ totalInfo }}</h2>
               <p>Informasi sistem</p>
             </div>
   
@@ -80,12 +80,10 @@
   
             <div>
               <h4>Belum Dibaca</h4>
-              <h2>3</h2>
+              <h2>{{ totalUnread }}</h2>
               <p>Notifikasi baru</p>
             </div>
-  
           </div>
-  
         </div>
   
         <!-- CONTENT -->
@@ -424,6 +422,37 @@ return new Date(
   minute: '2-digit',
   second: '2-digit'
 }) + ' WIB'
+
+})
+
+const totalNotifications = computed(() => {
+
+return notifications.value.length
+
+})
+
+const totalDanger = computed(() => {
+
+return notifications.value.filter(item =>
+  item.type === 'danger'
+).length
+
+})
+
+const totalInfo = computed(() => {
+
+return notifications.value.filter(item =>
+  item.type === 'success' ||
+  item.type === 'info'
+).length
+
+})
+
+const totalUnread = computed(() => {
+
+return notifications.value.filter(item =>
+  item.is_read === false
+).length
 
 })
   </script>
