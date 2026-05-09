@@ -511,269 +511,224 @@ body{
 /* =========================
    MOBILE RESPONSIVE
 ========================= */
-@media(max-width:768px){
+@media (max-width: 768px){
 
-/* LAYOUT */
 .dashboard-layout{
-  padding:12px;
-  gap:14px;
+  padding:0;
   display:block;
+  background:#F4F4F4;
+  min-height:100vh;
 }
 
-/* MOBILE BUTTON */
-.mobile-menu-btn{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  position:fixed;
-  top:14px;
-  left:14px;
-
-  width:50px;
-  height:50px;
-
-  border:none;
-  border-radius:16px;
-
-  background:#1B5E20;
-  color:white;
-
-  font-size:28px;
-
-  z-index:5000;
-
-  box-shadow:0 8px 24px rgba(0,0,0,0.15);
-}
-
-/* SIDEBAR */
-.sidebar{
-  position:fixed;
-
-  top:0;
-  left:-100%;
-
-  width:280px;
-  height:100vh;
-
-  background:linear-gradient(180deg,#012B07,#063A0D,#0A4A12);
-
-  border-radius:0 26px 26px 0;
-
-  padding:24px 18px;
-
-  z-index:4000;
-
-  overflow-y:auto;
-
-  transition:0.35s ease;
-}
-
-/* ACTIVE SIDEBAR */
-.sidebar.active{
-  left:0;
-}
-
-/* OVERLAY */
-.sidebar-overlay{
-  position:fixed;
-  inset:0;
-
-  background:rgba(0,0,0,0.45);
-
-  z-index:3000;
-}
-
-/* LOGO */
-.logo{
-  font-size:22px;
-  margin-bottom:24px;
-}
-
-/* MENU */
-.menu{
-  gap:10px;
-}
-
-.menu-item{
-  padding:14px 16px;
-  border-radius:14px;
-  font-size:15px;
-}
-
-.menu-item i{
-  font-size:20px;
-}
-
-/* MAIN */
+/* MOBILE HEADER */
 .main-content{
   width:100%;
-  padding-top:70px;
 }
 
-/* TOPBAR */
 .topbar{
-  flex-direction:column;
-  align-items:flex-start;
-  gap:12px;
-  margin-bottom:20px;
+  background:linear-gradient(180deg,#012B07,#063A0D,#0A4A12);
+  padding:26px 22px 28px;
+  border-bottom-left-radius:0;
+  border-bottom-right-radius:0;
+  margin-bottom:0;
+  position:relative;
+  overflow:hidden;
+}
+
+.topbar::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at center,
+  rgba(76,175,80,0.35),
+  transparent 60%);
 }
 
 .topbar h1{
-  font-size:34px;
-  line-height:1.1;
+  font-size:52px;
+  color:#000;
+  margin-top:36px;
+  position:relative;
+  z-index:2;
 }
 
 .topbar p{
-  font-size:14px;
-  margin-top:4px;
+  display:none;
 }
 
 .last-update{
-  font-size:14px;
+  position:absolute;
+  right:20px;
+  top:95px;
+  font-size:15px;
+  color:#777;
+  z-index:2;
+}
+
+/* MOBILE TOP GREEN BAR */
+.mobile-menu-btn{
+  position:fixed;
+  top:28px;
+  left:22px;
+  z-index:999;
+  width:50px;
+  height:50px;
+  border:none;
+  border-radius:14px;
+  background:transparent;
+  color:white;
+  font-size:36px;
+}
+
+/* LOGO TEXT */
+.topbar::after{
+  content:'SmartCompost';
+  position:absolute;
+  top:34px;
+  left:82px;
+  color:white;
+  font-size:24px;
+  font-weight:700;
+  z-index:2;
 }
 
 /* SENSOR GRID */
 .sensor-grid{
-  grid-template-columns:1fr;
-  gap:14px;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+  padding:18px;
+  margin-top:-10px;
 }
 
 .sensor-card{
-  min-height:auto;
-  padding:20px;
-  border-radius:22px;
+  min-height:200px;
+  border-radius:28px;
+  padding:22px;
+  background:#F7F7F7;
+  box-shadow:
+    0 4px 18px rgba(0,0,0,0.03);
 }
 
-.sensor-card h4{
-  font-size:16px;
-  line-height:1.4;
-}
-
-.sensor-card h2{
+.sensor-card i{
   font-size:34px;
-  margin:10px 0;
+  margin-bottom:18px;
 }
 
-.sensor-card p{
-  font-size:15px;
-}
-
-.sensor-icon i{
-  font-size:24px;
-}
-
-/* BOTTOM GRID */
-.bottom-grid{
-  grid-template-columns:1fr;
-  gap:14px;
-}
-
-/* CHART */
-.chart-card{
-  padding:18px;
-  border-radius:24px;
-}
-
-.chart-header{
-  flex-direction:column;
-  align-items:flex-start;
-  gap:12px;
+.sensor-info h4{
+  font-size:17px;
+  line-height:1.4;
+  color:#666;
   margin-bottom:16px;
 }
 
+.sensor-info h2{
+  font-size:46px;
+  font-weight:800;
+  margin-bottom:10px;
+  color:#000;
+}
+
+.sensor-info p{
+  font-size:16px;
+  color:#4CAF50;
+  font-weight:500;
+}
+
+/* CHART */
+.bottom-grid{
+  grid-template-columns:1fr;
+  gap:18px;
+  padding:0 18px 30px;
+}
+
+.chart-card{
+  border-radius:30px;
+  padding:22px;
+  background:#F7F7F7;
+}
+
+.chart-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:20px;
+}
+
 .chart-header h3{
-  font-size:22px;
+  font-size:20px;
+  font-weight:800;
+  margin-bottom:6px;
 }
 
 .chart-header p{
   font-size:14px;
+  color:#666;
 }
 
 .chart-header button{
-  padding:8px 14px;
-  font-size:13px;
-  border-radius:12px;
+  border:none;
+  background:white;
+  padding:10px 16px;
+  border-radius:14px;
+  font-weight:700;
+  font-size:14px;
 }
 
 .chart-area{
-  height:220px;
-  border-radius:18px;
-  padding:12px;
+  height:260px;
+  border-radius:24px;
+  background:#EEF6EC;
 }
 
 /* STATUS */
 .status-card{
-  padding:24px 18px;
-  border-radius:24px;
+  border-radius:32px;
+  padding:34px 24px;
+  background:#F7F7F7;
 }
 
 .status-circle{
-  width:90px;
-  height:90px;
-  font-size:42px;
-  margin-bottom:18px;
+  width:110px;
+  height:110px;
+  font-size:52px;
+  margin-bottom:20px;
 }
 
 .status-card h2{
-  font-size:28px;
+  font-size:34px;
+  margin-bottom:10px;
 }
 
 .status-desc{
-  font-size:15px;
   text-align:center;
+  font-size:18px;
   line-height:1.6;
+  margin-bottom:26px;
 }
 
 .recommend-box{
-  padding:16px;
-  border-radius:18px;
-  margin-top:18px;
+  border-radius:24px;
+  padding:24px;
+  background:white;
 }
 
 .recommend-box h4{
-  font-size:18px;
-  margin-bottom:8px;
+  font-size:20px;
+  margin-bottom:14px;
 }
 
 .recommend-box p{
-  font-size:14px;
-  line-height:1.6;
+  font-size:17px;
+  line-height:1.8;
+}
+
+/* HIDE SIDEBAR */
+.sidebar{
+  display:none;
 }
 
 }
 
-
-/* =========================
- EXTRA SMALL MOBILE
-========================= */
-@media(max-width:480px){
-
-.dashboard-layout{
-  padding:10px;
-}
-
-.topbar h1{
-  font-size:28px;
-}
-
-.sensor-card{
-  padding:18px;
-}
-
-.sensor-card h2{
-  font-size:28px;
-}
-
-.chart-area{
-  height:180px;
-}
-
-.status-card h2{
-  font-size:24px;
-}
-
-}
 
 
 </style>
