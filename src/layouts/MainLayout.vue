@@ -2,9 +2,18 @@
 
   <div class="layout">
 
+
+    <button
+  class="mobile-menu-btn"
+  @click="showSidebar = true"
+>
+  <i class="ri-menu-line"></i>
+</button>
+
     <!-- SIDEBAR -->
     <!-- SIDEBAR -->
-<aside class="sidebar">
+    <aside  class="sidebar"
+    :class="{ active: showSidebar }">
 
 <!-- ATAS -->
 <div class="sidebar-top">
@@ -96,6 +105,9 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
+const showSidebar = ref(false)
 </script>
 
 <style scoped>

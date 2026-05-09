@@ -2,6 +2,14 @@
   <div class="dashboard-layout">
 
 
+    <!-- MOBILE MENU BUTTON -->
+<button
+  class="mobile-menu-btn"
+  @click="showSidebar = true"
+>
+  <i class="ri-menu-line"></i>
+</button>
+
     <!-- MAIN -->
     <main class="main-content">
 
@@ -511,11 +519,29 @@ body{
   }
 
   /* SIDEBAR */
-  .sidebar{
-    width:100%;
-    border-radius:28px;
-    padding:24px 18px;
-  }
+  /* SIDEBAR MOBILE TOGGLE */
+.sidebar{
+  position:fixed;
+  top:0;
+  left:-100%;
+  width:280px;
+  height:100vh;
+
+  background:linear-gradient(180deg,#012B07,#063A0D,#0A4A12);
+
+  border-radius:0 28px 28px 0;
+  padding:24px 18px;
+
+  z-index:3000;
+  overflow-y:auto;
+
+  transition:0.35s ease;
+}
+
+/* SIDEBAR ACTIVE */
+.sidebar.active{
+  left:0;
+}
 
   .logo{
     font-size:22px;
@@ -539,7 +565,8 @@ body{
   /* MAIN */
   .main-content{
     width:100%;
-  }
+    padding-top:70px;
+}
 
   /* TOPBAR */
   .topbar{
@@ -687,5 +714,37 @@ body{
     height:180px;
   }
 
+}
+
+/* OVERLAY */
+.sidebar-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  z-index:2500;
+}
+
+/* BUTTON MENU */
+.mobile-menu-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  position:fixed;
+  top:16px;
+  left:16px;
+
+  width:50px;
+  height:50px;
+
+  border:none;
+  border-radius:14px;
+
+  background:#1B5E20;
+  color:white;
+
+  font-size:28px;
+
+  z-index:4000;
 }
 </style>
