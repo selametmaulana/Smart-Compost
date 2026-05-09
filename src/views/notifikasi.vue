@@ -464,7 +464,6 @@
   
   .notification-page{
     min-height:100vh;
-    background:#f5f7f5;
     display:flex;
     gap:20px;
     padding:20px;

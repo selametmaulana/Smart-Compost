@@ -373,7 +373,6 @@
   
   .device-page{
     min-height:100vh;
-    background:#f4f7f4;
     display:flex;
     gap:20px;
     padding:20px;

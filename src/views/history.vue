@@ -353,7 +353,6 @@ body{
 
 .history-page{
   min-height:100vh;
-  background:hsl(0, 0%, 0%);
   display:flex;
   padding:20px;
   gap:20px;
