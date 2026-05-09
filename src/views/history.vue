@@ -17,7 +17,8 @@
         <div class="top-right">
 
           <span class="update-text">
-            ● Terakhir diperbarui: 10:30 WIB
+          ● Terakhir diperbarui:
+          {{ lastUpdate }}
           </span>
 
           <div class="notif">
@@ -102,9 +103,7 @@
 
         <!-- CHART -->
         <div class="chart-card">
-
           <div class="chart-header">
-
             <h3>
               Grafik Perubahan Kondisi Kompos
             </h3>
@@ -112,7 +111,6 @@
             <button>
               7 Hari Terakhir
             </button>
-
           </div>
 
           <!-- LEGEND -->
@@ -127,29 +125,12 @@
               <span class="blue"></span>
               Kelembapan (%)
             </div>
-
-            <div>
-              <span class="orange"></span>
-              pH
-            </div>
-
-            <div>
-              <span class="purple"></span>
-              Oksigen (%)
-            </div>
-
           </div>
 
           <!-- FAKE GRAPH -->
           <div class="graph">
-
-            <div class="line green-line"></div>
-            <div class="line blue-line"></div>
-            <div class="line orange-line"></div>
-            <div class="line purple-line"></div>
-
-          </div>
-
+        <Line :data="chartData" :options="chartOptions" />
+        </div>
         </div>
 
         <!-- FILTER -->
@@ -161,7 +142,7 @@
 
             <label>Pilih Periode</label>
 
-            <select>
+            <select v-model="selectedPeriod">
               <option>7 Hari Terakhir</option>
               <option>30 Hari</option>
             </select>
@@ -172,7 +153,7 @@
 
             <label>Dari Tanggal</label>
 
-            <input type="date" />
+            <input type="date" v-model="startDate" />
 
           </div>
 
@@ -180,7 +161,7 @@
 
             <label>Sampai Tanggal</label>
 
-            <input type="date" />
+            <input type="date" v-model="endDate" />
 
           </div>
 
@@ -188,7 +169,7 @@
 
             <label>Pilih Parameter</label>
 
-            <select>
+            <select v-model="selectedParameter">
               <option>Semua Parameter</option>
               <option>Suhu</option>
               <option>Kelembapan</option>
@@ -197,15 +178,13 @@
 
           </div>
 
-          <button class="filter-btn">
+          <button class="filter-btn"
+          @click="currentPage = 1">
 
             <Filter size="18" />
             Terapkan Filter
-
           </button>
-
         </div>
-
       </div>
 
       <!-- TABLE -->
@@ -348,9 +327,10 @@
   </div>
 </template>
 
-<script setup>
 
+<script setup>
 import {
+  Chart as ChartJS,
   Bell,
   Database,
   Thermometer,
@@ -361,11 +341,158 @@ import {
   Download
 } from 'lucide-vue-next'
 
+import { Line } from 'vue-chartjs'
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement
+)
+
 import {
   ref,
   computed,
   onMounted
 } from 'vue'
+
+const selectedPeriod = ref('7 Hari Terakhir')
+const startDate = ref('')
+const endDate = ref('')
+const selectedParameter = ref('Semua Parameter')
+
+const chartData = computed(() => {
+
+const reversed =
+  [...filteredHistories.value]
+    .reverse()
+
+return {
+
+  labels: reversed.map(item =>
+    new Date(item.created_at)
+      .toLocaleTimeString('id-ID', {
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+  ),
+
+  datasets: [
+
+    {
+      label: 'Suhu Kompos',
+      data: reversed.map(item =>
+        item.suhu_material
+      ),
+      borderColor: '#4CAF50',
+      backgroundColor: '#4CAF50',
+      tension: 0.4
+    },
+
+    {
+      label: 'Kelembapan Kompos',
+      data: reversed.map(item =>
+        item.kelembapan_kompos
+      ),
+      borderColor: '#3b82f6',
+      backgroundColor: '#3b82f6',
+      tension: 0.4
+    }
+
+  ]
+
+}
+
+})
+
+const chartOptions = {
+
+responsive: true,
+
+maintainAspectRatio: false,
+
+plugins: {
+
+  legend: {
+    display: true
+  }
+
+}
+
+}
+
+const filteredHistories = computed(() => {
+
+  let data = [...histories.value]
+
+  // FILTER PERIODE
+  if (selectedPeriod.value === '7 Hari Terakhir') {
+
+    const sevenDaysAgo = new Date()
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+
+    data = data.filter(item => {
+      return new Date(item.created_at) >= sevenDaysAgo
+    })
+
+  }
+
+  if (selectedPeriod.value === '30 Hari') {
+
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+
+    data = data.filter(item => {
+      return new Date(item.created_at) >= thirtyDaysAgo
+    })
+
+  }
+
+
+  // FILTER TANGGAL
+  if (startDate.value) {
+
+    data = data.filter(item => {
+      return new Date(item.created_at) >= new Date(startDate.value)
+    })
+
+  }
+
+  if (endDate.value) {
+
+    const end = new Date(endDate.value)
+    end.setHours(23,59,59,999)
+
+    data = data.filter(item => {
+      return new Date(item.created_at) <= end
+    })
+
+  }
+
+  return data
+
+})
+
+const lastUpdate = computed(() => {
+
+if (histories.value.length === 0)
+  return 'Belum ada data'
+
+const latest =
+  histories.value[0]?.created_at
+
+return new Date(latest)
+  .toLocaleTimeString('id-ID', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  }) + ' WIB'
+
+})
+
+
 
 /* =========================
    HISTORY DATA
@@ -432,7 +559,7 @@ const paginatedData = computed(() => {
   const end =
     start + itemsPerPage
 
-  return histories.value.slice(start, end)
+  return filteredHistories.value.length
 
 })
 
@@ -915,15 +1042,11 @@ body{
 
 .graph{
   height:320px;
-
   margin-top:25px;
-
   border-radius:24px;
+  background:white;
+  padding:20px;
 
-  background:linear-gradient(to top,#eef8ed,#ffffff);
-
-  position:relative;
-  overflow:hidden;
 }
 
 .line{
