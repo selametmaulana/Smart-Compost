@@ -145,12 +145,10 @@
 
 <script setup>
 
-import { ref } from 'vue'
-
-const showSidebar = ref(false)
-
 import { ref, onMounted, onUnmounted } from 'vue'
 import mqtt from 'mqtt'
+
+const showSidebar = ref(false)
 
 const sensor = ref({
   suhu_udara: 0,
@@ -197,24 +195,6 @@ onUnmounted(() => {
   if (client) {
     client.end()
   }
-
-})
-
-onMounted(() => {
-
-  fetchSensorData()
-
-  interval = setInterval(() => {
-
-    fetchSensorData()
-
-  }, 2000)
-
-})
-
-onUnmounted(() => {
-
-  clearInterval(interval)
 
 })
 
