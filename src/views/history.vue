@@ -213,14 +213,27 @@
 
         <div class="table-header">
 
-          <h3>Riwayat Data Terbaru</h3>
+<h3>Riwayat Data Terbaru</h3>
 
-          <button>
-            <Download size="18" />
-            Unduh Data
-          </button>
+<div class="table-actions">
 
-        </div>
+  <!-- DOWNLOAD -->
+  <button class="download-btn">
+    <Download size="18" />
+    Unduh Data
+  </button>
+
+  <!-- DELETE ALL -->
+  <button
+    class="delete-all-btn"
+    @click="deleteAllHistory"
+  >
+    Hapus Semua
+  </button>
+
+</div>
+
+</div>
 
         <table>
 
@@ -471,6 +484,38 @@ const deleteHistory = async (id) => {
     console.log('DELETE ERROR:', err)
 
   }
+
+}
+
+/* =========================
+   DELETE ALL HISTORY
+========================= */
+const deleteAllHistory = async () => {
+
+const confirmDelete =
+  confirm('Yakin ingin menghapus SEMUA data?')
+
+if (!confirmDelete) return
+
+try {
+
+  await fetch(
+    'https://smart-compost-production.up.railway.app/history',
+    {
+      method: 'DELETE'
+    }
+  )
+
+  histories.value = []
+  currentPage.value = 1
+
+  alert('Semua data berhasil dihapus')
+
+} catch (err) {
+
+  console.log('DELETE ALL ERROR:', err)
+
+}
 
 }
 
@@ -1131,6 +1176,38 @@ tbody tr{
 .pagination button:disabled{
   opacity:.5;
   cursor:not-allowed;
+}
+
+.table-actions{
+  display:flex;
+  gap:12px;
+}
+
+.download-btn{
+  border:none;
+  background:white;
+  padding:12px 18px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.delete-all-btn{
+  border:none;
+  background:#ef4444;
+  color:white;
+  padding:12px 18px;
+  border-radius:14px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.delete-all-btn:hover{
+  opacity:.9;
 }
 
 </style>
