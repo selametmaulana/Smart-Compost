@@ -556,6 +556,31 @@ app.delete('/notifications', async (req, res) => {
 
 })
 
+app.get('/latest-sensor', async (req, res) => {
+
+  try {
+
+    const result = await pool.query(`
+      SELECT *
+      FROM history_sensor
+      ORDER BY id DESC
+      LIMIT 1
+    `)
+
+    res.json(result.rows[0])
+
+  } catch (err) {
+
+    console.log(err)
+
+    res.status(500).json({
+      error: err.message
+    })
+
+  }
+
+})
+
 app.get('/', (req, res) => {
   res.send('Backend Smart Compost aktif 🚀')
 })

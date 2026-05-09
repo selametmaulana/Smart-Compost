@@ -19,15 +19,16 @@
           <div class="top-right">
   
             <span class="update-text">
-              ● Terakhir diperbarui: 10:30 WIB
-            </span>
+● Terakhir diperbarui:
+{{ lastUpdated }}
+</span>
   
             <div class="notif">
   
               <Bell size="20" />
   
               <div class="notif-dot">
-                2
+                {{ notifications.length }}
               </div>
   
             </div>
@@ -46,7 +47,7 @@
   
             <div>
               <h4>Koneksi Internet</h4>
-              <h2>Online</h2>
+              <h2>{{ internetStatus }}</h2>
               <p>ESP32 Terhubung</p>
             </div>
   
@@ -61,7 +62,7 @@
   
             <div>
               <h4>Daya Perangkat</h4>
-              <h2>89%</h2>
+              <h2>{{ batteryLevel }}%</h2>
               <p>Baterai Optimal</p>
             </div>
   
@@ -76,7 +77,7 @@
   
             <div>
               <h4>Status Sensor</h4>
-              <h2>Aktif</h2>
+              <h2>{{ sensorStatus }}</h2>
               <p>Semua sensor berjalan</p>
             </div>
   
@@ -91,7 +92,7 @@
   
             <div>
               <h4>Uptime Sistem</h4>
-              <h2>12 Hari</h2>
+              <h2>{{ uptime }}</h2>
               <p>Stabil tanpa gangguan</p>
             </div>
   
@@ -196,7 +197,7 @@
   
               <h3>Status Sensor</h3>
   
-              <button>
+              <button @click="refreshData">
                 Refresh
               </button>
   
@@ -212,8 +213,8 @@
                 </div>
   
                 <div>
-                  <h4>Sensor Suhu</h4>
-                  <p>DHT22 Temperature</p>
+                  <h4>Suhu Ruang Komposter</h4>
+                    <p>{{ suhuRuang }} °C</p>
                 </div>
   
               </div>
@@ -234,8 +235,8 @@
                 </div>
   
                 <div>
-                  <h4>Sensor Kelembapan</h4>
-                  <p>Humidity Sensor</p>
+                  <h4>Suhu Material Kompos</h4>
+                    <p>{{ suhuMaterial }} °C</p>
                 </div>
   
               </div>
@@ -256,8 +257,8 @@
                 </div>
   
                 <div>
-                  <h4>Sensor pH</h4>
-                  <p>pH Meter Analog</p>
+                  <h4>Kelembapan Udara</h4>
+                <p>{{ kelembapanUdara }} %</p>
                 </div>
   
               </div>
@@ -278,8 +279,8 @@
                 </div>
   
                 <div>
-                  <h4>Sensor Oksigen</h4>
-                  <p>Gas Monitoring</p>
+                  <h4>Kelembapan Kompos</h4>
+                <p>{{ kelembapanKompos }} %</p>
                 </div>
   
               </div>
@@ -299,11 +300,12 @@
   
                 <div class="progress-top">
                   <span>Performa Sistem</span>
-                  <span>92%</span>
+                  <span>{{ systemPerformance }}%</span>
                 </div>
   
                 <div class="progress-bar">
-                  <div class="progress-fill"></div>
+                  <div class="progress-fill" 
+                  :style="{width: systemPerformance + '%'}"></div>
                 </div>
   
               </div>
@@ -339,27 +341,218 @@
   </template>
   
   <script setup>
-  import {
-    Leaf,
-    LayoutDashboard,
-    Cpu,
-    Files,
-    Bell,
-    Settings,
-    ShieldCheck,
-    Wifi,
-    BatteryCharging,
-    Activity,
-    Clock3,
-    Database,
-    Cloud,
-    Thermometer,
-    Droplets,
-    FlaskConical,
-    Wind,
-    CheckCircle2
-  } from 'lucide-vue-next'
-  </script>
+
+import {
+  Leaf,
+  Cpu,
+  Bell,
+  ShieldCheck,
+  Wifi,
+  BatteryCharging,
+  Activity,
+  Clock3,
+  Database,
+  Cloud,
+  Thermometer,
+  Droplets,
+  FlaskConical,
+  Wind,
+  CheckCircle2
+} from 'lucide-vue-next'
+
+import {
+  ref,
+  computed,
+  onMounted,
+  onBeforeUnmount
+} from 'vue'
+
+/* =========================
+   STATE
+========================= */
+
+const sensorData = ref({})
+const notifications = ref([])
+const lastUpdated = ref('-')
+const loading = ref(false)
+
+let intervalId = null
+
+/* =========================
+   DEVICE STATUS
+========================= */
+
+const internetStatus = computed(() => {
+  return sensorData.value?.online
+    ? 'Online'
+    : 'Offline'
+})
+
+const batteryLevel = computed(() => {
+  return sensorData.value?.battery || 0
+})
+
+const sensorStatus = computed(() => {
+  return sensorData.value?.sensor_status || 'Aktif'
+})
+
+const uptime = computed(() => {
+  return sensorData.value?.uptime || '0 Hari'
+})
+
+/* =========================
+   SENSOR VALUE
+========================= */
+
+const suhuRuang = computed(() => {
+  return sensorData.value?.suhu_ruang || 0
+})
+
+const suhuMaterial = computed(() => {
+  return sensorData.value?.suhu_material || 0
+})
+
+const kelembapanUdara = computed(() => {
+  return sensorData.value?.kelembapan_udara || 0
+})
+
+const kelembapanKompos = computed(() => {
+  return sensorData.value?.kelembapan_kompos || 0
+})
+
+/* =========================
+   FETCH SENSOR
+========================= */
+
+const fetchSensor = async () => {
+
+  try {
+
+    loading.value = true
+
+    const res = await fetch(
+      'https://smart-compost-production.up.railway.app/latest-sensor'
+    )
+
+    const data = await res.json()
+
+    console.log('SENSOR:', data)
+
+    sensorData.value = data
+
+    lastUpdated.value =
+      new Date().toLocaleTimeString('id-ID')
+
+  } catch (err) {
+
+    console.log('ERROR SENSOR:', err)
+
+  } finally {
+
+    loading.value = false
+
+  }
+
+}
+
+/* =========================
+   FETCH NOTIFICATION
+========================= */
+
+const fetchNotifications = async () => {
+
+  try {
+
+    const res = await fetch(
+      'https://smart-compost-production.up.railway.app/notifications'
+    )
+
+    const data = await res.json()
+
+    notifications.value = data
+
+  } catch (err) {
+
+    console.log('ERROR NOTIF:', err)
+
+  }
+
+}
+
+/* =========================
+   SYSTEM PERFORMANCE
+========================= */
+
+const systemPerformance = computed(() => {
+
+let score = 100
+
+// offline
+if (!sensorData.value?.online) {
+  score -= 40
+}
+
+// battery rendah
+if ((sensorData.value?.battery || 0) < 30) {
+  score -= 20
+}
+
+// sensor warning
+if (
+  sensorData.value?.sensor_status === 'Warning'
+) {
+  score -= 20
+}
+
+// suhu terlalu tinggi
+if (
+  (sensorData.value?.suhu_material || 0) > 60
+) {
+  score -= 20
+}
+
+return score < 0 ? 0 : score
+
+})
+
+/* =========================
+   REFRESH BUTTON
+========================= */
+
+const refreshData = () => {
+
+  fetchSensor()
+  fetchNotifications()
+
+}
+
+/* =========================
+   AUTO REFRESH
+========================= */
+
+onMounted(() => {
+
+  refreshData()
+
+  intervalId = setInterval(() => {
+
+    refreshData()
+
+  }, 5000)
+
+})
+
+/* =========================
+   CLEAR INTERVAL
+========================= */
+
+onBeforeUnmount(() => {
+
+  clearInterval(intervalId)
+
+})
+
+</script>
   
   <style scoped>
   
