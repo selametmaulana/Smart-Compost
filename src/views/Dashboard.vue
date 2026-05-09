@@ -247,13 +247,6 @@ body{
 }
 
 /* LAYOUT */
-.dashboard-layout{
-  min-height:100vh;
-    display:flex;
-    gap:20px;
-    padding:20px;
-}
-
 
 .logo{
   color:white;
