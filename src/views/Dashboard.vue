@@ -9,7 +9,7 @@
       <div class="topbar">
         <div>
           <h1>Dashboard</h1>
-          <p>Monitoring kondisi kompos secara realtime</p>
+          <p>Monitoring kondisi kompos secara realtime terbaik</p>
         </div>
 
         <div class="last-update">
