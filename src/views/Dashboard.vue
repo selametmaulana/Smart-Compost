@@ -243,6 +243,10 @@ body{
   gap:20px;
   padding:18px;
   background:#E9ECE8;
+
+  position:sticky;
+  top:18px;
+  height:calc(100vh - 36px);
 }
 
 /* SIDEBAR */
@@ -254,6 +258,10 @@ body{
   display:flex;
   flex-direction:column;
   box-shadow:0 10px 30px rgba(0,0,0,0.08);
+
+  position:sticky;
+  top:18px;
+  height:calc(100vh - 36px);
 }
 
 .logo{
@@ -474,7 +482,9 @@ body{
 
 
 
-/* RESPONSIVE */
+/* =========================
+   RESPONSIVE TABLET
+========================= */
 @media(max-width:1200px){
 
   .sensor-grid{
@@ -487,27 +497,194 @@ body{
 
 }
 
+
+/* =========================
+   RESPONSIVE MOBILE
+========================= */
 @media(max-width:768px){
 
+  /* LAYOUT */
   .dashboard-layout{
     flex-direction:column;
+    padding:12px;
+    gap:14px;
   }
 
+  /* SIDEBAR */
   .sidebar{
     width:100%;
+    border-radius:28px;
+    padding:24px 18px;
   }
 
-  .sensor-grid{
-    grid-template-columns:1fr;
+  .logo{
+    font-size:22px;
+    margin-bottom:24px;
   }
 
-  .topbar{
-    flex-direction:column;
+  .menu{
     gap:10px;
   }
 
+  .menu-item{
+    padding:14px 16px;
+    font-size:15px;
+    border-radius:14px;
+  }
+
+  .menu-item i{
+    font-size:20px;
+  }
+
+  /* MAIN */
+  .main-content{
+    width:100%;
+  }
+
+  /* TOPBAR */
+  .topbar{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:18px;
+  }
+
   .topbar h1{
-    font-size:40px;
+    font-size:34px;
+    line-height:1.1;
+  }
+
+  .topbar p{
+    font-size:14px;
+    margin-top:4px;
+  }
+
+  /* SENSOR GRID */
+  .sensor-grid{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+
+  .sensor-card{
+    min-height:auto;
+    padding:20px;
+    border-radius:22px;
+  }
+
+  .sensor-card i{
+    font-size:24px;
+    margin-bottom:14px;
+  }
+
+  .sensor-card h3{
+    font-size:16px;
+    margin-bottom:8px;
+  }
+
+  .sensor-card h1{
+    font-size:34px;
+    margin-bottom:10px;
+  }
+
+  .status{
+    font-size:16px;
+  }
+
+  /* BOTTOM */
+  .bottom-grid{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+
+  /* CHART */
+  .chart-card{
+    padding:18px;
+    border-radius:24px;
+  }
+
+  .chart-top{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+  }
+
+  .chart-top h3{
+    font-size:18px;
+  }
+
+  .day-btn{
+    padding:8px 14px;
+    font-size:13px;
+  }
+
+  .chart-area{
+    height:220px;
+    border-radius:18px;
+    padding:12px;
+  }
+
+  /* STATUS */
+  .status-card{
+    padding:24px 18px;
+    border-radius:24px;
+  }
+
+  .status-circle{
+    width:90px;
+    height:90px;
+    font-size:42px;
+    margin-bottom:16px;
+  }
+
+  .status-card h2{
+    font-size:28px;
+  }
+
+  .status-text{
+    font-size:15px;
+    margin-bottom:20px;
+  }
+
+  .recommend-box{
+    padding:16px;
+    border-radius:18px;
+  }
+
+  .recommend-box h4{
+    font-size:18px;
+  }
+
+  .recommend-box p{
+    font-size:14px;
+    line-height:1.6;
+  }
+
+}
+
+
+/* =========================
+   EXTRA SMALL MOBILE
+========================= */
+@media(max-width:480px){
+
+  .dashboard-layout{
+    padding:10px;
+  }
+
+  .sidebar{
+    padding:20px 16px;
+  }
+
+  .topbar h1{
+    font-size:28px;
+  }
+
+  .sensor-card h1{
+    font-size:28px;
+  }
+
+  .chart-area{
+    height:180px;
   }
 
 }
