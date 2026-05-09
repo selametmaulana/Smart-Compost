@@ -12,17 +12,14 @@
             <h1>Notifikasi</h1>
             <p>Pusat notifikasi dan peringatan sistem</p>
         </div>
-
         <div class="top-right">
-
-            <span class="update-text">
-              ● Terakhir diperbarui: 10:30 WIB
-            </span>
+          <span class="update-text">
+          ● Terakhir diperbarui:
+          {{ lastUpdate }}
+        </span>
   
             <div class="notif-icon">
-  
               <Bell size="22" />
-  
               <div class="notif-badge">
                 3
               </div>
@@ -34,9 +31,7 @@
   
         <!-- SUMMARY -->
         <div class="summary-grid">
-  
           <div class="summary-card">
-  
             <div class="summary-icon red">
               <BellRing size="28" />
             </div>
@@ -98,26 +93,19 @@
   
           <!-- LEFT -->
           <div class="notification-box">
-  
             <!-- HEADER -->
             <div class="box-header">
-  
               <h3>Daftar Notifikasi</h3>
-  
               <div class="filters">
-  
                 <button class="active-filter">
                   Semua
                 </button>
-  
                 <button>
                   Belum Dibaca
                 </button>
-  
                 <button>
                   Terbaru
                 </button>
-  
               </div>
   
             </div>
@@ -125,321 +113,186 @@
             <!-- ITEM -->
             <div
   class="notification-item"
-  v-for="item in notifications"
+  v-for="item in filteredNotifications"
   :key="item.id"
 >
-  
-<div class="notif-left">
 
-<div class="notif-icon-box red-bg">
-  <Bell size="24" />
+  <div class="notif-left">
+
+    <div class="notif-icon-box red-bg">
+      <Bell size="24" />
+    </div>
+
+    <div>
+      <h4>{{ item.title }}</h4>
+      <p>{{ item.message }}</p>
+    </div>
+
+  </div>
+
+  <div class="notif-right">
+
+    <span>
+      {{
+        new Date(item.created_at)
+        .toLocaleTimeString('id-ID')
+      }}
+    </span>
+
+    <label class="danger-label">
+      {{ item.type }}
+    </label>
+
+    <button
+      class="read-btn"
+      @click="markAsRead(item.id)"
+    >
+      Tandai Dibaca
+    </button>
+
+  </div>
+
 </div>
-
-<div>
-
-  <h4>
-    {{ item.title }}
-  </h4>
-
-  <p>
-    {{ item.message }}
-  </p>
-
-</div>
-
-</div>
-
-<div class="notif-right">
-
-<span>
-  {{
-    new Date(item.created_at)
-    .toLocaleTimeString('id-ID')
-  }}
-</span>
-
-<label class="danger-label">
-  {{ item.type }}
-</label>
-
-</div>
-  
-    
-  
-            </div>
-  
-            <!-- ITEM -->
-            <div class="notification-item">
-  
-              <div class="notif-left">
-  
-                <div class="notif-icon-box orange-bg">
-                  <Droplets size="24" />
-                </div>
-  
-                <div>
-                  <h4 class="orange-text">
-                    Kelembapan Rendah
-                  </h4>
-  
-                  <p>
-                    Kelembapan kompos turun menjadi 40%
-                  </p>
-                </div>
-  
-              </div>
-  
-              <div class="notif-right">
-  
-                <span>10:25 WIB</span>
-  
-                <label class="warning-label">
-                  Peringatan
-                </label>
-  
-              </div>
-  
-            </div>
-  
-            <!-- ITEM -->
-            <div class="notification-item">
-  
-              <div class="notif-left">
-  
-                <div class="notif-icon-box green-bg">
-                  <BadgeCheck size="24" />
-                </div>
-  
-                <div>
-                  <h4 class="green-text">
-                    Kondisi Kompos Optimal
-                  </h4>
-  
-                  <p>
-                    Semua parameter dalam kondisi optimal
-                  </p>
-                </div>
-  
-              </div>
-  
-              <div class="notif-right">
-  
-                <span>10:20 WIB</span>
-  
-                <label class="success-label">
-                  Informasi
-                </label>
-  
-              </div>
-  
-            </div>
-  
-            <!-- ITEM -->
-            <div class="notification-item">
-  
-              <div class="notif-left">
-  
-                <div class="notif-icon-box blue-bg">
-                  <Wifi size="24" />
-                </div>
-  
-                <div>
-                  <h4 class="blue-text">
-                    Perangkat Terhubung
-                  </h4>
-  
-                  <p>
-                    ESP32 berhasil terhubung ke server
-                  </p>
-                </div>
-  
-              </div>
-  
-              <div class="notif-right">
-  
-                <span>10:15 WIB</span>
-  
-                <label class="info-label">
-                  Informasi
-                </label>
-  
-              </div>
-  
-            </div>
-  
-            <!-- ITEM -->
-            <div class="notification-item">
-  
-              <div class="notif-left">
-  
-                <div class="notif-icon-box green-bg">
-                  <Database size="24" />
-                </div>
-  
-                <div>
-                  <h4 class="green-text">
-                    Data Berhasil Disimpan
-                  </h4>
-  
-                  <p>
-                    Data sensor berhasil disimpan ke database
-                  </p>
-                </div>
-  
-              </div>
-  
-              <div class="notif-right">
-  
-                <span>10:10 WIB</span>
-  
-                <label class="success-label">
-                  Informasi
-                </label>
-  
-              </div>
-  
-            </div>
-  
           </div>
   
           <!-- RIGHT -->
           <div class="right-panel">
-  
             <!-- FILTER -->
             <div class="filter-card">
-  
-              <h3>Filter Notifikasi</h3>
-  
-              <div class="form-group">
-  
-                <label>Pilih Jenis</label>
-  
-                <select>
-                  <option>Semua Jenis</option>
-                  <option>Peringatan</option>
-                  <option>Informasi</option>
-                </select>
-  
-              </div>
-  
-              <div class="form-group">
-  
-                <label>Pilih Status</label>
-  
-                <select>
-                  <option>Semua Status</option>
-                  <option>Belum Dibaca</option>
-                  <option>Sudah Dibaca</option>
-                </select>
-  
-              </div>
-  
-              <div class="form-group">
-  
-                <label>Dari Tanggal</label>
-  
-                <input type="date" />
-              </div>
-  
-              <div class="form-group">
-  
-                <label>Sampai Tanggal</label>
-  
-                <input type="date" />
-              </div>
-  
-              <button class="filter-btn">
-                Terapkan Filter
-              </button>
-  
-            </div>
+
+<h3>Filter Notifikasi</h3>
+
+<!-- JENIS -->
+<div class="form-group">
+
+  <label>Pilih Jenis</label>
+
+  <select v-model="selectedType">
+
+    <option value="">
+      Semua Jenis
+    </option>
+
+    <option value="danger">
+      Peringatan
+    </option>
+
+    <option value="success">
+      Informasi
+    </option>
+
+  </select>
+
+</div>
+
+<!-- STATUS -->
+<div class="form-group">
+
+  <label>Pilih Status</label>
+
+  <select v-model="selectedStatus">
+
+    <option value="">
+      Semua Status
+    </option>
+
+    <option value="false">
+      Belum Dibaca
+    </option>
+
+    <option value="true">
+      Sudah Dibaca
+    </option>
+
+  </select>
+
+</div>
+
+<!-- START DATE -->
+<div class="form-group">
+
+  <label>Dari Tanggal</label>
+
+  <input
+    type="date"
+    v-model="startDate"
+  />
+
+</div>
+
+<!-- END DATE -->
+<div class="form-group">
+
+  <label>Sampai Tanggal</label>
+
+  <input
+    type="date"
+    v-model="endDate"
+  />
+
+</div>
+
+<button
+  class="filter-btn"
+>
+  Terapkan Filter
+</button>
+
+</div>
   
             <!-- SETTINGS -->
             <div class="settings-card">
-  
               <h3>Pengaturan Notifikasi</h3>
-  
               <div class="setting-item">
-  
                 <div class="setting-left">
-  
                   <div class="setting-icon green-bg">
                     <Bell size="20" />
                   </div>
-  
                   <span>Notifikasi Email</span>
-  
                 </div>
-  
                 <span class="active-status">
                   Aktif
                 </span>
-  
               </div>
-  
               <div class="setting-item">
-  
                 <div class="setting-left">
-  
                   <div class="setting-icon orange-bg">
                     <Smartphone size="20" />
                   </div>
-  
                   <span>Notifikasi WhatsApp</span>
-  
                 </div>
-  
                 <span class="active-status">
                   Aktif
                 </span>
-  
               </div>
-  
               <div class="setting-item">
-  
                 <div class="setting-left">
-  
                   <div class="setting-icon blue-bg">
                     <Monitor size="20" />
                   </div>
-  
                   <span>Notifikasi Browser</span>
-  
                 </div>
-  
                 <span class="active-status">
                   Aktif
                 </span>
-  
               </div>
-  
             </div>
   
             <!-- INFO -->
             <div class="info-card">
-  
               <div class="info-top">
-  
                 <Info size="24" />
-  
                 <h4>Informasi</h4>
-  
               </div>
-  
               <p>
                 Anda akan menerima notifikasi otomatis
                 ketika terjadi perubahan kondisi kompos
                 yang memerlukan perhatian.
               </p>
-  
             </div>
-  
           </div>
-  
         </div>
-  
       </main>
-  
     </div>
   </template>
   
@@ -470,6 +323,10 @@
 } from 'vue'
 
 const notifications = ref([])
+const selectedType = ref('')
+const selectedStatus = ref('')
+const startDate = ref('')
+const endDate = ref('')
 
 const fetchNotifications = async () => {
 
@@ -478,10 +335,73 @@ try {
   const res = await fetch(
     'https://smart-compost-production.up.railway.app/notifications'
   )
-
   const data = await res.json()
-
   notifications.value = data
+} catch (err) {
+  console.log(err)
+}
+
+}
+
+onMounted(() => {
+fetchNotifications()
+})
+
+const filteredNotifications = computed(() => {
+let data = [...notifications.value]
+
+// FILTER TYPE
+if (selectedType.value) {
+  data = data.filter(item =>
+    item.type === selectedType.value
+  )
+
+}
+
+// FILTER STATUS
+if (selectedStatus.value) {
+  data = data.filter(item =>
+    String(item.is_read) === selectedStatus.value
+  )
+
+}
+
+// FILTER START DATE
+if (startDate.value) {
+  data = data.filter(item => {
+    return new Date(item.created_at)
+      >= new Date(startDate.value)
+  })
+
+}
+
+// FILTER END DATE
+if (endDate.value) {
+  const end = new Date(endDate.value)
+  end.setHours(23,59,59,999)
+  data = data.filter(item => {
+    return new Date(item.created_at)
+      <= end
+
+  })
+
+}
+
+return data
+})
+
+const markAsRead = async (id) => {
+
+try {
+
+  await fetch(
+    `https://smart-compost-production.up.railway.app/notifications/${id}/read`,
+    {
+      method: 'PUT'
+    }
+  )
+
+  fetchNotifications()
 
 } catch (err) {
 
@@ -491,9 +411,19 @@ try {
 
 }
 
-onMounted(() => {
+const lastUpdate = computed(() => {
 
-fetchNotifications()
+if (notifications.value.length === 0) {
+  return 'Belum ada data'
+}
+
+return new Date(
+  notifications.value[0].created_at
+).toLocaleTimeString('id-ID', {
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit'
+}) + ' WIB'
 
 })
   </script>
