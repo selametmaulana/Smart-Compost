@@ -337,19 +337,22 @@
 
 <script setup>
 
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import mqtt from 'mqtt'
+import {
+  Bell,
+  Database,
+  Thermometer,
+  Droplets,
+  FlaskConical,
+  Wind,
+  Filter,
+  Download
+} from 'lucide-vue-next'
 
-/* =========================
-   DATA SENSOR TERBARU
-========================= */
-const sensor = ref({
-  suhu_udara: 0,
-  suhu_kompos: 0,
-  kelembapan_udara: 0,
-  kelembapan_kompos: 0,
-  status: 'Waiting...'
-})
+import {
+  ref,
+  computed,
+  onMounted
+} from 'vue'
 
 /* =========================
    HISTORY DATA
@@ -357,88 +360,72 @@ const sensor = ref({
 const histories = ref([])
 
 /* =========================
-   MQTT
+   PAGINATION
 ========================= */
-let client = null
+const currentPage = ref(1)
+const itemsPerPage = 10
 
-onMounted(() => {
+/* =========================
+   FETCH HISTORY DARI RAILWAY
+========================= */
+const fetchHistory = async () => {
 
-  client = mqtt.connect(
-    'wss://405ddc32b5914dc29655d90f79fac3c4.s1.eu.hivemq.cloud:8884/mqtt',
-    {
-      username: 'Smart_Compost',
-      password: 'Kompos123'
-    }
-  )
+  try {
 
-  client.on('connect', () => {
+    const res = await fetch(
+      'https://smart-compost-production.up.railway.app/history'
+    )
 
-    console.log('✅ MQTT Connected')
+    const data = await res.json()
 
-    client.subscribe('iot/kompos/ta/device1/data')
+    histories.value = data
 
-  })
+  } catch (err) {
 
-  client.on('message', (topic, message) => {
+    console.log('ERROR FETCH:', err)
 
-    const data = JSON.parse(message.toString())
-
-    console.log('📡 DATA:', data)
-
-    /* DATA TERBARU */
-    sensor.value = data
-
-    /* MASUKKAN KE HISTORY */
-    histories.value.unshift({
-      id: Date.now(),
-
-      time: new Date().toLocaleString('id-ID'),
-
-      temp_ruang: data.suhu_udara + '°C',
-
-      temp_kompos: data.suhu_kompos + '°C',
-
-      hum_udara: data.kelembapan_udara + '%',
-
-      hum_kompos: data.kelembapan_kompos + '%',
-
-      status: data.status
-    })
-
-    /* BATASI DATA HISTORY */
-    if (histories.value.length > 50) {
-      histories.value.pop()
-    }
-
-  })
-
-})
-
-onUnmounted(() => {
-
-  if(client){
-    client.end()
   }
 
+}
+
+/* =========================
+   LOAD DATA
+========================= */
+onMounted(() => {
+
+  fetchHistory()
+
 })
 
-// PAGINATION
+/* =========================
+   TOTAL PAGE
+========================= */
 const totalPages = computed(() => {
-  return Math.ceil(histories.value.length / itemsPerPage)
+
+  return Math.ceil(
+    histories.value.length / itemsPerPage
+  )
+
 })
 
+/* =========================
+   DATA PER PAGE
+========================= */
 const paginatedData = computed(() => {
 
   const start =
     (currentPage.value - 1) * itemsPerPage
 
-  const end = start + itemsPerPage
+  const end =
+    start + itemsPerPage
 
   return histories.value.slice(start, end)
 
 })
 
-// NEXT PAGE
+/* =========================
+   NEXT PAGE
+========================= */
 const nextPage = () => {
 
   if (currentPage.value < totalPages.value) {
@@ -447,7 +434,9 @@ const nextPage = () => {
 
 }
 
-// PREV PAGE
+/* =========================
+   PREV PAGE
+========================= */
 const prevPage = () => {
 
   if (currentPage.value > 1) {
@@ -456,31 +445,38 @@ const prevPage = () => {
 
 }
 
-// DELETE
+/* =========================
+   DELETE HISTORY
+========================= */
 const deleteHistory = async (id) => {
 
-  if (!confirm('Hapus data ini?')) return
+  const confirmDelete =
+    confirm('Hapus data ini?')
+
+  if (!confirmDelete) return
 
   try {
 
     await fetch(
-      `http://localhost:3000/history/${id}`,
+      `https://smart-compost-production.up.railway.app/history/${id}`,
       {
         method: 'DELETE'
       }
     )
 
-    fetchHistory()
+    await fetchHistory()
 
   } catch (err) {
 
-    console.log(err)
+    console.log('DELETE ERROR:', err)
 
   }
 
 }
 
-// FORMAT DATE
+/* =========================
+   FORMAT TANGGAL
+========================= */
 const formatDate = (date) => {
 
   return new Date(date)
@@ -492,58 +488,92 @@ const formatDate = (date) => {
    TOTAL DATA
 ========================= */
 const totalData = computed(() => {
+
   return histories.value.length
+
 })
 
 /* =========================
-   RATA-RATA
+   AVG SUHU RUANG
 ========================= */
-
 const avgSuhuRuang = computed(() => {
 
-  if(histories.value.length === 0) return 0
+  if (histories.value.length === 0)
+    return 0
 
-  const total = histories.value.reduce((sum, item) => {
-    return sum + parseFloat(item.temp_ruang)
-  }, 0)
+  const total =
+    histories.value.reduce((sum, item) => {
 
-  return (total / histories.value.length).toFixed(1)
+      return sum + Number(item.suhu_ruang)
+
+    }, 0)
+
+  return (
+    total / histories.value.length
+  ).toFixed(1)
 
 })
 
+/* =========================
+   AVG SUHU KOMPOS
+========================= */
 const avgSuhuKompos = computed(() => {
 
-  if(histories.value.length === 0) return 0
+  if (histories.value.length === 0)
+    return 0
 
-  const total = histories.value.reduce((sum, item) => {
-    return sum + parseFloat(item.temp_kompos)
-  }, 0)
+  const total =
+    histories.value.reduce((sum, item) => {
 
-  return (total / histories.value.length).toFixed(1)
+      return sum + Number(item.suhu_material)
 
-})
+    }, 0)
 
-const avgHumUdara = computed(() => {
-
-  if(histories.value.length === 0) return 0
-
-  const total = histories.value.reduce((sum, item) => {
-    return sum + parseFloat(item.hum_udara)
-  }, 0)
-
-  return (total / histories.value.length).toFixed(1)
+  return (
+    total / histories.value.length
+  ).toFixed(1)
 
 })
 
+/* =========================
+   AVG HUM KOMPOS
+========================= */
 const avgHumKompos = computed(() => {
 
-  if(histories.value.length === 0) return 0
+  if (histories.value.length === 0)
+    return 0
 
-  const total = histories.value.reduce((sum, item) => {
-    return sum + parseFloat(item.hum_kompos)
-  }, 0)
+  const total =
+    histories.value.reduce((sum, item) => {
 
-  return (total / histories.value.length).toFixed(1)
+      return sum + Number(item.kelembapan_kompos)
+
+    }, 0)
+
+  return (
+    total / histories.value.length
+  ).toFixed(1)
+
+})
+
+/* =========================
+   AVG HUM UDARA
+========================= */
+const avgHumUdara = computed(() => {
+
+  if (histories.value.length === 0)
+    return 0
+
+  const total =
+    histories.value.reduce((sum, item) => {
+
+      return sum + Number(item.kelembapan_udara)
+
+    }, 0)
+
+  return (
+    total / histories.value.length
+  ).toFixed(1)
 
 })
 
