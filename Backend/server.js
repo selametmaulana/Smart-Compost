@@ -257,6 +257,8 @@ app.get('/dashboard', async (req, res) => {
   }
 })
 
+console.log('🔥 SERVER STARTING...')
+
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
