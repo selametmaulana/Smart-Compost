@@ -22,8 +22,36 @@ const client = mqtt.connect({
   reconnectPeriod: 1000
 })
 
+// =====================
+// SENSOR STATE
+// =====================
+let sensorData = {
+  suhu_kompos: 0,
+  suhu_udara: 0,
+  kelembapan_udara: 0,
+  kelembapan_kompos: 0,
+  status: 'Waiting...',
+  pompa: false,
+  fan: false
+}
+
 client.on('connect', () => {
+
   console.log('✅ MQTT Connected')
+
+  client.subscribe(
+    'iot/kompos/ta/device1/data',
+    (err) => {
+
+      if (err) {
+        console.log('❌ Subscribe gagal')
+      } else {
+        console.log('✅ Subscribe berhasil')
+      }
+
+    }
+  )
+
 })
 
 client.on('error', (err) => {
@@ -38,6 +66,52 @@ client.on('reconnect', () => {
   console.log('🔄 MQTT Reconnecting...')
 })
 
+/* =========================
+   MQTT MESSAGE
+========================= */
+client.on('message', async (topic, message) => {
+
+  try {
+
+    const data = JSON.parse(
+      message.toString()
+    )
+
+    console.log('📡 MQTT DATA:', data)
+
+    // REALTIME CACHE
+    sensorData = data
+
+    // SIMPAN DATABASE
+    await pool.query(`
+      INSERT INTO history_sensor (
+        suhu_ruang,
+        suhu_material,
+        kelembapan_udara,
+        kelembapan_kompos,
+        status
+      ) VALUES ($1,$2,$3,$4,$5)
+    `, [
+      data.suhu_udara,
+      data.suhu_kompos,
+      data.kelembapan_udara,
+      data.kelembapan_kompos,
+      data.status || 'AUTO'
+    ])
+
+    console.log('✅ Data masuk PostgreSQL')
+
+  } catch (err) {
+
+    console.log(
+      '❌ ERROR MQTT:',
+      err.message
+    )
+
+  }
+
+})
+
 
 // =====================
 // ROOT / HEALTH CHECK
@@ -49,18 +123,6 @@ app.get('/', (req, res) => {
   });
 })
 
-// =====================
-// SENSOR STATE (REALTIME CACHE)
-// =====================
-let sensorData = {
-  suhu_kompos: 0,
-  suhu_udara: 0,
-  kelembapan_udara: 0,
-  kelembapan_kompos: 0,
-  status: 'Waiting...',
-  pompa: false,
-  fan: false
-}
 
 // =====================
 // SENSOR DATA (REALTIME UPDATE + SAVE DB)
@@ -195,6 +257,10 @@ app.get('/dashboard', async (req, res) => {
   }
 })
 
+const PORT = process.env.PORT || 3000
 
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`)
+})
 
 
