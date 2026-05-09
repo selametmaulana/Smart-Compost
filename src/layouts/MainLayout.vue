@@ -123,9 +123,13 @@
   flex-shrink:0; /* TAMBAHAN PENTING */
 }
 
+
 .main-content{
   flex:1;
-  min-width:0; /* TAMBAHAN PENTING */
+  min-width:0;
+
+  background:#E9ECE8; /* TAMBAHAN */
+  min-height:100vh;   /* TAMBAHAN */
 }
 
 /* BAGIAN ATAS */

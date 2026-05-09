@@ -3,11 +3,7 @@
 
 
     <!-- MOBILE MENU BUTTON -->
-<button
-  class="mobile-menu-btn"
-  @click="showSidebar = true">
-  <i class="ri-menu-line"></i>
-</button>
+
 
     <!-- MAIN -->
     <main class="main-content">
@@ -240,6 +236,12 @@ onUnmounted(() => {
   padding:0;
   box-sizing:border-box;
   font-family:'Poppins',sans-serif;
+}
+
+.dashboard-layout{
+  width:100%;
+  min-height:100vh;
+  background:#E9ECE8;
 }
 
 body{
@@ -486,10 +488,10 @@ body{
 ========================= */
 @media (max-width: 768px){
 
-.dashboard-layout{
+  .dashboard-layout{
   padding:0;
   display:block;
-  background:#F4F4F4;
+  background:#E9ECE8;
   min-height:100vh;
 }
 
@@ -702,6 +704,11 @@ body{
 
 }
 
-
+html,
+body,
+#app{
+  background:#E9ECE8;
+  min-height:100%;
+}
 
 </style>
