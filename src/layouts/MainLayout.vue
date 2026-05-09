@@ -108,12 +108,13 @@
   padding:18px; 
   background:#E9ECE8;
   overflow-x:hidden;
+  align-items:flex-start;
 }
 
 /* SIDEBAR */
 .sidebar{
   width:260px;
-  height:calc(100vh - 36px);
+  min-height:calc(100vh - 36px);
   position:sticky;
   top:18px;
   background:linear-gradient(180deg,#08240d,#123c18);
@@ -122,7 +123,6 @@
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-
   box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
@@ -151,15 +151,11 @@
   display:flex;
   align-items:center;
   gap:14px;
-
   color:white;
   text-decoration:none;
-
   padding:16px 18px;
   border-radius:18px;
-
   transition:0.3s;
-
   font-size:17px;
   font-weight:500;
 }
