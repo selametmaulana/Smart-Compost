@@ -225,7 +225,7 @@
 
   <!-- DELETE ALL -->
   <button
-    class="delete-all-btn"
+    class="delete-btn"
     @click="deleteAllHistory"
   >
     Hapus Semua
