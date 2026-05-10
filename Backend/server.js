@@ -148,13 +148,20 @@ const handleNotifications = async (data) => {
 
 setInterval(async () => {
 
+  console.log('⏰ Interval running...')
+
   if (isSaving) return
 
   try {
 
-    if (!latestSensorData) return
+    if (!latestSensorData) {
+      console.log('⚠️ No sensor data yet')
+      return
+    }
 
     isSaving = true
+
+    console.log('💾 Saving to database...', latestSensorData)
 
     await pool.query(`
       INSERT INTO history_sensor (
@@ -172,12 +179,16 @@ setInterval(async () => {
       latestSensorData.status
     ])
 
-    console.log('💾 Saved every 1 minute')
+    console.log('✅ Saved every 1 minute')
 
   } catch (err) {
-    console.log('❌ ERROR:', err.message)
+
+    console.log('❌ SAVE ERROR:', err.message)
+
   } finally {
+
     isSaving = false
+
   }
 
 }, 60000)
