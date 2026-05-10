@@ -80,7 +80,11 @@ client.on('message', async (topic, message) => {
 
     // REALTIME CACHE (FIXED)
     sensorData = {
-      ...data,
+      suhu_ruang: data.suhu_udara ?? 0,
+      suhu_material: data.suhu_kompos ?? 0,
+      kelembapan_udara: data.kelembapan_udara ?? 0,
+      kelembapan_kompos: data.kelembapan_kompos ?? 0,
+      status: data.status || 'AUTO',
       lastSensorTime: Date.now()
     }
 
@@ -548,48 +552,18 @@ app.delete('/notifications', async (req, res) => {
 
 })
 
-app.get('/latest-sensor', async (req, res) => {
+app.get('/latest-sensor', (req, res) => {
 
-  try {
+  const lastTime = sensorData?.lastSensorTime || 0
+  const diff = Date.now() - lastTime
 
-    const result = await pool.query(`
-      SELECT *
-      FROM history_sensor
-      ORDER BY id DESC
-      LIMIT 1
-    `)
-
-    const data = result.rows[0]
-
-    if (!data) {
-
-      return res.json({
-        online: false,
-        sensor_status: 'Offline'
-      })
-
-    }
-
-    const diff = Date.now() - lastSensorTime
-
-    data.online = diff < 15000
-
-    data.sensor_status =
-      diff < 15000
-        ? 'Aktif'
-        : 'Offline'
-
-    res.json(data)
-
-  } catch (err) {
-
-    console.log(err)
-
-    res.status(500).json({
-      error: err.message
-    })
-
-  }
+  res.json({
+    ...sensorData,
+    online: lastTime ? diff < 15000 : false,
+    sensor_status: lastTime
+      ? (diff < 15000 ? 'Aktif' : 'Offline')
+      : 'Offline'
+  })
 
 })
 
