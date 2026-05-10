@@ -116,9 +116,11 @@
   
               <h3>Perangkat SmartCompost</h3>
   
-              <span>
-                ● Online
-              </span>
+              <span :style="{color:internetStatus === 
+              'Online'? '#4CAF50'
+              : '#f59e0b'}">
+              ● {{ internetStatus }}
+            </span>
   
             </div>
   
@@ -137,7 +139,12 @@
   
               </div>
   
-              <div class="device-light"></div>
+              <div
+  class="device-light"
+  :class="internetStatus === 'Online'
+    ? 'light-online'
+    : 'light-offline'"
+></div>
   
             </div>
   

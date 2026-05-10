@@ -26,6 +26,7 @@ const client = mqtt.connect({
 // SENSOR STATE
 // =====================
 let sensorData = {
+  lastSensorTime:  0,
   suhu_kompos: 0,
   suhu_udara: 0,
   kelembapan_udara: 0,
@@ -34,6 +35,8 @@ let sensorData = {
   pompa: false,
   fan: false
 }
+
+
 
 client.on('connect', () => {
 
@@ -65,14 +68,14 @@ client.on('offline', () => {
 client.on('reconnect', () => {
   console.log('🔄 MQTT Reconnecting...')
 })
-let lastSensorTime = Date.now()
+
 
 /* =========================
    MQTT MESSAGE
 ========================= */
 client.on('message', async (topic, message) => {
 
-
+  lastSensorTime = Date.now()
   try {
 
     const data = JSON.parse(
