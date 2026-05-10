@@ -154,12 +154,7 @@
       {{ item.type }}
     </label>
 
-    <button
-      class="read-btn"
-      @click="markAsRead(item.id)"
-    >
-      Tandai Dibaca
-    </button>
+    
 
   </div>
 
@@ -434,7 +429,20 @@ try {
     }
   )
 
-  fetchNotifications()
+  // UPDATE LOCAL STATE
+  notifications.value =
+    notifications.value.map(item => {
+
+      if (item.id === id) {
+        return {
+          ...item,
+          is_read: true
+        }
+      }
+
+      return item
+
+    })
 
 } catch (err) {
 
@@ -501,6 +509,12 @@ return notifications.value.filter(item =>
     padding:0;
     box-sizing:border-box;
   }
+
+  .readed-text{
+  color:#4CAF50;
+  font-weight:700;
+  font-size:14px;
+}
   
   .notification-page{
     min-height:100vh;
