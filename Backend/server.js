@@ -67,18 +67,12 @@ client.on('reconnect', () => {
   console.log('🔄 MQTT Reconnecting...')
 })
 
-
-/* =========================
-   MQTT MESSAGE
-========================= */
-
 client.on('message', async (topic, message) => {
-
   try {
 
     const data = JSON.parse(message.toString())
 
-    // REALTIME CACHE (FIXED)
+    // ✅ UPDATE RAM ONLY
     sensorData = {
       suhu_ruang: data.suhu_udara ?? 0,
       suhu_material: data.suhu_kompos ?? 0,
@@ -88,65 +82,59 @@ client.on('message', async (topic, message) => {
       lastSensorTime: Date.now()
     }
 
-     // 🔥 SIMPAN UNTUK SETINTERVAL
-     latestSensorData = sensorData
+    console.log('📡 MQTT:', sensorData)
 
-    console.log('📡 MQTT DATA:', data)
-
-
-    // =====================
-    // AUTO NOTIFICATION
-    // =====================
-
-    if (data.suhu_kompos > 20 && Date.now() - lastTempNotif > 60000) {
-
-      await pool.query(`
-        INSERT INTO notifications (
-          title,
-          message,
-          type,
-          category
-        ) VALUES ($1,$2,$3,$4)
-      `, [
-        'Suhu Tinggi Terdeteksi',
-        `Suhu kompos mencapai ${data.suhu_kompos}°C`,
-        'danger',
-        'temperature'
-      ])
-    
-      lastTempNotif = Date.now()
-    
-      console.log('🔥 Notifikasi suhu tinggi dibuat')
-    }
-
-    if (data.kelembapan_kompos < 30 && Date.now() - lastHumidityNotif > 60000) {
-
-      await pool.query(`
-        INSERT INTO notifications (
-          title,
-          message,
-          type,
-          category
-        ) VALUES ($1,$2,$3,$4)
-      `, [
-        'Kelembapan Rendah',
-        `Kelembapan kompos ${data.kelembapan_kompos}%`,
-        'warning',
-        'humidity'
-      ])
-    
-      lastHumidityNotif = Date.now()
-    
-      console.log('💧 Notifikasi kelembapan dibuat')
-    }
-
-    console.log('✅ Data masuk PostgreSQL')
+    // =========================
+    // 🔥 NOTIFICATION ENGINE
+    // =========================
+    handleNotifications(data)
 
   } catch (err) {
-    console.log('❌ ERROR MQTT:', err.message)
+    console.log('MQTT ERROR:', err.message)
+  }
+})
+
+
+let lastTempNotif = 0
+let lastHumidityNotif = 0
+
+const handleNotifications = async (data) => {
+
+  const now = Date.now()
+
+  // 🔥 SUHU TINGGI
+  if (data.suhu_kompos > 20 && now - lastTempNotif > 60000) {
+
+    await pool.query(`
+      INSERT INTO notifications (title, message, type, category)
+      VALUES ($1,$2,$3,$4)
+    `, [
+      'Suhu Tinggi Terdeteksi',
+      `Suhu kompos ${data.suhu_kompos}°C`,
+      'danger',
+      'temperature'
+    ])
+
+    lastTempNotif = now
   }
 
-})
+  // 💧 KELEMBAPAN RENDAH
+  if (data.kelembapan_kompos < 30 && now - lastHumidityNotif > 60000) {
+
+    await pool.query(`
+      INSERT INTO notifications (title, message, type, category)
+      VALUES ($1,$2,$3,$4)
+    `, [
+      'Kelembapan Rendah',
+      `Kelembapan ${data.kelembapan_kompos}%`,
+      'warning',
+      'humidity'
+    ])
+
+    lastHumidityNotif = now
+  }
+}
+
 
 setInterval(async () => {
 
@@ -196,59 +184,6 @@ app.get('/', (req, res) => {
 })
 
 
-// =====================
-// SENSOR DATA (REALTIME UPDATE + SAVE DB)
-// =====================
-app.post('/sensor-data', async (req, res) => {
-
-  try {
-
-    console.log('BODY:', req.body)
-
-    const data = req.body || {}
-
-    if (!data.suhu_udara) {
-      return res.status(400).json({
-        success: false,
-        error: 'Payload kosong'
-      })
-    }
-
-    sensorData = data
-
-    await pool.query(`
-      INSERT INTO history_sensor (
-        suhu_ruang,
-        suhu_material,
-        kelembapan_udara,
-        kelembapan_kompos,
-        status
-      ) VALUES ($1,$2,$3,$4,$5)
-    `, [
-      data.suhu_udara,
-      data.suhu_kompos,
-      data.kelembapan_udara,
-      data.kelembapan_kompos,
-      data.status || 'AUTO'
-    ])
-
-    res.json({
-      success: true,
-      message: 'Data berhasil disimpan'
-    })
-
-  } catch (err) {
-
-    console.error(err)
-
-    res.status(500).json({
-      success: false,
-      error: err.message
-    })
-
-  }
-
-})
 
 // =====================
 // GET REALTIME SENSOR
