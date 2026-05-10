@@ -124,7 +124,7 @@
             <!-- ITEM -->
             <div
   class="notification-item"
-  v-for="item in filteredNotifications"
+  v-for="item in paginatedNotifications"
   :key="item.id"
 >
 
@@ -160,6 +160,29 @@
 
 </div>
           </div>
+
+          <div class="pagination">
+
+<button
+  @click="prevPage"
+  :disabled="currentPage === 1"
+>
+  Prev
+</button>
+
+<span>
+  Halaman {{ currentPage }}
+  dari {{ totalPages }}
+</span>
+
+<button
+  @click="nextPage"
+  :disabled="currentPage >= totalPages"
+>
+  Next
+</button>
+
+</div>
   
           <!-- RIGHT -->
           <div class="right-panel">
@@ -330,6 +353,8 @@
 
 const notifications = ref([])
 const selectedType = ref('')
+const currentPage = ref(1)
+const itemsPerPage = 5
 const selectedStatus = ref('')
 const activeFilter = ref('all')
 const startDate = ref('')
@@ -417,6 +442,43 @@ if (endDate.value) {
 return data
 
 })
+
+const totalPages = computed(() => {
+
+return Math.ceil(
+  filteredNotifications.value.length /
+  itemsPerPage
+)
+
+})
+
+const paginatedNotifications = computed(() => {
+
+const start =
+  (currentPage.value - 1) * itemsPerPage
+
+const end =
+  start + itemsPerPage
+
+return filteredNotifications.value.slice(start, end)
+
+})
+
+const nextPage = () => {
+
+if (currentPage.value < totalPages.value) {
+  currentPage.value++
+}
+
+}
+
+const prevPage = () => {
+
+if (currentPage.value > 1) {
+  currentPage.value--
+}
+
+}
 
 const markAsRead = async (id) => {
 
@@ -509,6 +571,33 @@ return notifications.value.filter(item =>
     padding:0;
     box-sizing:border-box;
   }
+
+  .pagination{
+  margin-top:25px;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:18px;
+}
+
+.pagination button{
+  border:none;
+  background:#4CAF50;
+  color:white;
+
+  padding:10px 18px;
+
+  border-radius:10px;
+
+  cursor:pointer;
+  font-weight:600;
+}
+
+.pagination button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
 
   .readed-text{
   color:#4CAF50;
