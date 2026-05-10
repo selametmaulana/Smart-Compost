@@ -95,16 +95,29 @@
             <div class="box-header">
               <h3>Daftar Notifikasi</h3>
               <div class="filters">
-                <button class="active-filter">
-                  Semua
-                </button>
-                <button>
-                  Belum Dibaca
-                </button>
-                <button>
-                  Terbaru
-                </button>
-              </div>
+
+<button
+  :class="{ 'active-filter': activeFilter === 'all' }"
+  @click="activeFilter = 'all'"
+>
+  Semua
+</button>
+
+<button
+  :class="{ 'active-filter': activeFilter === 'unread' }"
+  @click="activeFilter = 'unread'"
+>
+  Belum Dibaca
+</button>
+
+<button
+  :class="{ 'active-filter': activeFilter === 'latest' }"
+  @click="activeFilter = 'latest'"
+>
+  Terbaru
+</button>
+
+</div>
   
             </div>
   
@@ -323,6 +336,7 @@
 const notifications = ref([])
 const selectedType = ref('')
 const selectedStatus = ref('')
+const activeFilter = ref('all')
 const startDate = ref('')
 const endDate = ref('')
 
@@ -342,14 +356,33 @@ try {
 }
 
 onMounted(() => {
-fetchNotifications()
-})
+fetchNotifications()})
 
 const filteredNotifications = computed(() => {
+
 let data = [...notifications.value]
+
+// TOP FILTER
+if (activeFilter.value === 'unread') {
+
+  data = data.filter(item =>
+    item.is_read === false
+  )
+
+}
+
+if (activeFilter.value === 'latest') {
+
+  data = data.sort((a, b) =>
+    new Date(b.created_at) -
+    new Date(a.created_at)
+  )
+
+}
 
 // FILTER TYPE
 if (selectedType.value) {
+
   data = data.filter(item =>
     item.type === selectedType.value
   )
@@ -358,34 +391,36 @@ if (selectedType.value) {
 
 // FILTER STATUS
 if (selectedStatus.value) {
+
   data = data.filter(item =>
     String(item.is_read) === selectedStatus.value
   )
 
 }
 
-// FILTER START DATE
+// START DATE
 if (startDate.value) {
-  data = data.filter(item => {
-    return new Date(item.created_at)
-      >= new Date(startDate.value)
-  })
+
+  data = data.filter(item =>
+    new Date(item.created_at)
+    >= new Date(startDate.value)
+  )
 
 }
 
-// FILTER END DATE
+// END DATE
 if (endDate.value) {
+
   const end = new Date(endDate.value)
   end.setHours(23,59,59,999)
-  data = data.filter(item => {
-    return new Date(item.created_at)
-      <= end
-
-  })
+  data = data.filter(item =>
+    new Date(item.created_at) <= end
+  )
 
 }
 
 return data
+
 })
 
 const markAsRead = async (id) => {
