@@ -26,7 +26,6 @@ const client = mqtt.connect({
 // SENSOR STATE
 // =====================
 let sensorData = {
-  lastSensorTime:  0,
   suhu_kompos: 0,
   suhu_udara: 0,
   kelembapan_udara: 0,
@@ -35,7 +34,6 @@ let sensorData = {
   pompa: false,
   fan: false
 }
-
 
 
 client.on('connect', () => {
@@ -73,24 +71,24 @@ client.on('reconnect', () => {
 /* =========================
    MQTT MESSAGE
 ========================= */
+
 client.on('message', async (topic, message) => {
 
-  lastSensorTime = Date.now()
   try {
 
-    const data = JSON.parse(
-      message.toString()
-    )
+    const data = JSON.parse(message.toString())
+
+    // REALTIME CACHE (FIXED)
+    sensorData = {
+      ...data,
+      lastSensorTime: Date.now()
+    }
 
     console.log('📡 MQTT DATA:', data)
-
-    // REALTIME CACHE
-    sensorData = data
 
     // =====================
     // SIMPAN HISTORY SENSOR
     // =====================
-
     await pool.query(`
       INSERT INTO history_sensor (
         suhu_ruang,
@@ -111,8 +109,7 @@ client.on('message', async (topic, message) => {
     // AUTO NOTIFICATION
     // =====================
 
-    // SUHU TINGGI
-    if (data.suhu_kompos > 50) {
+    if (data.suhu_kompos > 20 && Date.now() - lastTempNotif > 60000) {
 
       await pool.query(`
         INSERT INTO notifications (
@@ -120,23 +117,20 @@ client.on('message', async (topic, message) => {
           message,
           type,
           category
-        )
-        VALUES ($1,$2,$3,$4)
+        ) VALUES ($1,$2,$3,$4)
       `, [
-
         'Suhu Tinggi Terdeteksi',
         `Suhu kompos mencapai ${data.suhu_kompos}°C`,
         'danger',
         'temperature'
-
       ])
-
+    
+      lastTempNotif = Date.now()
+    
       console.log('🔥 Notifikasi suhu tinggi dibuat')
-
     }
 
-    // KELEMBAPAN RENDAH
-    if (data.kelembapan_kompos < 40) {
+    if (data.kelembapan_kompos < 30 && Date.now() - lastHumidityNotif > 60000) {
 
       await pool.query(`
         INSERT INTO notifications (
@@ -144,30 +138,23 @@ client.on('message', async (topic, message) => {
           message,
           type,
           category
-        )
-        VALUES ($1,$2,$3,$4)
+        ) VALUES ($1,$2,$3,$4)
       `, [
-
         'Kelembapan Rendah',
         `Kelembapan kompos ${data.kelembapan_kompos}%`,
         'warning',
         'humidity'
-
       ])
-
+    
+      lastHumidityNotif = Date.now()
+    
       console.log('💧 Notifikasi kelembapan dibuat')
-
     }
 
     console.log('✅ Data masuk PostgreSQL')
 
   } catch (err) {
-
-    console.log(
-      '❌ ERROR MQTT:',
-      err.message
-    )
-
+    console.log('❌ ERROR MQTT:', err.message)
   }
 
 })
