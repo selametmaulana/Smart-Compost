@@ -88,26 +88,11 @@ client.on('message', async (topic, message) => {
       lastSensorTime: Date.now()
     }
 
+     // 🔥 SIMPAN UNTUK SETINTERVAL
+     latestSensorData = sensorData
+
     console.log('📡 MQTT DATA:', data)
 
-    // =====================
-    // SIMPAN HISTORY SENSOR
-    // =====================
-    await pool.query(`
-      INSERT INTO history_sensor (
-        suhu_ruang,
-        suhu_material,
-        kelembapan_udara,
-        kelembapan_kompos,
-        status
-      ) VALUES ($1,$2,$3,$4,$5)
-    `, [
-      data.suhu_udara,
-      data.suhu_kompos,
-      data.kelembapan_udara,
-      data.kelembapan_kompos,
-      data.status || 'AUTO'
-    ])
 
     // =====================
     // AUTO NOTIFICATION
@@ -162,6 +147,42 @@ client.on('message', async (topic, message) => {
   }
 
 })
+
+setInterval(async () => {
+
+  if (isSaving) return
+
+  try {
+
+    if (!latestSensorData) return
+
+    isSaving = true
+
+    await pool.query(`
+      INSERT INTO history_sensor (
+        suhu_ruang,
+        suhu_material,
+        kelembapan_udara,
+        kelembapan_kompos,
+        status
+      ) VALUES ($1,$2,$3,$4,$5)
+    `, [
+      latestSensorData.suhu_ruang,
+      latestSensorData.suhu_material,
+      latestSensorData.kelembapan_udara,
+      latestSensorData.kelembapan_kompos,
+      latestSensorData.status
+    ])
+
+    console.log('💾 Saved every 1 minute')
+
+  } catch (err) {
+    console.log('❌ ERROR:', err.message)
+  } finally {
+    isSaving = false
+  }
+
+}, 60000)
 
 
 // =====================
