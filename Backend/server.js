@@ -69,11 +69,12 @@ client.on('reconnect', () => {
 })
 
 client.on('message', async (topic, message) => {
+
   try {
 
     const data = JSON.parse(message.toString())
 
-    // ✅ UPDATE RAM ONLY
+    // UPDATE RAM
     sensorData = {
       suhu_ruang: data.suhu_udara ?? 0,
       suhu_material: data.suhu_kompos ?? 0,
@@ -83,16 +84,17 @@ client.on('message', async (topic, message) => {
       lastSensorTime: Date.now()
     }
 
+    // WAJIB
+    latestSensorData = sensorData
+
     console.log('📡 MQTT:', sensorData)
 
-    // =========================
-    // 🔥 NOTIFICATION ENGINE
-    // =========================
-    handleNotifications(data)
+    await handleNotifications(data)
 
   } catch (err) {
     console.log('MQTT ERROR:', err.message)
   }
+
 })
 
 
