@@ -71,14 +71,20 @@
           <!-- CARD -->
           <div class="device-status-card">
   
-            <div class="device-icon orange">
-              <Activity size="26" />
+            <div
+  class="device-icon"
+  :class="
+    sensorStatus === 'Aktif'
+      ? 'green'
+      : 'orange'
+  "
+>
             </div>
   
             <div>
               <h4>Status Sensor</h4>
               <h2>{{ sensorStatus }}</h2>
-              <p>Semua sensor berjalan</p>
+          <p>{{sensorStatus === 'Aktif'? 'Semua sensor berjalan': 'Sensor tidak terhubung'}}</p>
             </div>
   
           </div>

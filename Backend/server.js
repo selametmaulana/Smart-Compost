@@ -558,10 +558,6 @@ app.delete('/notifications', async (req, res) => {
 
 })
 
-/* =========================
-   LATEST SENSOR
-========================= */
-
 app.get('/latest-sensor', async (req, res) => {
 
   try {
@@ -575,19 +571,23 @@ app.get('/latest-sensor', async (req, res) => {
 
     const data = result.rows[0]
 
-    // jika belum ada data
     if (!data) {
 
       return res.json({
-        online: false
+        online: false,
+        sensor_status: 'Offline'
       })
 
     }
 
-    // cek esp32 online/offline
     const diff = Date.now() - lastSensorTime
 
     data.online = diff < 15000
+
+    data.sensor_status =
+      diff < 15000
+        ? 'Aktif'
+        : 'Offline'
 
     res.json(data)
 
