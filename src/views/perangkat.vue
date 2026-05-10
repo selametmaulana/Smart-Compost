@@ -205,24 +205,20 @@
   
             <!-- SENSOR ITEM -->
             <div class="sensor-item">
-  
               <div class="sensor-left">
-  
                 <div class="sensor-icon green-bg">
                   <Thermometer size="22" />
                 </div>
-  
                 <div>
                   <h4>Suhu Ruang Komposter</h4>
                     <p>{{ suhuRuang }} °C</p>
                 </div>
-  
               </div>
-  
-              <div class="sensor-status online">
-                Online
+              <div class="sensor-status"
+              :class="internetStatus === 'Online'
+              ? 'online'
+              : 'warning'">{{ internetStatus }}
               </div>
-  
             </div>
   
             <!-- SENSOR ITEM -->
@@ -238,11 +234,12 @@
                   <h4>Suhu Material Kompos</h4>
                     <p>{{ suhuMaterial }} °C</p>
                 </div>
-  
               </div>
   
-              <div class="sensor-status online">
-                Online
+              <div class="sensor-status"
+              :class="internetStatus === 'Online'
+              ? 'online'
+              : 'warning'">{{ internetStatus }}
               </div>
   
             </div>
@@ -263,8 +260,10 @@
   
               </div>
   
-              <div class="sensor-status online">
-                Online
+              <div class="sensor-status"
+              :class="internetStatus === 'Online'
+              ? 'online'
+              : 'warning'">{{ internetStatus }}
               </div>
   
             </div>
@@ -285,8 +284,10 @@
   
               </div>
   
-              <div class="sensor-status warning">
-                Warning
+              <div class="sensor-status"
+              :class="internetStatus === 'Online'
+              ? 'online'
+              : 'warning'">{{ internetStatus }}
               </div>
   
             </div>

@@ -65,11 +65,13 @@ client.on('offline', () => {
 client.on('reconnect', () => {
   console.log('🔄 MQTT Reconnecting...')
 })
+let lastSensorTime = Date.now()
 
 /* =========================
    MQTT MESSAGE
 ========================= */
 client.on('message', async (topic, message) => {
+
 
   try {
 
@@ -556,6 +558,10 @@ app.delete('/notifications', async (req, res) => {
 
 })
 
+/* =========================
+   LATEST SENSOR
+========================= */
+
 app.get('/latest-sensor', async (req, res) => {
 
   try {
@@ -567,7 +573,23 @@ app.get('/latest-sensor', async (req, res) => {
       LIMIT 1
     `)
 
-    res.json(result.rows[0])
+    const data = result.rows[0]
+
+    // jika belum ada data
+    if (!data) {
+
+      return res.json({
+        online: false
+      })
+
+    }
+
+    // cek esp32 online/offline
+    const diff = Date.now() - lastSensorTime
+
+    data.online = diff < 15000
+
+    res.json(data)
 
   } catch (err) {
 
