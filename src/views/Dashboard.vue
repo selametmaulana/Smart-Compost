@@ -1,7 +1,33 @@
 <template>
   <div class="dashboard-layout">
 
+    <!-- POPUP -->
+<div
+  v-if="showPopup"
+  class="popup-overlay"
+>
+  <div class="popup-box">
 
+    <div class="popup-icon">
+      <i class="ri-settings-3-line"></i>
+    </div>
+
+    <h2>Pengaturan Diperlukan</h2>
+
+    <p>
+      Sebelum menggunakan dashboard monitoring,
+      silakan lakukan pengaturan sistem terlebih dahulu.
+    </p>
+
+    <button
+      class="popup-btn"
+      @click="goToSettings"
+    >
+      Ke Pengaturan
+    </button>
+
+  </div>
+</div>
     <!-- MAIN -->
     <main class="main-content">
 
@@ -149,6 +175,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import mqtt from 'mqtt'
 
 const showSidebar = ref(false)
+const showPopup = ref(true)
 
 const sensor = ref({
   suhu_udara: 0,
@@ -159,6 +186,12 @@ const sensor = ref({
 })
 
 let client = null
+
+
+
+const goToSettings = () => {
+  window.location.href = '/dashboard/pengaturan'
+}
 
 onMounted(() => {
 
@@ -218,6 +251,98 @@ onUnmounted(() => {
 
 body{
   background:#E9ECE8;
+}
+
+/* POPUP */
+.popup-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+
+  background:rgba(0,0,0,0.45);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  z-index:9999;
+
+  backdrop-filter:blur(6px);
+}
+
+.popup-box{
+  width:420px;
+  background:white;
+
+  border-radius:30px;
+  padding:40px;
+
+  text-align:center;
+
+  animation:popupShow .3s ease;
+}
+
+.popup-icon{
+  width:90px;
+  height:90px;
+
+  margin:auto;
+  margin-bottom:22px;
+
+  border-radius:50%;
+  background:#E8F7EA;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:#4CAF50;
+  font-size:42px;
+}
+
+.popup-box h2{
+  font-size:30px;
+  margin-bottom:14px;
+}
+
+.popup-box p{
+  color:#666;
+  line-height:1.7;
+  margin-bottom:28px;
+}
+
+.popup-btn{
+  width:100%;
+
+  border:none;
+  background:#4CAF50;
+  color:white;
+
+  padding:16px;
+  border-radius:16px;
+
+  font-size:16px;
+  font-weight:700;
+
+  cursor:pointer;
+}
+
+.popup-btn:hover{
+  opacity:.9;
+}
+
+@keyframes popupShow{
+  from{
+    transform:scale(.8);
+    opacity:0;
+  }
+
+  to{
+    transform:scale(1);
+    opacity:1;
+  }
 }
 
 /* LAYOUT */
