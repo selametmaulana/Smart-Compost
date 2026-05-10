@@ -36,6 +36,16 @@ let sensorData = {
 }
 
 
+// CACHE SENSOR TERAKHIR
+let latestSensorData = null
+
+// LOCK SAVE
+let isSaving = false
+
+// NOTIFICATION TIMER
+let lastTempNotif = 0
+let lastHumidityNotif = 0
+
 
 client.on('connect', () => {
 
@@ -97,10 +107,6 @@ client.on('message', async (topic, message) => {
 
 })
 
-
-let lastTempNotif = 0
-let lastHumidityNotif = 0
-let isSaving = false
 
 const handleNotifications = async (data) => {
 
