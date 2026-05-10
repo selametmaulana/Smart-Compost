@@ -36,6 +36,7 @@ let sensorData = {
 }
 
 
+
 client.on('connect', () => {
 
   console.log('✅ MQTT Connected')
@@ -97,6 +98,7 @@ client.on('message', async (topic, message) => {
 
 let lastTempNotif = 0
 let lastHumidityNotif = 0
+let isSaving = false
 
 const handleNotifications = async (data) => {
 
