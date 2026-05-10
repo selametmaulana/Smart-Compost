@@ -159,9 +159,8 @@
   </div>
 
 </div>
-          </div>
 
-          <div class="pagination">
+<div class="pagination">
 
 <button
   @click="prevPage"
@@ -183,6 +182,9 @@
 </button>
 
 </div>
+          </div>
+
+        
   
           <!-- RIGHT -->
           <div class="right-panel">
