@@ -179,6 +179,9 @@ import {
 
 import mqtt from 'mqtt'
 
+// =========================
+// STATE
+// =========================
 const showSidebar = ref(false)
 const showPopup = ref(false)
 
@@ -207,93 +210,120 @@ const goToSettings = () => {
 // =========================
 onMounted(async () => {
 
-// =========================
-// CHECK DEVICE
-// =========================
-try {
+  // =========================
+  // CHECK DEVICE
+  // =========================
+  try {
 
-  const res = await fetch(
-    'https://smart-compost-production.up.railway.app/devices'
-  )
+    const res = await fetch(
+      'https://smart-compost-production.up.railway.app/devices'
+    )
 
-  const devices = await res.json()
+    const devices = await res.json()
 
-  console.log(devices)
+    console.log('DEVICES:', devices)
 
-  // TIDAK ADA DEVICE
-  if (!devices.length) {
+    // CARI DEVICE YANG VALID
+    const validDevice = devices.find(device =>
+      device.device_name &&
+      device.location &&
+      device.wifi_ssid
+    )
 
-    showPopup.value = true
-
-  } else {
-
-    // AMBIL DEVICE PERTAMA
-    const device = devices[0]
-
-    // VALIDASI
-    if (
-      !device.device_name ||
-      !device.location ||
-      !device.wifi_ssid
-    ) {
+    // JIKA BELUM ADA DEVICE VALID
+    if (!validDevice) {
 
       showPopup.value = true
 
+      console.log('❌ DEVICE BELUM LENGKAP')
+
+    } else {
+
+      showPopup.value = false
+
+      console.log('✅ DEVICE VALID:', validDevice)
+
     }
 
+  } catch (err) {
+
+    console.log('❌ ERROR DEVICE:', err)
+
+    showPopup.value = true
+
   }
 
-} catch (err) {
-
-  console.log(err)
-
-  showPopup.value = true
-
-}
-
-// =========================
-// MQTT CONNECT
-// =========================
-client = mqtt.connect(
-  'wss://405ddc32b5914dc29655d90f79fac3c4.s1.eu.hivemq.cloud:8884/mqtt',
-  {
-    username: 'Smart_Compost',
-    password: 'Kompos123'
-  }
-)
-
-client.on('connect', () => {
-
-  console.log('✅ MQTT Connected')
-
-  client.subscribe(
-    'iot/kompos/ta/device1/data'
+  // =========================
+  // MQTT CONNECT
+  // =========================
+  client = mqtt.connect(
+    'wss://405ddc32b5914dc29655d90f79fac3c4.s1.eu.hivemq.cloud:8884/mqtt',
+    {
+      username: 'Smart_Compost',
+      password: 'Kompos123'
+    }
   )
 
-})
+  client.on('connect', () => {
 
-client.on('message', (topic, message) => {
+    console.log('✅ MQTT Connected')
 
-  const data = JSON.parse(
-    message.toString()
-  )
+    client.subscribe(
+      'iot/kompos/ta/device1/data'
+    )
 
-  sensor.value = data
+  })
 
-  console.log('📡 DATA:', data)
+  // =========================
+  // MQTT MESSAGE
+  // =========================
+  client.on('message', (topic, message) => {
 
-})
+    try {
+
+      const data = JSON.parse(
+        message.toString()
+      )
+
+      sensor.value = {
+        suhu_udara:
+          data.suhu_udara ?? 0,
+
+        suhu_kompos:
+          data.suhu_kompos ?? 0,
+
+        kelembapan_udara:
+          data.kelembapan_udara ?? 0,
+
+        kelembapan_kompos:
+          data.kelembapan_kompos ?? 0,
+
+        status:
+          data.status || 'Normal'
+      }
+
+      console.log('📡 SENSOR:', data)
+
+    } catch (err) {
+
+      console.log('❌ MQTT ERROR:', err)
+
+    }
+
+  })
 
 })
 
 // =========================
-// DESTROY MQTT
+// ON UNMOUNTED
 // =========================
 onUnmounted(() => {
 
   if (client) {
 
     client.end()
+
+    console.log('🔌 MQTT Disconnected')
 
   }
 

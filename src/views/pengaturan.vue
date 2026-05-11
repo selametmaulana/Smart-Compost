@@ -480,8 +480,6 @@ try {
     last_calibration: device.value.last_calibration
   }
 
-  console.log('SEND:', payload)
-
   const res = await fetch(
     `https://smart-compost-production.up.railway.app/devices/${device.value.device_id}`,
     {
@@ -495,16 +493,21 @@ try {
 
   const data = await res.json()
 
-  console.log('RESULT:', data)
+  console.log(data)
 
   if (!res.ok) {
 
-    alert('❌ Gagal simpan')
+    alert('❌ Gagal menyimpan')
     return
 
   }
 
   alert('✅ Device berhasil disimpan')
+
+  // =========================
+  // REDIRECT KE DASHBOARD
+  // =========================
+  window.location.href = '/dashboard'
 
 } catch (err) {
 
