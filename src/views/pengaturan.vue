@@ -449,28 +449,50 @@ const systemSettings = ref({
 
 const saveSystemSettings = () => {
 
-  console.log('SYSTEM SETTINGS:', systemSettings.value)
+console.log('SYSTEM SETTINGS:', systemSettings.value)
 
-  localStorage.setItem(
-    'system_settings',
-    JSON.stringify(systemSettings.value)
-  )
+localStorage.setItem(
+  'system_settings',
+  JSON.stringify(systemSettings.value)
+)
 
-  alert('✅ Pengaturan sistem berhasil disimpan')
+// APPLY THEME
+applyTheme(systemSettings.value.theme)
+
+alert('✅ Pengaturan sistem berhasil disimpan')
+
+}
+
+const applyTheme = (theme) => {
+
+if (theme === 'dark') {
+
+  document.body.classList.add('dark-mode')
+
+} else {
+
+  document.body.classList.remove('dark-mode')
+
+}
 
 }
 
 onMounted(() => {
 
-const saved =
-  localStorage.getItem('system_settings')
+  const saved =
+    localStorage.getItem('system_settings')
 
-if (saved) {
+  if (saved) {
 
-  systemSettings.value =
-    JSON.parse(saved)
+    systemSettings.value =
+      JSON.parse(saved)
 
-}
+    // APPLY THEME SAAT PAGE LOAD
+    applyTheme(systemSettings.value.theme)
+
+  }
+
+  loadDevice()
 
 })
 
@@ -828,6 +850,48 @@ loadDevice()
     align-items:center;
     justify-content:center;
   }
+
+  /* DARK MODE */
+:global(body.dark-mode){
+
+background:#0f172a;
+color:white;
+
+}
+
+:global(body.dark-mode) .main-content{
+background:#111827;
+}
+
+:global(body.dark-mode) .settings-card{
+background:#1e293b;
+color:white;
+}
+
+:global(body.dark-mode) .setting-item{
+border-color:#334155;
+}
+
+:global(body.dark-mode) .setting-left p{
+color:#cbd5e1;
+}
+
+:global(body.dark-mode) input,
+:global(body.dark-mode) select{
+background:#0f172a;
+color:white;
+border:1px solid #334155;
+}
+
+:global(body.dark-mode) .theme-btn{
+background:#334155;
+color:white;
+}
+
+:global(body.dark-mode) .topbar p,
+:global(body.dark-mode) .update-text{
+color:#cbd5e1;
+}
   
   /* ITEM */
   
