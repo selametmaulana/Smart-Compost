@@ -625,9 +625,20 @@ loadDevice()
 })
   </script>
   
-  <style scoped>
+  <style>
   
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+  html,
+body{
+  margin:0;
+  padding:0;
+  background:#f1f5f9;
+}
+
+body.dark-mode{
+  background:#020617 !important;
+}
   
   *{
     margin:0;
@@ -738,7 +749,7 @@ select,
   
   .main-content{
     flex:1;
-    background: transparent;
+    background: white;
     border-radius:35px;
     padding:35px;
   }
