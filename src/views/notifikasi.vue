@@ -562,9 +562,30 @@ return notifications.value.filter(item =>
 ).length
 
 })
+
+onMounted(() => {
+
+const saved =
+  JSON.parse(
+    localStorage.getItem('system_settings')
+  )
+
+if(saved?.theme === 'dark'){
+
+  document.body.classList.add('dark-mode')
+
+}else{
+
+  document.body.classList.remove('dark-mode')
+
+}
+
+})
+
+
   </script>
   
-  <style scoped>
+  <style>
   
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
   
@@ -1141,5 +1162,68 @@ return notifications.value.filter(item =>
     }
   
   }
+
+  /* =========================
+   DARK MODE
+========================= */
+
+body.dark-mode{
+
+background:
+radial-gradient(circle at top left,#0f3d1d,#020617 45%);
+
+color:white;
+
+}
+
+body.dark-mode .main-content,
+body.dark-mode .notification-box,
+body.dark-mode .filter-card,
+body.dark-mode .settings-card,
+body.dark-mode .info-card,
+body.dark-mode .summary-card{
+
+background:#0f172a;
+color:white;
+
+border:1px solid rgba(255,255,255,.06);
+
+}
+
+body.dark-mode .notification-item{
+
+background:#111827;
+color:white;
+
+}
+
+body.dark-mode p,
+body.dark-mode span{
+
+color:#94a3b8;
+
+}
+
+body.dark-mode input,
+body.dark-mode select{
+
+background:#020617;
+color:white;
+border:1px solid #334155;
+
+}
+
+body.dark-mode .filters button{
+
+background:#1e293b;
+color:white;
+
+}
+
+body.dark-mode .active-filter{
+
+background:#22c55e !important;
+
+}
   
   </style>
