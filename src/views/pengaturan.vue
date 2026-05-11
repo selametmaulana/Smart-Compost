@@ -369,17 +369,23 @@
                 </div>
               </div>
   
-              <button class="calibration-btn"
-              @click="handleCalibration = new Date().toLocaleString('id-ID')">
-              Kalibrasi Ulang
-            </button>
+              <button
+  class="calibration-btn"
+  @click="handleCalibration"
+>
+  Kalibrasi Ulang
+</button>
             <p style="margin-top:10px">
               {{ device.last_calibration || 'Belum pernah' }}
             </p>
           </div>
   
             <!-- BUTTON -->
-            <button class="save-btn" @click="saveDevice":disabled="loading">
+            <button
+  class="save-btn"
+  @click="saveDevice"
+  :disabled="loading"
+>
               {{ loading ? 'Menyimpan...' : 'Simpan Perubahan' }}
             </button>
   
@@ -395,7 +401,7 @@ import { ref, onMounted } from 'vue'
 const loading = ref(false)
 
 const device = ref({
-  device_id: '',
+  device_id: 'Devices1',
   device_name: '',
   location: '',
   is_active: true,
@@ -437,7 +443,7 @@ const loadDevice = async () => {
   try {
 
     const res = await fetch(
-      `https://smart-compost-production.up.railway.app/device/${currentDeviceId.value}`
+      `https://smart-compost-production.up.railway.app/devices/${currentDeviceId.value}`
     )
 
     const data = await res.json()
@@ -479,7 +485,7 @@ try {
   }
 
   const res = await fetch(
-    `https://smart-compost-production.up.railway.app/device/${device.value.device_id}`,
+    `https://smart-compost-production.up.railway.app/devices/${device.value.device_id}`,
     {
       method: 'PUT',
       headers: {

@@ -304,9 +304,7 @@ app.put('/devices/:id', async (req, res) => {
         send_interval,
         last_calibration
       )
-      VALUES (
-        $1, $2, $3, $4, $5, $6, $7
-      )
+      VALUES ($1,$2,$3,$4,$5,$6,$7)
 
       ON CONFLICT (device_id)
 
@@ -319,7 +317,6 @@ app.put('/devices/:id', async (req, res) => {
         last_calibration = EXCLUDED.last_calibration
 
       RETURNING *
-
     `, [
       id,
       device_name,
