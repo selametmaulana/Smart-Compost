@@ -96,6 +96,28 @@
 </template>
 
 <script setup>
+
+import { onMounted } from 'vue'
+
+onMounted(() => {
+
+  const saved =
+    JSON.parse(
+      localStorage.getItem('system_settings')
+    )
+
+  if(saved?.theme === 'dark'){
+
+    document.body.classList.add('dark-mode')
+
+  }else{
+
+    document.body.classList.remove('dark-mode')
+
+  }
+
+})
+
 </script>
 
 <style scoped>
@@ -201,4 +223,62 @@
   font-size:13px;
   opacity:0.8;
 }
+
+/* =========================
+   DARK MODE MAIN LAYOUT
+========================= */
+
+body.dark-mode .layout{
+
+background:
+radial-gradient(circle at top left,#0f3d1d,#020617 45%);
+
+}
+
+/* SIDEBAR */
+body.dark-mode .sidebar{
+
+background:
+linear-gradient(
+180deg,
+#03120a,
+#020617
+);
+
+border:1px solid rgba(0,255,120,.08);
+
+box-shadow:
+0 0 30px rgba(0,255,120,.08);
+
+}
+
+/* MENU */
+body.dark-mode .menu-item:hover{
+
+background:rgba(255,255,255,.05);
+
+}
+
+body.dark-mode .menu-item.active{
+
+background:
+linear-gradient(
+90deg,
+#15803d,
+#22c55e
+);
+
+}
+
+/* SIDEBAR CARD */
+body.dark-mode .sidebar-card{
+
+background:rgba(255,255,255,.04);
+
+border:1px solid rgba(255,255,255,.06);
+
+backdrop-filter:blur(14px);
+
+}
+
 </style>

@@ -329,10 +329,31 @@ onUnmounted(() => {
 
 })
 
+import { onMounted } from 'vue'
+
+onMounted(() => {
+
+  const saved =
+    JSON.parse(
+      localStorage.getItem('system_settings')
+    )
+
+  if(saved?.theme === 'dark'){
+
+    document.body.classList.add('dark-mode')
+
+  }else{
+
+    document.body.classList.remove('dark-mode')
+
+  }
+
+})
+
 </script>
 
 
-<style scoped>
+<style>
 
 /* GOOGLE FONT */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
@@ -717,6 +738,141 @@ body{
   .topbar h1{
     font-size:40px;
   }
+
+}
+
+/* =========================
+   DARK MODE
+========================= */
+
+:global(body.dark-mode){
+
+background:
+radial-gradient(circle at top left,#0f3d1d,#020617 45%);
+
+color:white;
+
+}
+
+/* LAYOUT */
+:global(body.dark-mode) .dashboard-layout{
+
+background:transparent;
+
+}
+
+/* MAIN */
+:global(body.dark-mode) .main-content{
+
+background:transparent;
+
+}
+
+/* CARD */
+:global(body.dark-mode) .sensor-card,
+:global(body.dark-mode) .chart-card,
+:global(body.dark-mode) .status-card,
+:global(body.dark-mode) .recommend-box{
+
+background:
+rgba(15,23,42,.85);
+
+border:1px solid rgba(255,255,255,.06);
+
+color:white;
+
+backdrop-filter:blur(16px);
+
+}
+
+/* CHART AREA */
+:global(body.dark-mode) .chart-area{
+
+background:#0f172a;
+
+}
+
+/* TOPBAR */
+:global(body.dark-mode) .topbar h1{
+
+color:white;
+
+}
+
+:global(body.dark-mode) .topbar p{
+
+color:#94a3b8;
+
+}
+
+/* TEXT */
+:global(body.dark-mode) .sensor-card h1,
+:global(body.dark-mode) .sensor-card h3,
+:global(body.dark-mode) .status-card h2,
+:global(body.dark-mode) .recommend-box h4{
+
+color:white;
+
+}
+
+:global(body.dark-mode) .recommend-box p,
+:global(body.dark-mode) .status-text{
+
+color:#cbd5e1;
+
+}
+
+/* BUTTON */
+:global(body.dark-mode) .day-btn{
+
+background:#1e293b;
+color:white;
+
+}
+
+/* SIDEBAR */
+:global(body.dark-mode) .sidebar{
+
+background:
+linear-gradient(
+180deg,
+#03120a,
+#020617
+);
+
+border:1px solid rgba(0,255,120,.08);
+
+}
+
+/* MENU */
+:global(body.dark-mode) .menu-item:hover{
+
+background:rgba(255,255,255,.06);
+
+}
+
+:global(body.dark-mode) .menu-item.active{
+
+background:
+linear-gradient(
+90deg,
+#15803d,
+#22c55e
+);
+
+}
+
+/* POPUP */
+:global(body.dark-mode) .popup-box{
+
+background:#0f172a;
+color:white;
+
+}
+
+:global(body.dark-mode) .popup-box p{
+
+color:#cbd5e1;
 
 }
 </style>

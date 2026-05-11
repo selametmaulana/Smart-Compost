@@ -760,9 +760,30 @@ const avgHumUdara = computed(() => {
 
 })
 
+import { onMounted } from 'vue'
+
+onMounted(() => {
+
+  const saved =
+    JSON.parse(
+      localStorage.getItem('system_settings')
+    )
+
+  if(saved?.theme === 'dark'){
+
+    document.body.classList.add('dark-mode')
+
+  }else{
+
+    document.body.classList.remove('dark-mode')
+
+  }
+
+})
+
 </script>
 
-<style scoped>
+<style>
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
@@ -1337,6 +1358,150 @@ tbody tr{
 
 .delete-all-btn:hover{
   opacity:.9;
+}
+
+/* =========================
+   DARK MODE HISTORY
+========================= */
+
+body.dark-mode{
+
+background:
+radial-gradient(circle at top left,#0f3d1d,#020617 45%);
+
+color:white;
+
+}
+
+/* MAIN */
+body.dark-mode .main-content{
+
+background:
+linear-gradient(
+180deg,
+rgba(15,23,42,.95),
+rgba(2,6,23,.98)
+);
+
+border:1px solid rgba(255,255,255,.08);
+
+}
+
+/* CARD */
+body.dark-mode .stat-card,
+body.dark-mode .chart-card,
+body.dark-mode .filter-card,
+body.dark-mode .table-card,
+body.dark-mode .graph{
+
+background:#0f172a;
+color:white;
+
+border:1px solid rgba(255,255,255,.06);
+
+}
+
+/* TABLE */
+body.dark-mode table{
+
+color:white;
+
+}
+
+body.dark-mode thead{
+
+background:#111827;
+
+}
+
+body.dark-mode tbody tr{
+
+border-bottom:
+1px solid rgba(255,255,255,.06);
+
+}
+
+/* INPUT */
+body.dark-mode input,
+body.dark-mode select{
+
+background:#020617;
+color:white;
+border:1px solid #334155;
+
+}
+
+/* BUTTON */
+body.dark-mode .chart-header button,
+body.dark-mode .download-btn{
+
+background:#1e293b;
+color:white;
+
+}
+
+/* TEXT */
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode label,
+body.dark-mode td{
+
+color:#cbd5e1;
+
+}
+
+/* NOTIF */
+body.dark-mode .notif{
+
+background:#111827;
+
+}
+
+/* SIDEBAR */
+body.dark-mode .sidebar{
+
+background:
+linear-gradient(
+180deg,
+#03120a,
+#020617
+);
+
+border:1px solid rgba(0,255,120,.08);
+
+}
+
+/* MENU */
+body.dark-mode .menu li:hover{
+
+background:rgba(255,255,255,.05);
+
+}
+
+body.dark-mode .active{
+
+background:
+linear-gradient(
+90deg,
+#15803d,
+#22c55e
+);
+
+}
+
+/* TABLE HEADER */
+body.dark-mode th{
+
+color:white;
+
+}
+
+/* DOWNLOAD BUTTON */
+body.dark-mode .filter-btn,
+body.dark-mode .pagination button{
+
+background:#16a34a;
+
 }
 
 </style>
