@@ -760,7 +760,6 @@ const avgHumUdara = computed(() => {
 
 })
 
-import { onMounted } from 'vue'
 
 onMounted(() => {
 
