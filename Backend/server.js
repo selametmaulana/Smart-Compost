@@ -304,7 +304,9 @@ app.put('/devices/:id', async (req, res) => {
         send_interval,
         last_calibration
       )
-      VALUES ($1,$2,$3,$4,$5,$6,$7)
+      VALUES (
+        $1, $2, $3, $4, $5, $6, $7
+      )
 
       ON CONFLICT (device_id)
 
@@ -314,7 +316,8 @@ app.put('/devices/:id', async (req, res) => {
         is_active = EXCLUDED.is_active,
         wifi_ssid = EXCLUDED.wifi_ssid,
         send_interval = EXCLUDED.send_interval,
-        last_calibration = EXCLUDED.last_calibration
+        last_calibration = EXCLUDED.last_calibration,
+        updated_at = NOW()
 
       RETURNING *
     `, [
