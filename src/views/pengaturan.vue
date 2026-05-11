@@ -350,9 +350,9 @@
               </div>
   
               <select v-model="device.send_interval">
-                <option>10 detik</option>
-                <option>30 detik</option>
-                <option>1 menit</option>
+                <option :value="10">10 detik</option>
+<option :value="30">30 detik</option>
+<option :value="60">1 menit</option>
               </select>
             </div>
   
@@ -401,12 +401,12 @@ import { ref, onMounted } from 'vue'
 const loading = ref(false)
 
 const device = ref({
-  device_id: 'Devices1',
+  device_id: 'device1',
   device_name: '',
   location: '',
   is_active: true,
   wifi_ssid: '',
-  send_interval: '10 detik',
+  send_interval: '10',
   last_calibration: ''
 })
 
