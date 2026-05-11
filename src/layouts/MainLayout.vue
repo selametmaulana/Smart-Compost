@@ -282,6 +282,10 @@ body.dark-mode .sidebar-card p{
 
 }
 
+body.dark-mode .menu-item i {
+  color: #fff !important;
+}
+
 /* MENU HOVER */
 body.dark-mode .menu-item:hover{
 
@@ -295,8 +299,7 @@ body.dark-mode .menu-item.active{
   background:
   linear-gradient(
     90deg,
-    
-    #22c55e
+    #15803d
   );
 
   color:#ffffff;
