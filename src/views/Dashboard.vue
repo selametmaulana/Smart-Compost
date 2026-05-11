@@ -207,26 +207,31 @@ const goToSettings = () => {
 // =========================
 onMounted(async () => {
 
-  // =========================
-  // CHECK DEVICE
-  // =========================
-  try {
+// =========================
+// CHECK DEVICE
+// =========================
+try {
 
-    const res = await fetch(
-      'https://smart-compost-production.up.railway.app/devices'
-    )
+  const res = await fetch(
+    'https://smart-compost-production.up.railway.app/devices'
+  )
 
-    const device = await res.json()
+  const devices = await res.json()
 
-    // DEVICE BELUM ADA
-    if (!device) {
+  console.log(devices)
 
-      showPopup.value = true
+  // TIDAK ADA DEVICE
+  if (!devices.length) {
 
-    }
+    showPopup.value = true
 
-    // DATA BELUM LENGKAP
-    else if (
+  } else {
+
+    // AMBIL DEVICE PERTAMA
+    const device = devices[0]
+
+    // VALIDASI
+    if (
       !device.device_name ||
       !device.location ||
       !device.wifi_ssid
@@ -236,46 +241,48 @@ onMounted(async () => {
 
     }
 
-  } catch (err) {
-
-    console.log(err)
-
-    showPopup.value = true
-
   }
 
-  // =========================
-  // MQTT CONNECT
-  // =========================
-  client = mqtt.connect(
-    'wss://405ddc32b5914dc29655d90f79fac3c4.s1.eu.hivemq.cloud:8884/mqtt',
-    {
-      username: 'Smart_Compost',
-      password: 'Kompos123'
-    }
+} catch (err) {
+
+  console.log(err)
+
+  showPopup.value = true
+
+}
+
+// =========================
+// MQTT CONNECT
+// =========================
+client = mqtt.connect(
+  'wss://405ddc32b5914dc29655d90f79fac3c4.s1.eu.hivemq.cloud:8884/mqtt',
+  {
+    username: 'Smart_Compost',
+    password: 'Kompos123'
+  }
+)
+
+client.on('connect', () => {
+
+  console.log('✅ MQTT Connected')
+
+  client.subscribe(
+    'iot/kompos/ta/device1/data'
   )
 
-  client.on('connect', () => {
+})
 
-    console.log('✅ MQTT Connected')
+client.on('message', (topic, message) => {
 
-    client.subscribe(
-      'iot/kompos/ta/device1/data'
-    )
+  const data = JSON.parse(
+    message.toString()
+  )
 
-  })
+  sensor.value = data
 
-  client.on('message', (topic, message) => {
+  console.log('📡 DATA:', data)
 
-    const data = JSON.parse(
-      message.toString()
-    )
-
-    sensor.value = data
-
-    console.log('📡 DATA:', data)
-
-  })
+})
 
 })
 
