@@ -240,127 +240,88 @@
             <button class="save-btn">
               Simpan Perubahan
             </button>
-  
           </div>
   
           <!-- IOT -->
           <div class="settings-card">
-  
             <div class="card-header">
-  
               <div class="header-icon blue-bg">
                 <Cpu size="28" />
               </div>
-  
               <div>
-  
                 <h2>Pengaturan Perangkat IoT</h2>
-  
                 <p>
                   Kelola perangkat IoT dan konfigurasi sensor
                 </p>
-  
               </div>
-  
             </div>
   
             <!-- ITEM -->
             <div class="setting-item">
-  
               <div class="setting-left">
-  
                 <div class="icon-box blue-bg">
                   <BadgeInfo size="24" />
                 </div>
-  
                 <div>
                   <h4>ID Perangkat</h4>
                   <p>Identitas unik perangkat</p>
                 </div>
-  
               </div>
-  
-              <input
-                type="text"
-                value="ESP32-SC-001"
-              />
-  
+              <input type="text"
+              v-model="device.device_id"/>
             </div>
   
             <!-- ITEM -->
             <div class="setting-item">
-  
               <div class="setting-left">
-  
                 <div class="icon-box green-bg">
                   <CreditCard size="24" />
                 </div>
-  
                 <div>
                   <h4>Nama Perangkat</h4>
                   <p>Nama untuk identifikasi</p>
                 </div>
-  
               </div>
-  
-              <input
-                type="text"
-                value="SmartCompost Unit 1"
-              />
-  
+              <input type="text" v-model="device.device_name"/>
             </div>
   
             <!-- ITEM -->
             <div class="setting-item">
-  
               <div class="setting-left">
-  
                 <div class="icon-box purple-bg">
                   <MapPin size="24" />
                 </div>
-  
                 <div>
                   <h4>Lokasi Perangkat</h4>
                   <p>Lokasi penempatan perangkat</p>
                 </div>
-  
               </div>
-  
-              <input
-                type="text"
-                value="Komposter Utama"
-              />
+              <input type="text" v-model="device.location"/>
   
             </div>
   
             <!-- ITEM -->
             <div class="setting-item">
-  
               <div class="setting-left">
-  
                 <div class="icon-box green-bg">
                   <Power size="24" />
                 </div>
-  
                 <div>
                   <h4>Status Perangkat</h4>
                   <p>Aktifkan atau nonaktifkan perangkat</p>
                 </div>
-  
               </div>
-  
+              
               <label class="switch">
-                <input type="checkbox" checked />
+                <input type="checkbox"
+                v-model="device.is_active"/>
                 <span class="slider"></span>
               </label>
-  
             </div>
   
             <!-- ITEM -->
             <div class="setting-item">
-  
               <div class="setting-left">
-  
                 <div class="icon-box blue-bg">
                   <Wifi size="24" />
                 </div>
@@ -369,21 +330,15 @@
                   <h4>Koneksi WiFi</h4>
                   <p>SSID jaringan WiFi</p>
                 </div>
-  
               </div>
   
-              <input
-                type="text"
-                value="SmartCompost_WiFi"
-              />
-  
+              <input type="text"
+              v-model="device.wifi_ssid"/>
             </div>
   
             <!-- ITEM -->
             <div class="setting-item">
-  
               <div class="setting-left">
-  
                 <div class="icon-box orange-bg">
                   <CloudUpload size="24" />
                 </div>
@@ -392,22 +347,18 @@
                   <h4>Interval Kirim Data</h4>
                   <p>Interval pengiriman data ke server</p>
                 </div>
-  
               </div>
   
-              <select>
+              <select v-model="device.send_interval">
                 <option>10 detik</option>
                 <option>30 detik</option>
                 <option>1 menit</option>
               </select>
-  
             </div>
   
             <!-- ITEM -->
             <div class="setting-item">
-  
               <div class="setting-left">
-  
                 <div class="icon-box purple-bg">
                   <SlidersHorizontal size="24" />
                 </div>
@@ -416,30 +367,43 @@
                   <h4>Kalibrasi Sensor</h4>
                   <p>Terakhir kalibrasi sensor</p>
                 </div>
-  
               </div>
   
-              <button class="calibration-btn">
-                Kalibrasi Ulang
-              </button>
-  
-            </div>
+              <button class="calibration-btn"
+              @click="handleCalibration = new Date().toLocaleString('id-ID')">
+              Kalibrasi Ulang
+            </button>
+            <p style="margin-top:10px">
+              {{ device.last_calibration || 'Belum pernah' }}
+            </p>
+          </div>
   
             <!-- BUTTON -->
-            <button class="save-btn">
-              Simpan Perubahan
+            <button class="save-btn" @click="saveDevice":disabled="loading">
+              {{ loading ? 'Menyimpan...' : 'Simpan Perubahan' }}
             </button>
   
           </div>
-  
         </div>
-  
       </main>
-  
     </div>
   </template>
   
   <script setup>
+import { ref, onMounted } from 'vue'
+
+const loading = ref(false)
+
+const device = ref({
+  device_id: '',
+  device_name: '',
+  location: '',
+  is_active: true,
+  wifi_ssid: '',
+  send_interval: '10 detik',
+  last_calibration: ''
+})
+
   import {
     Leaf,
     LayoutDashboard,
@@ -463,6 +427,102 @@
     CloudUpload,
     SlidersHorizontal
   } from 'lucide-vue-next'
+
+
+
+const currentDeviceId = ref('device1')
+
+const loadDevice = async () => {
+
+  try {
+
+    const res = await fetch(
+      `https://smart-compost-production.up.railway.app/device/${currentDeviceId.value}`
+    )
+
+    const data = await res.json()
+
+    if (data) {
+
+      device.value = {
+        ...device.value,
+        ...data
+      }
+
+    }
+
+  } catch (err) {
+
+    console.log(err)
+
+  }
+
+}
+
+const saveDevice = async () => {
+
+loading.value = true
+
+try {
+
+  if (
+    !device.value.device_id ||
+    !device.value.device_name ||
+    !device.value.location ||
+    !device.value.wifi_ssid
+  ) {
+
+    alert('❌ Lengkapi data device')
+    loading.value = false
+    return
+
+  }
+
+  const res = await fetch(
+    `https://smart-compost-production.up.railway.app/device/${device.value.device_id}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(device.value)
+    }
+  )
+
+  const data = await res.json()
+
+  alert('✅ Device berhasil disimpan')
+
+  console.log(data)
+
+} catch (err) {
+
+  console.log(err)
+
+  alert('❌ Gagal menyimpan')
+
+} finally {
+
+  loading.value = false
+
+}
+
+}
+
+const handleCalibration = async () => {
+
+device.value.last_calibration =
+  new Date().toLocaleString('id-ID')
+
+await saveDevice()
+
+}
+
+onMounted(() => {
+
+loadDevice()
+
+})
   </script>
   
   <style scoped>

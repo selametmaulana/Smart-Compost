@@ -255,6 +255,95 @@ app.delete('/history', async (req, res) => {
 })
 
 
+app.get('/devices', async (req, res) => {
+
+  try {
+
+    const result = await pool.query(`
+      SELECT *
+      FROM devices
+      ORDER BY created_at DESC
+    `)
+
+    res.json(result.rows)
+
+  } catch (err) {
+
+    console.log(err)
+
+    res.status(500).json({
+      error: 'Server error'
+    })
+
+  }
+
+})
+
+app.put('/devices/:id', async (req, res) => {
+
+  const { id } = req.params
+
+  const {
+    device_name,
+    location,
+    is_active,
+    wifi_ssid,
+    send_interval,
+    last_calibration
+  } = req.body
+
+  try {
+
+    const result = await pool.query(`
+      INSERT INTO devices (
+        device_id,
+        device_name,
+        location,
+        is_active,
+        wifi_ssid,
+        send_interval,
+        last_calibration
+      )
+      VALUES (
+        $1, $2, $3, $4, $5, $6, $7
+      )
+
+      ON CONFLICT (device_id)
+
+      DO UPDATE SET
+        device_name = EXCLUDED.device_name,
+        location = EXCLUDED.location,
+        is_active = EXCLUDED.is_active,
+        wifi_ssid = EXCLUDED.wifi_ssid,
+        send_interval = EXCLUDED.send_interval,
+        last_calibration = EXCLUDED.last_calibration
+
+      RETURNING *
+
+    `, [
+      id,
+      device_name,
+      location,
+      is_active,
+      wifi_ssid,
+      send_interval,
+      last_calibration
+    ])
+
+    res.json(result.rows[0])
+
+  } catch (err) {
+
+    console.log(err)
+
+    res.status(500).json({
+      error: 'Server error'
+    })
+
+  }
+
+})
+
 // =====================
 // DASHBOARD (FIXED)
 // =====================

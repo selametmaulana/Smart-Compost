@@ -171,11 +171,16 @@
 
 <script setup>
 
-import { ref, onMounted, onUnmounted } from 'vue'
+import {
+  ref,
+  onMounted,
+  onUnmounted
+} from 'vue'
+
 import mqtt from 'mqtt'
 
 const showSidebar = ref(false)
-const showPopup = ref(true)
+const showPopup = ref(false)
 
 const sensor = ref({
   suhu_udara: 0,
@@ -187,14 +192,61 @@ const sensor = ref({
 
 let client = null
 
-
-
+// =========================
+// GO TO SETTINGS
+// =========================
 const goToSettings = () => {
-  window.location.href = '/dashboard/pengaturan'
+
+  window.location.href =
+    '/dashboard/pengaturan'
+
 }
 
-onMounted(() => {
+// =========================
+// ON MOUNTED
+// =========================
+onMounted(async () => {
 
+  // =========================
+  // CHECK DEVICE
+  // =========================
+  try {
+
+    const res = await fetch(
+      'https://smart-compost-production.up.railway.app/devices'
+    )
+
+    const device = await res.json()
+
+    // DEVICE BELUM ADA
+    if (!device) {
+
+      showPopup.value = true
+
+    }
+
+    // DATA BELUM LENGKAP
+    else if (
+      !device.device_name ||
+      !device.location ||
+      !device.wifi_ssid
+    ) {
+
+      showPopup.value = true
+
+    }
+
+  } catch (err) {
+
+    console.log(err)
+
+    showPopup.value = true
+
+  }
+
+  // =========================
+  // MQTT CONNECT
+  // =========================
   client = mqtt.connect(
     'wss://405ddc32b5914dc29655d90f79fac3c4.s1.eu.hivemq.cloud:8884/mqtt',
     {
@@ -207,13 +259,17 @@ onMounted(() => {
 
     console.log('✅ MQTT Connected')
 
-    client.subscribe('iot/kompos/ta/device1/data')
+    client.subscribe(
+      'iot/kompos/ta/device1/data'
+    )
 
   })
 
   client.on('message', (topic, message) => {
 
-    const data = JSON.parse(message.toString())
+    const data = JSON.parse(
+      message.toString()
+    )
 
     sensor.value = data
 
@@ -223,10 +279,15 @@ onMounted(() => {
 
 })
 
+// =========================
+// DESTROY MQTT
+// =========================
 onUnmounted(() => {
 
   if (client) {
+
     client.end()
+
   }
 
 })
