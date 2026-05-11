@@ -244,7 +244,7 @@ body.dark-mode .layout{
   background:
   radial-gradient(
     circle at top left,
-    #0f3d1d,
+    #000000,
     #020617 45%
   );
 
@@ -295,7 +295,7 @@ body.dark-mode .menu-item.active{
   background:
   linear-gradient(
     90deg,
-    #15803d,
+    
     #22c55e
   );
 
