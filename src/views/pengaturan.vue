@@ -471,18 +471,16 @@ loading.value = true
 
 try {
 
-  if (
-    !device.value.device_id ||
-    !device.value.device_name ||
-    !device.value.location ||
-    !device.value.wifi_ssid
-  ) {
-
-    alert('❌ Lengkapi data device')
-    loading.value = false
-    return
-
+  const payload = {
+    device_name: device.value.device_name,
+    location: device.value.location,
+    is_active: device.value.is_active,
+    wifi_ssid: device.value.wifi_ssid,
+    send_interval: Number(device.value.send_interval),
+    last_calibration: device.value.last_calibration
   }
+
+  console.log('SEND:', payload)
 
   const res = await fetch(
     `https://smart-compost-production.up.railway.app/devices/${device.value.device_id}`,
@@ -491,21 +489,28 @@ try {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(device.value)
+      body: JSON.stringify(payload)
     }
   )
 
   const data = await res.json()
 
-  alert('✅ Device berhasil disimpan')
+  console.log('RESULT:', data)
 
-  console.log(data)
+  if (!res.ok) {
+
+    alert('❌ Gagal simpan')
+    return
+
+  }
+
+  alert('✅ Device berhasil disimpan')
 
 } catch (err) {
 
   console.log(err)
 
-  alert('❌ Gagal menyimpan')
+  alert('❌ Server error')
 
 } finally {
 

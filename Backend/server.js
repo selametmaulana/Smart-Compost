@@ -279,6 +279,40 @@ app.get('/devices', async (req, res) => {
 
 })
 
+app.get('/devices/:id', async (req, res) => {
+
+  const { id } = req.params
+
+  try {
+
+    const result = await pool.query(`
+      SELECT *
+      FROM devices
+      WHERE device_id = $1
+    `, [id])
+
+    if (result.rows.length === 0) {
+
+      return res.status(404).json({
+        error: 'Device tidak ditemukan'
+      })
+
+    }
+
+    res.json(result.rows[0])
+
+  } catch (err) {
+
+    console.log(err)
+
+    res.status(500).json({
+      error: 'Server error'
+    })
+
+  }
+
+})
+
 app.put('/devices/:id', async (req, res) => {
 
   const { id } = req.params
