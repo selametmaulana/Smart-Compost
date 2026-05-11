@@ -128,9 +128,13 @@ onMounted(() => {
   display:flex; 
   gap:20px; 
   padding:18px; 
-  background:#E9ECE8; }
-  
-/* SIDEBAR */
+  background:#E9ECE8;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
 .sidebar{
   width:260px;
   height:calc(100vh - 36px);
@@ -149,7 +153,7 @@ onMounted(() => {
 
   box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
- 
+
 /* BAGIAN ATAS */
 .sidebar-top{
   display:flex;
@@ -171,12 +175,13 @@ onMounted(() => {
   gap:14px;
 }
 
+/* DEFAULT MENU */
 .menu-item{
   display:flex;
   align-items:center;
   gap:14px;
 
-  color:white;
+  color:#ffffff;
   text-decoration:none;
 
   padding:16px 18px;
@@ -186,21 +191,40 @@ onMounted(() => {
 
   font-size:17px;
   font-weight:500;
+
+  position:relative;
 }
 
+/* ICON */
 .menu-item i{
   font-size:22px;
 }
 
+/* HOVER */
 .menu-item:hover{
   background:rgba(255,255,255,0.08);
+  color:white;
 }
+
+/* =========================
+   ACTIVE MENU
+   HIJAU HANYA 1
+========================= */
 
 .menu-item.active{
-  background:#52B84E;
+  background:#22c55e;
+  color:white;
+
+  box-shadow:
+  0 10px 25px rgba(34,197,94,.35);
 }
 
-/* CARD PALING BAWAH */
+/* HAPUS GARIS PUTIH BAWAH */
+.menu-item.active::after{
+  display:none;
+}
+
+/* CARD BAWAH */
 .sidebar-card{
   background:rgba(255,255,255,0.08);
   border-radius:24px;
@@ -225,59 +249,100 @@ onMounted(() => {
 }
 
 /* =========================
-   DARK MODE MAIN LAYOUT
+   DARK MODE
 ========================= */
 
 body.dark-mode .layout{
 
-background:
-radial-gradient(circle at top left,#0f3d1d,#020617 45%);
+  background:
+  radial-gradient(
+    circle at top left,
+    #0f3d1d,
+    #020617 45%
+  );
 
 }
 
 /* SIDEBAR */
 body.dark-mode .sidebar{
 
-background:
-linear-gradient(
-180deg,
-#03120a,
-#020617
-);
+  background:
+  linear-gradient(
+    180deg,
+    #03120a,
+    #020617
+  );
 
-border:1px solid rgba(0,255,120,.08);
+  border:1px solid rgba(0,255,120,.08);
 
-box-shadow:
-0 0 30px rgba(0,255,120,.08);
+  box-shadow:
+  0 0 30px rgba(0,255,120,.08);
 
 }
 
-/* MENU */
+/* =========================
+   TEXT WAJIB PUTIH
+========================= */
+
+body.dark-mode .logo,
+body.dark-mode .menu-item,
+body.dark-mode .menu-item i,
+body.dark-mode .sidebar-card,
+body.dark-mode .sidebar-card h3,
+body.dark-mode .sidebar-card p{
+
+  color:white;
+
+}
+
+/* MENU HOVER */
 body.dark-mode .menu-item:hover{
 
-background:rgba(255,255,255,.05);
+  background:rgba(255,255,255,.05);
 
 }
 
+/* ACTIVE MENU */
 body.dark-mode .menu-item.active{
 
-background:
-linear-gradient(
-90deg,
-#15803d,
-#22c55e
-);
+  background:
+  linear-gradient(
+    90deg,
+    #15803d,
+    #22c55e
+  );
 
+  color:white;
+
+  box-shadow:
+  0 0 25px rgba(34,197,94,.35);
+
+}
+
+/* HAPUS GARIS PUTIH ACTIVE */
+body.dark-mode .menu-item.active::after{
+  display:none;
 }
 
 /* SIDEBAR CARD */
 body.dark-mode .sidebar-card{
 
-background:rgba(255,255,255,.04);
+  background:rgba(255,255,255,.04);
 
-border:1px solid rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.06);
 
-backdrop-filter:blur(14px);
+  backdrop-filter:blur(14px);
+
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+
+  .sidebar{
+    width:100%;
+    height:auto;
+    position:relative;
+  }
 
 }
 
