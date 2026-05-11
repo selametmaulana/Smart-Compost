@@ -1123,7 +1123,7 @@ select,
    DARK MODE FULL
 ========================= */
 
-:global(body.dark-mode){
+body.dark-mode{
 
 background:
 radial-gradient(circle at top left,#0f3d1d,#020617 45%);
@@ -1133,14 +1133,14 @@ color:white;
 }
 
 /* PAGE */
-:global(body.dark-mode) .settings-page{
+body.dark-mode .settings-page{
 
 background:transparent;
 
 }
 
 /* MAIN */
-:global(body.dark-mode) .main-content{
+body.dark-mode .main-content{
 
 background:
 linear-gradient(
@@ -1157,7 +1157,7 @@ box-shadow:
 }
 
 /* CARD */
-:global(body.dark-mode) .settings-card{
+body.dark-mode .settings-card{
 
 background:
 rgba(15,23,42,.75);
@@ -1174,31 +1174,31 @@ box-shadow:
 }
 
 /* TEXT */
-:global(body.dark-mode) h1,
-:global(body.dark-mode) h2,
-:global(body.dark-mode) h4{
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h4{
 
 color:white;
 
 }
 
-:global(body.dark-mode) p,
-:global(body.dark-mode) .update-text{
+body.dark-mode p,
+body.dark-mode .update-text{
 
 color:#94a3b8;
 
 }
 
 /* ITEM */
-:global(body.dark-mode) .setting-item{
+body.dark-mode .setting-item{
 
 border-top:1px solid rgba(255,255,255,.08);
 
 }
 
 /* INPUT */
-:global(body.dark-mode) input,
-:global(body.dark-mode) select{
+body.dark-mode input,
+body.dark-mode select{
 
 background:#0f172a;
 
@@ -1209,7 +1209,7 @@ border:1px solid #334155;
 }
 
 /* TOPBAR */
-:global(body.dark-mode) .notif-icon{
+body.dark-mode .notif-icon{
 
 background:#111827;
 border:1px solid rgba(255,255,255,.08);
@@ -1217,7 +1217,7 @@ border:1px solid rgba(255,255,255,.08);
 }
 
 /* BUTTON */
-:global(body.dark-mode) .theme-btn{
+body.dark-mode .theme-btn{
 
 background:#1e293b;
 color:white;
@@ -1225,7 +1225,7 @@ border:1px solid rgba(255,255,255,.08);
 
 }
 
-:global(body.dark-mode) .active-theme{
+body.dark-mode .active-theme{
 
 background:#16a34a;
 color:white;
@@ -1233,7 +1233,7 @@ color:white;
 }
 
 /* SAVE BUTTON */
-:global(body.dark-mode) .save-btn{
+body.dark-mode .save-btn{
 
 background:
 linear-gradient(
@@ -1247,11 +1247,12 @@ box-shadow:
 
 }
 
+
 /* =========================
    DARK MODE SIDEBAR
 ========================= */
 
-:global(body.dark-mode) .sidebar{
+body.dark-mode .sidebar{
 
 background:
 linear-gradient(
@@ -1268,19 +1269,19 @@ box-shadow:
 }
 
 /* MENU */
-:global(body.dark-mode) .menu li{
+body.dark-mode .menu li{
 
 color:#e2e8f0;
 
 }
 
-:global(body.dark-mode) .menu li:hover{
+body.dark-mode .menu li:hover{
 
 background:rgba(255,255,255,.05);
 
 }
 
-:global(body.dark-mode) .active{
+body.dark-mode .active{
 
 background:
 linear-gradient(
@@ -1292,14 +1293,14 @@ linear-gradient(
 }
 
 /* INPUT PLACEHOLDER */
-:global(body.dark-mode) input::placeholder{
+body.dark-mode input::placeholder{
 
 color:#94a3b8;
 
 }
 
 /* SELECT OPTION */
-:global(body.dark-mode) option{
+body.dark-mode option{
 
 background:#0f172a;
 color:white;
@@ -1307,7 +1308,7 @@ color:white;
 }
 
 /* NOTIF BADGE */
-:global(body.dark-mode) .notif-badge{
+body.dark-mode .notif-badge{
 
 background:#22c55e;
 color:white;
@@ -1315,42 +1316,42 @@ color:white;
 }
 
 /* ICON BOX */
-:global(body.dark-mode) .green-bg{
+body.dark-mode .green-bg{
 
 background:rgba(34,197,94,.12);
 color:#4ade80;
 
 }
 
-:global(body.dark-mode) .blue-bg{
+body.dark-mode .blue-bg{
 
 background:rgba(59,130,246,.12);
 color:#60a5fa;
 
 }
 
-:global(body.dark-mode) .purple-bg{
+body.dark-mode .purple-bg{
 
 background:rgba(168,85,247,.12);
 color:#c084fc;
 
 }
 
-:global(body.dark-mode) .orange-bg{
+body.dark-mode .orange-bg{
 
 background:rgba(249,115,22,.12);
 color:#fb923c;
 
 }
 
-:global(body.dark-mode) .cyan-bg{
+body.dark-mode .cyan-bg{
 
 background:rgba(6,182,212,.12);
 color:#22d3ee;
 
 }
 
-:global(body.dark-mode) .gray-bg{
+body.dark-mode .gray-bg{
 
 background:rgba(148,163,184,.12);
 color:#cbd5e1;
@@ -1358,7 +1359,7 @@ color:#cbd5e1;
 }
 
 /* BUTTON HOVER */
-:global(body.dark-mode) .save-btn:hover{
+body.dark-mode .save-btn:hover{
 
 transform:translateY(-2px);
 
@@ -1368,46 +1369,45 @@ box-shadow:
 }
 
 /* CALIBRATION BUTTON */
-:global(body.dark-mode) .calibration-btn{
+body.dark-mode .calibration-btn{
 
 background:#16a34a;
 
 }
 
-:global(body.dark-mode) .calibration-btn:hover{
+body.dark-mode .calibration-btn:hover{
 
 background:#22c55e;
 
 }
 
 /* SWITCH */
-:global(body.dark-mode) .slider{
+body.dark-mode .slider{
 
 background:#334155;
 
 }
 
-:global(body.dark-mode)
-.switch input:checked + .slider{
+body.dark-mode .switch input:checked + .slider{
 
 background:#22c55e;
 
 }
 
 /* SCROLLBAR */
-:global(body.dark-mode) ::-webkit-scrollbar{
+body.dark-mode ::-webkit-scrollbar{
 
 width:10px;
 
 }
 
-:global(body.dark-mode) ::-webkit-scrollbar-track{
+body.dark-mode ::-webkit-scrollbar-track{
 
 background:#020617;
 
 }
 
-:global(body.dark-mode) ::-webkit-scrollbar-thumb{
+body.dark-mode ::-webkit-scrollbar-thumb{
 
 background:#14532d;
 border-radius:20px;
@@ -1415,19 +1415,18 @@ border-radius:20px;
 }
 
 /* GLASS EFFECT */
-:global(body.dark-mode) .settings-card,
-:global(body.dark-mode) .main-content{
+body.dark-mode .settings-card,
+body.dark-mode .main-content{
 
 backdrop-filter:blur(20px);
 
 }
 
 /* TOPBAR TITLE GLOW */
-:global(body.dark-mode) .topbar h1{
+body.dark-mode .topbar h1{
 
 text-shadow:
 0 0 15px rgba(34,197,94,.15);
 
 }
-  
   </style>
