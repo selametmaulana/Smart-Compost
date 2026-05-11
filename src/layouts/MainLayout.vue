@@ -19,7 +19,7 @@
     <router-link
       to="/dashboard"
       class="menu-item"
-      active-class="active"
+      exact-active-class="active"
     >
       <i class="ri-dashboard-line"></i>
       <span>Dashboard</span>
@@ -29,7 +29,7 @@
     <router-link
       to="/dashboard/perangkat"
       class="menu-item"
-      active-class="active"
+      exact-active-class="active"
     >
       <i class="ri-cpu-line"></i>
       <span>Perangkat</span>
@@ -39,7 +39,7 @@
     <router-link
       to="/dashboard/history"
       class="menu-item"
-      active-class="active"
+      exact-active-class="active"
     >
       <i class="ri-bar-chart-line"></i>
       <span>History</span>
@@ -49,7 +49,7 @@
     <router-link
       to="/dashboard/notifikasi"
       class="menu-item"
-      active-class="active"
+      exact-active-class="active"
     >
       <i class="ri-notification-3-line"></i>
       <span>Notifikasi</span>
@@ -59,7 +59,7 @@
     <router-link
       to="/dashboard/pengaturan"
       class="menu-item"
-      active-class="active"
+      exact-active-class="active"
     >
       <i class="ri-settings-3-line"></i>
       <span>Pengaturan</span>
@@ -138,19 +138,14 @@ onMounted(() => {
 .sidebar{
   width:260px;
   height:calc(100vh - 36px);
-
   position:sticky;
   top:18px;
-
   background:linear-gradient(180deg,#08240d,#123c18);
   border-radius:38px;
-
   padding:36px 22px;
-
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-
   box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
@@ -180,18 +175,13 @@ onMounted(() => {
   display:flex;
   align-items:center;
   gap:14px;
-
   color:#ffffff;
   text-decoration:none;
-
   padding:16px 18px;
   border-radius:18px;
-
   transition:0.3s;
-
   font-size:17px;
   font-weight:500;
-
   position:relative;
 }
 
@@ -228,13 +218,10 @@ onMounted(() => {
 .sidebar-card{
   background:rgba(255,255,255,0.08);
   border-radius:24px;
-
   padding:24px;
-
   display:flex;
   gap:15px;
   align-items:center;
-
   color:white;
 }
 
@@ -291,7 +278,7 @@ body.dark-mode .sidebar-card,
 body.dark-mode .sidebar-card h3,
 body.dark-mode .sidebar-card p{
 
-  color:white;
+  color:#ffffff;
 
 }
 
@@ -312,7 +299,7 @@ body.dark-mode .menu-item.active{
     #22c55e
   );
 
-  color:white;
+  color:#ffffff;
 
   box-shadow:
   0 0 25px rgba(34,197,94,.35);
@@ -328,9 +315,7 @@ body.dark-mode .menu-item.active::after{
 body.dark-mode .sidebar-card{
 
   background:rgba(255,255,255,.04);
-
   border:1px solid rgba(255,255,255,.06);
-
   backdrop-filter:blur(14px);
 
 }
