@@ -75,11 +75,11 @@
   
               </div>
   
-              <select>
-                <option>Asia/Jakarta (WIB)</option>
-                <option>Asia/Makassar (WITA)</option>
-                <option>Asia/Jayapura (WIT)</option>
-              </select>
+              <select v-model="systemSettings.timezone">
+  <option>Asia/Jakarta (WIB)</option>
+  <option>Asia/Makassar (WITA)</option>
+  <option>Asia/Jayapura (WIT)</option>
+</select>
   
             </div>
   
@@ -99,10 +99,10 @@
   
               </div>
   
-              <select>
-                <option>Bahasa Indonesia</option>
-                <option>English</option>
-              </select>
+              <select v-model="systemSettings.language">
+  <option>Bahasa Indonesia</option>
+  <option>English</option>
+</select>
   
             </div>
   
@@ -122,11 +122,11 @@
   
               </div>
   
-              <select>
-                <option>10 detik</option>
-                <option>30 detik</option>
-                <option>1 menit</option>
-              </select>
+              <select v-model="systemSettings.refresh_interval">
+  <option>10 detik</option>
+  <option>30 detik</option>
+  <option>1 menit</option>
+</select>
   
             </div>
   
@@ -148,13 +148,25 @@
   
               <div class="theme-group">
   
-                <button class="theme-btn active-theme">
-                  ☀ Terang
-                </button>
-  
-                <button class="theme-btn">
-                  🌙 Gelap
-                </button>
+                <div class="theme-group">
+
+<button
+  class="theme-btn"
+  :class="{ 'active-theme': systemSettings.theme === 'light' }"
+  @click="systemSettings.theme = 'light'"
+>
+  ☀ Terang
+</button>
+
+<button
+  class="theme-btn"
+  :class="{ 'active-theme': systemSettings.theme === 'dark' }"
+  @click="systemSettings.theme = 'dark'"
+>
+  🌙 Gelap
+</button>
+
+</div>
   
               </div>
   
@@ -178,13 +190,25 @@
   
               <div class="theme-group">
   
-                <button class="theme-btn active-theme">
-                  °C
-                </button>
-  
-                <button class="theme-btn">
-                  °F
-                </button>
+                <div class="theme-group">
+
+<button
+  class="theme-btn"
+  :class="{ 'active-theme': systemSettings.temperature_unit === 'C' }"
+  @click="systemSettings.temperature_unit = 'C'"
+>
+  °C
+</button>
+
+<button
+  class="theme-btn"
+  :class="{ 'active-theme': systemSettings.temperature_unit === 'F' }"
+  @click="systemSettings.temperature_unit = 'F'"
+>
+  °F
+</button>
+
+</div>
   
               </div>
   
@@ -206,10 +230,10 @@
   
               </div>
   
-              <select>
-                <option>DD/MM/YYYY</option>
-                <option>MM/DD/YYYY</option>
-              </select>
+              <select v-model="systemSettings.date_format">
+  <option>DD/MM/YYYY</option>
+  <option>MM/DD/YYYY</option>
+</select>
   
             </div>
   
@@ -229,17 +253,20 @@
   
               </div>
   
-              <select>
-                <option>24 Jam</option>
-                <option>12 Jam</option>
-              </select>
+              <select v-model="systemSettings.time_format">
+  <option>24 Jam</option>
+  <option>12 Jam</option>
+</select>
   
             </div>
   
             <!-- BUTTON -->
-            <button class="save-btn">
-              Simpan Perubahan
-            </button>
+            <button
+  class="save-btn"
+  @click="saveSystemSettings"
+>
+  Simpan Perubahan
+</button>
           </div>
   
           <!-- IOT -->
@@ -408,6 +435,43 @@ const device = ref({
   wifi_ssid: '',
   send_interval: '10',
   last_calibration: ''
+})
+
+const systemSettings = ref({
+  timezone: 'Asia/Jakarta (WIB)',
+  language: 'Bahasa Indonesia',
+  refresh_interval: '10 detik',
+  theme: 'light',
+  temperature_unit: 'C',
+  date_format: 'DD/MM/YYYY',
+  time_format: '24 Jam'
+})
+
+const saveSystemSettings = () => {
+
+  console.log('SYSTEM SETTINGS:', systemSettings.value)
+
+  localStorage.setItem(
+    'system_settings',
+    JSON.stringify(systemSettings.value)
+  )
+
+  alert('✅ Pengaturan sistem berhasil disimpan')
+
+}
+
+onMounted(() => {
+
+const saved =
+  localStorage.getItem('system_settings')
+
+if (saved) {
+
+  systemSettings.value =
+    JSON.parse(saved)
+
+}
+
 })
 
   import {
