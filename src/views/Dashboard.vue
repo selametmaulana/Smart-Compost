@@ -1161,12 +1161,12 @@ gap:18px;
 
 .actuator-icon{
 
-width:82px;
-height:82px;
+width:40px;
+height:40px;
 
 background:#F4F4F4;
 
-border-radius:22px;
+border-radius:12px;
 
 display:flex;
 align-items:center;
