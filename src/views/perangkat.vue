@@ -76,7 +76,7 @@
     :size="26"
   />
 
-  <CpuOff
+  <CircleOff
     v-else
     :size="26"
   />
@@ -366,7 +366,6 @@
 import {
   Leaf,
   Cpu,
-  CpuOff,
   Bell,
   ShieldCheck,
   Wifi,
@@ -379,7 +378,8 @@ import {
   Droplets,
   FlaskConical,
   Wind,
-  CheckCircle2
+  CheckCircle2,
+  CircleOff
 } from 'lucide-vue-next'
 
 import {
