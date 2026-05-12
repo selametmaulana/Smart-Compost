@@ -65,24 +65,36 @@
   
           <!-- CARD -->
           <div class="device-status-card">
-  
-            <div
+
+<div
   class="device-icon"
-  :class="
-    sensorStatus === 'Aktif'
-      ? 'green'
-      : 'orange'
-  "
+  :class="sensorStatus === 'Aktif' ? 'green' : 'orange'"
 >
-            </div>
-  
-            <div>
-              <h4>Status Sensor</h4>
-              <h2>{{ sensorStatus }}</h2>
-          <p>{{sensorStatus === 'Aktif'? 'Semua sensor berjalan': 'Sensor tidak terhubung'}}</p>
-            </div>
-  
-          </div>
+
+  <Cpu
+    v-if="sensorStatus === 'Aktif'"
+    :size="26"
+  />
+
+  <CpuOff
+    v-else
+    :size="26"
+  />
+
+</div>
+
+<div>
+  <h4>Status Sensor</h4>
+  <h2>{{ sensorStatus }}</h2>
+
+  <p>
+    {{ sensorStatus === 'Aktif'
+      ? 'Semua sensor berjalan'
+      : 'Sensor tidak terhubung' }}
+  </p>
+</div>
+
+</div>
   
           <!-- CARD -->
           <div class="device-status-card">
