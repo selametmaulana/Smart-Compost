@@ -191,6 +191,7 @@ import mqtt from 'mqtt'
 // =========================
 const showSidebar = ref(false)
 const showPopup = ref(false)
+const notifications = ref([])
 
 const sensor = ref({
   suhu_udara: 0,
@@ -212,6 +213,22 @@ const goToSettings = () => {
 
 }
 
+const fetchNotifications = async () => {
+  try {
+    const res = await fetch(
+      'https://smart-compost-production.up.railway.app/notifications'
+    )
+
+    const data = await res.json()
+
+    notifications.value = data || []
+
+  } catch (err) {
+    console.log('ERROR NOTIF:', err)
+    notifications.value = []
+  }
+}
+
 // =========================
 // ON MOUNTED
 // =========================
@@ -220,6 +237,8 @@ onMounted(async () => {
   // =========================
   // CHECK DEVICE
   // =========================
+  fetchNotifications()
+  
   try {
 
     const res = await fetch(
