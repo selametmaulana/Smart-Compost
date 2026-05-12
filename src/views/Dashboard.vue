@@ -180,10 +180,11 @@
 
 import {
   ref,
-  Bell,
   onMounted,
   onUnmounted
 } from 'vue'
+
+import { Bell } from 'lucide-vue-next'
 
 import mqtt from 'mqtt'
 
