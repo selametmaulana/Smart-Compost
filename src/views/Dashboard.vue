@@ -201,7 +201,7 @@
 
       <div class="actuator-icon">
   <img
-    src="/pompa.jpeg"
+    src="/pompa.png"
     alt="Pompa"
     class="actuator-img"
   >
@@ -244,12 +244,9 @@
     <div class="actuator-left">
 
       <div class="actuator-icon fan">
-  <img
-    src="/kipas.jpeg"
-    alt="Kipas"
-    class="actuator-img"
-  >
-</div>
+        <img src="/kipas.png" alt="Kipas"
+        :class="['actuator-img',{ 'fan-spin': fanOn }]"/>
+      </div>
 
       <div>
         <h4>Kipas</h4>
@@ -1161,24 +1158,45 @@ gap:18px;
 
 .actuator-icon{
 
-width:40px;
-height:40px;
-
-background:#F4F4F4;
-
+width:80px;
+height:80px;
+background:#ffffff;
 border-radius:12px;
-
 display:flex;
 align-items:center;
 justify-content:center;
 
 }
 
+.actuator-img{
+
+width:150px;
+height:100px;
+object-fit:contain;
+}
+
+.fan-spin{
+
+animation:fanRotate 1.2s linear infinite;
+
+}
+
+/* ANIMASI PUTAR */
+@keyframes fanRotate{
+
+from{
+  transform:rotate(0deg);
+}
+
+to{
+  transform:rotate(360deg);
+}
+
+}
+
 .actuator-icon.fan{
 
-background:#EEF4FF;
-color:#3B82F6;
-
+background:#ffffff;
 }
 
 .actuator-left h4{
