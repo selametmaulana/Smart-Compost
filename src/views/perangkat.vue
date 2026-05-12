@@ -366,6 +366,7 @@
 import {
   Leaf,
   Cpu,
+  CpuOff,
   Bell,
   ShieldCheck,
   Wifi,
@@ -399,12 +400,29 @@ const loading = ref(false)
 
 let intervalId = null
 
+const isRealtimeOnline = computed(() => {
+
+if (!sensorData.value?.created_at) {
+  return false
+}
+
+const last = new Date(sensorData.value.created_at)
+const now = new Date()
+
+const diffSeconds =
+  (now - last) / 1000
+
+// jika lebih dari 15 detik dianggap offline
+return diffSeconds < 15
+
+})
+
 /* =========================
    DEVICE STATUS
 ========================= */
 
 const internetStatus = computed(() => {
-  return sensorData.value?.online
+  return isRealtimeOnline.value
     ? 'Online'
     : 'Offline'
 })
@@ -414,7 +432,13 @@ const batteryLevel = computed(() => {
 })
 
 const sensorStatus = computed(() => {
-  return sensorData.value?.sensor_status || 'Aktif'
+  const status = sensorData.value?.sensor_status
+
+  if (!status) return 'Offline'
+
+  return status.toLowerCase() === 'aktif'
+    ? 'Aktif'
+    : 'Offline'
 })
 
 const uptime = computed(() => {
@@ -426,19 +450,33 @@ const uptime = computed(() => {
 ========================= */
 
 const suhuRuang = computed(() => {
-  return sensorData.value?.suhu_ruang || 0
+  return internetStatus.value === 'Online'
+    ? sensorData.value?.suhu_ruang || 0
+    : '--'
 })
 
 const suhuMaterial = computed(() => {
-  return sensorData.value?.suhu_material || 0
+
+return internetStatus.value === 'Online'
+  ? sensorData.value?.suhu_material || 0
+  : '--'
+
 })
 
 const kelembapanUdara = computed(() => {
-  return sensorData.value?.kelembapan_udara || 0
+
+return internetStatus.value === 'Online'
+  ? sensorData.value?.kelembapan_udara || 0
+  : '--'
+
 })
 
 const kelembapanKompos = computed(() => {
-  return sensorData.value?.kelembapan_kompos || 0
+
+return internetStatus.value === 'Online'
+  ? sensorData.value?.kelembapan_kompos || 0
+  : '--'
+
 })
 
 /* =========================
