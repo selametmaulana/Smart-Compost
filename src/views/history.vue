@@ -370,6 +370,7 @@ const selectedPeriod = ref('7 Hari Terakhir')
 const startDate = ref('')
 const endDate = ref('')
 const selectedParameter = ref('Semua Parameter')
+const notifications = ref([])
 
 const chartData = computed(() => {
 
@@ -536,12 +537,29 @@ const fetchHistory = async () => {
 
 }
 
+const fetchNotifications = async () => {
+  try {
+    const res = await fetch(
+      'https://smart-compost-production.up.railway.app/notifications'
+    )
+
+    const data = await res.json()
+
+    notifications.value = data || []
+
+  } catch (err) {
+    console.log('ERROR NOTIF:', err)
+    notifications.value = []
+  }
+}
+
 /* =========================
    LOAD DATA
 ========================= */
 onMounted(() => {
 
   fetchHistory()
+  fetchNotifications()
 
 })
 

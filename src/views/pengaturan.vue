@@ -425,6 +425,7 @@
 import { ref, onMounted } from 'vue'
 
 const loading = ref(false)
+const notifications = ref([])
 
 const device = ref({
   device_id: 'device1',
@@ -617,9 +618,26 @@ await saveDevice()
 
 }
 
+const fetchNotifications = async () => {
+  try {
+    const res = await fetch(
+      'https://smart-compost-production.up.railway.app/notifications'
+    )
+
+    const data = await res.json()
+
+    notifications.value = data || []
+
+  } catch (err) {
+    console.log('ERROR NOTIF:', err)
+    notifications.value = []
+  }
+}
+
 onMounted(() => {
 
 loadDevice()
+fetchNotifications()
 
 })
   </script>

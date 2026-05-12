@@ -180,6 +180,7 @@
 
 import {
   ref,
+  Bell,
   onMounted,
   onUnmounted
 } from 'vue'
@@ -238,7 +239,7 @@ onMounted(async () => {
   // CHECK DEVICE
   // =========================
   fetchNotifications()
-  
+
   try {
 
     const res = await fetch(
