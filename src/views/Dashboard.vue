@@ -38,9 +38,16 @@
           <p>Monitoring kondisi kompos secara realtime terbaik</p>
         </div>
 
-        <div class="last-update">
-          <i class="ri-time-line"></i>
-          Terakhir diperbarui: 10:30 WIB
+        <div class="top-right">
+          <span class="update-text">
+            ● Terakhir diperbarui:{{ lastUpdated }}
+          </span>
+          <div class="notif">
+            <Bell size="20" />
+            <div class="notif-dot">
+              {{ notifications.length }}
+            </div>
+          </div>
         </div>
       </div>
 

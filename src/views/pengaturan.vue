@@ -20,19 +20,18 @@
   
           <div class="top-right">
   
-            <span class="update-text">
-              ● Terakhir diperbarui: 10:30 WIB
-            </span>
-  
-            <div class="notif-icon">
-  
-              <Bell size="20" />
-  
-              <div class="notif-badge">
-                3
-              </div>
-            </div>
-        </div>
+  <span class="update-text">
+    ● Terakhir diperbarui:
+    {{ lastUpdated }}
+  </span>
+
+  <div class="notif">
+    <Bell size="20" />
+    <div class="notif-dot">
+      {{ notifications.length }}
+    </div>
+  </div>
+</div>
     </div>
 
         <!-- CONTENT -->

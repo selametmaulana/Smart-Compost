@@ -13,19 +13,19 @@
             <p>Pusat notifikasi dan peringatan sistem</p>
         </div>
         <div class="top-right">
-          <span class="update-text">
-          ● Terakhir diperbarui:
-          {{ lastUpdate }}
-        </span>
   
-            <div class="notif-icon">
-              <Bell size="22" />
-              <div class="notif-badge">
-                3
-              </div>
-  
-            </div>
-          </div>
+  <span class="update-text">
+    ● Terakhir diperbarui:
+    {{ lastUpdated }}
+  </span>
+
+  <div class="notif">
+    <Bell size="20" />
+    <div class="notif-dot">
+      {{ notifications.length }}
+    </div>
+  </div>
+</div>
   
         </div>
   

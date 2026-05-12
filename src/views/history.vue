@@ -15,22 +15,19 @@
         </div>
 
         <div class="top-right">
+  
+  <span class="update-text">
+    ● Terakhir diperbarui:
+    {{ lastUpdated }}
+  </span>
 
-          <span class="update-text">
-          ● Terakhir diperbarui:
-          {{ lastUpdate }}
-          </span>
-
-          <div class="notif">
-
-            <Bell size="20" />
-
-            <div class="notif-dot">
-              3
-            </div>
-
-          </div>
-        </div>
+  <div class="notif">
+    <Bell size="20" />
+    <div class="notif-dot">
+      {{ notifications.length }}
+    </div>
+  </div>
+</div>
       </div>
 
       <!-- STATS -->

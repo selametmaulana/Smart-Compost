@@ -19,28 +19,23 @@
           <div class="top-right">
   
             <span class="update-text">
-● Terakhir diperbarui:
-{{ lastUpdated }}
-</span>
+              ● Terakhir diperbarui:
+              {{ lastUpdated }}
+            </span>
   
             <div class="notif">
-  
               <Bell size="20" />
-  
               <div class="notif-dot">
                 {{ notifications.length }}
               </div>
-  
             </div>
           </div>
         </div>
   
         <!-- DEVICE STATUS -->
         <div class="device-status-grid">
-  
           <!-- CARD -->
           <div class="device-status-card">
-  
             <div class="device-icon green">
               <Wifi size="26" />
             </div>
