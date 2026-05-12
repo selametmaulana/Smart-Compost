@@ -200,8 +200,12 @@
     <div class="actuator-left">
 
       <div class="actuator-icon">
-        <i class="ri-water-flash-line"></i>
-      </div>
+  <img
+    src="/pompa.jpeg"
+    alt="Pompa"
+    class="actuator-img"
+  >
+</div>
 
       <div>
         <h4>Pompa Air</h4>
@@ -240,11 +244,15 @@
     <div class="actuator-left">
 
       <div class="actuator-icon fan">
-        <i class="ri-fan-line"></i>
-      </div>
+  <img
+    src="/kipas.jpeg"
+    alt="Kipas"
+    class="actuator-img"
+  >
+</div>
 
       <div>
-        <h4>Kipas Aerasi</h4>
+        <h4>Kipas</h4>
         <p>Sirkulasi udara komposter</p>
       </div>
 
@@ -1153,19 +1161,16 @@ gap:18px;
 
 .actuator-icon{
 
-width:70px;
-height:70px;
+width:82px;
+height:82px;
+
+background:#F4F4F4;
 
 border-radius:22px;
-
-background:#E8F7EA;
 
 display:flex;
 align-items:center;
 justify-content:center;
-
-font-size:34px;
-color:#4CAF50;
 
 }
 
@@ -1204,7 +1209,6 @@ gap:10px;
 
 position:relative;
 display:inline-block;
-
 width:74px;
 height:40px;
 
@@ -1222,16 +1226,12 @@ height:0;
 
 position:absolute;
 cursor:pointer;
-
 top:0;
 left:0;
 right:0;
 bottom:0;
-
 background:#ddd;
-
 transition:.4s;
-
 border-radius:50px;
 
 }
@@ -1240,17 +1240,12 @@ border-radius:50px;
 
 position:absolute;
 content:"";
-
 height:30px;
 width:30px;
-
 left:5px;
 bottom:5px;
-
 background:white;
-
 transition:.4s;
-
 border-radius:50%;
 
 }
@@ -1287,7 +1282,6 @@ body.dark-mode .actuator-wrapper{
 
 background:
 rgba(15,23,42,.85);
-
 border:1px solid rgba(255,255,255,.05);
 
 }
@@ -1295,7 +1289,6 @@ border:1px solid rgba(255,255,255,.05);
 body.dark-mode .actuator-card{
 
 background:#0f172a;
-
 border:1px solid rgba(255,255,255,.05);
 
 }
