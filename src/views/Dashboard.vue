@@ -172,6 +172,112 @@
           </div>
         </div>
       </div>
+
+      <!-- =========================
+     AKTUATOR MQTT
+========================= -->
+<div class="actuator-wrapper">
+
+<div class="actuator-header">
+
+  <div>
+    <h3>Aktuator Perangkat</h3>
+    <p>Kontrol perangkat realtime via MQTT</p>
+  </div>
+
+  <div class="mqtt-status">
+    <span class="dot"></span>
+    MQTT Connected
+  </div>
+
+</div>
+
+<div class="actuator-grid">
+
+  <!-- POMPA -->
+  <div class="actuator-card">
+
+    <div class="actuator-left">
+
+      <div class="actuator-icon">
+        <i class="ri-water-flash-line"></i>
+      </div>
+
+      <div>
+        <h4>Pompa Air</h4>
+        <p>Penyiraman otomatis kompos</p>
+      </div>
+
+    </div>
+
+    <div class="switch-wrapper">
+
+      <label class="switch">
+
+        <input
+          type="checkbox"
+          v-model="pumpOn"
+          @change="togglePump"
+        >
+
+        <span class="slider"></span>
+
+      </label>
+
+      <span
+        :class="pumpOn ? 'on-text' : 'off-text'"
+      >
+        {{ pumpOn ? 'ON' : 'OFF' }}
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- KIPAS -->
+  <div class="actuator-card">
+
+    <div class="actuator-left">
+
+      <div class="actuator-icon fan">
+        <i class="ri-fan-line"></i>
+      </div>
+
+      <div>
+        <h4>Kipas Aerasi</h4>
+        <p>Sirkulasi udara komposter</p>
+      </div>
+
+    </div>
+
+    <div class="switch-wrapper">
+
+      <label class="switch">
+
+        <input
+          type="checkbox"
+          v-model="fanOn"
+          @change="toggleFan"
+        >
+
+        <span class="slider"></span>
+
+      </label>
+
+      <span
+        :class="fanOn ? 'on-text' : 'off-text'"
+      >
+        {{ fanOn ? 'ON' : 'OFF' }}
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
     </main>
   </div>
 </template>
@@ -193,6 +299,8 @@ import mqtt from 'mqtt'
 // =========================
 const showSidebar = ref(false)
 const showPopup = ref(false)
+const pumpOn = ref(false)
+const fanOn = ref(false)
 const notifications = ref([])
 
 const sensor = ref({
@@ -212,6 +320,46 @@ const goToSettings = () => {
 
   window.location.href =
     '/dashboard/pengaturan'
+
+}
+
+// =========================
+// MQTT AKTUATOR
+// =========================
+
+const togglePump = () => {
+
+if(!client) return
+
+const payload = JSON.stringify({
+  device: 'pump',
+  status: pumpOn.value ? 'ON' : 'OFF'
+})
+
+client.publish(
+  'iot/kompos/ta/device1/pump',
+  payload
+)
+
+console.log('PUMP:', payload)
+
+}
+
+const toggleFan = () => {
+
+if(!client) return
+
+const payload = JSON.stringify({
+  device: 'fan',
+  status: fanOn.value ? 'ON' : 'OFF'
+})
+
+client.publish(
+  'iot/kompos/ta/device1/fan',
+  payload
+)
+
+console.log('FAN:', payload)
 
 }
 
@@ -730,6 +878,7 @@ body{
 
 
 
+
 /* RESPONSIVE */
 @media(max-width:1200px){
 
@@ -900,6 +1049,299 @@ color:white;
 body.dark-mode .popup-box p{
 
 color:#cbd5e1;
+
+}
+
+/* =========================
+   AKTUATOR
+========================= */
+
+.actuator-wrapper{
+
+margin-top:20px;
+
+background:#F1F1F1;
+
+border-radius:32px;
+
+padding:24px;
+
+}
+
+.actuator-header{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+margin-bottom:24px;
+
+}
+
+.actuator-header h3{
+
+font-size:28px;
+font-weight:800;
+
+}
+
+.actuator-header p{
+
+color:#666;
+margin-top:4px;
+
+}
+
+.mqtt-status{
+
+display:flex;
+align-items:center;
+gap:10px;
+
+font-weight:600;
+color:#22c55e;
+
+}
+
+.dot{
+
+width:10px;
+height:10px;
+
+background:#22c55e;
+border-radius:50%;
+
+}
+
+.actuator-grid{
+
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+
+}
+
+.actuator-card{
+
+background:white;
+
+border-radius:24px;
+
+padding:24px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+transition:.3s;
+
+}
+
+.actuator-card:hover{
+
+transform:translateY(-3px);
+
+}
+
+.actuator-left{
+
+display:flex;
+align-items:center;
+gap:18px;
+
+}
+
+.actuator-icon{
+
+width:70px;
+height:70px;
+
+border-radius:22px;
+
+background:#E8F7EA;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:34px;
+color:#4CAF50;
+
+}
+
+.actuator-icon.fan{
+
+background:#EEF4FF;
+color:#3B82F6;
+
+}
+
+.actuator-left h4{
+
+font-size:24px;
+margin-bottom:4px;
+
+}
+
+.actuator-left p{
+
+color:#666;
+
+}
+
+/* SWITCH */
+
+.switch-wrapper{
+
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+
+}
+
+.switch{
+
+position:relative;
+display:inline-block;
+
+width:74px;
+height:40px;
+
+}
+
+.switch input{
+
+opacity:0;
+width:0;
+height:0;
+
+}
+
+.slider{
+
+position:absolute;
+cursor:pointer;
+
+top:0;
+left:0;
+right:0;
+bottom:0;
+
+background:#ddd;
+
+transition:.4s;
+
+border-radius:50px;
+
+}
+
+.slider:before{
+
+position:absolute;
+content:"";
+
+height:30px;
+width:30px;
+
+left:5px;
+bottom:5px;
+
+background:white;
+
+transition:.4s;
+
+border-radius:50%;
+
+}
+
+input:checked + .slider{
+
+background:#4CAF50;
+
+}
+
+input:checked + .slider:before{
+
+transform:translateX(34px);
+
+}
+
+.on-text{
+
+color:#22c55e;
+font-weight:700;
+
+}
+
+.off-text{
+
+color:#999;
+font-weight:700;
+
+}
+
+/* DARK MODE */
+
+body.dark-mode .actuator-wrapper{
+
+background:
+rgba(15,23,42,.85);
+
+border:1px solid rgba(255,255,255,.05);
+
+}
+
+body.dark-mode .actuator-card{
+
+background:#0f172a;
+
+border:1px solid rgba(255,255,255,.05);
+
+}
+
+body.dark-mode .actuator-left h4{
+
+color:white;
+
+}
+
+body.dark-mode .actuator-left p,
+body.dark-mode .actuator-header p{
+
+color:#94a3b8;
+
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+.actuator-grid{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+@media(max-width:600px){
+
+.actuator-card{
+
+flex-direction:column;
+align-items:flex-start;
+gap:20px;
+
+}
+
+.switch-wrapper{
+
+width:100%;
+flex-direction:row;
+justify-content:space-between;
+
+}
 
 }
 
