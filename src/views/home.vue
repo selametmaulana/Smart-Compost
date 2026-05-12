@@ -1498,21 +1498,23 @@ color:white;
 /* MAIN PAGE */
 body.dark-mode .home{
 
-background:transparent;
+background:
+linear-gradient(
+180deg,
+#020617,
+#071426,
+#020617
+);
+
 color:white;
 
 }
 
 /* BLUR */
-body.dark-mode .blur-1{
-
-background:#22c55e30;
-
-}
-
+body.dark-mode .blur-1,
 body.dark-mode .blur-2{
 
-background:#14532d50;
+display:none;
 
 }
 
