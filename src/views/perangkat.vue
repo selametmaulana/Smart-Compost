@@ -432,13 +432,21 @@ const batteryLevel = computed(() => {
 })
 
 const sensorStatus = computed(() => {
-  const status = sensorData.value?.sensor_status
 
-  if (!status) return 'Offline'
+if (!isRealtimeOnline.value) {
+  return 'Offline'
+}
 
-  return status.toLowerCase() === 'aktif'
-    ? 'Aktif'
-    : 'Offline'
+const hasSensorData =
+  sensorData.value?.suhu_ruang !== undefined &&
+  sensorData.value?.suhu_material !== undefined &&
+  sensorData.value?.kelembapan_udara !== undefined &&
+  sensorData.value?.kelembapan_kompos !== undefined
+
+return hasSensorData
+  ? 'Aktif'
+  : 'Offline'
+
 })
 
 const uptime = computed(() => {
