@@ -540,6 +540,10 @@ const t = computed(() => {
   return translations[currentLang.value]
 })
 
+const lastUpdated = ref(
+  new Date().toLocaleString('id-ID')
+)
+
 const saveSystemSettings = () => {
 
 console.log('SYSTEM SETTINGS:', systemSettings.value)
