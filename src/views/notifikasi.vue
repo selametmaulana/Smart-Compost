@@ -9,8 +9,8 @@
         <div class="topbar">
 
         <div>
-            <h1>Notifikasi</h1>
-            <p>Pusat notifikasi dan peringatan sistem</p>
+            <h1>{{ t.notifications }}</h1>
+            <p>{{ t.notification_center }}</p>
         </div>
         <div class="top-right">
   
@@ -37,9 +37,9 @@
             </div>
   
             <div>
-              <h4>Total Notifikasi</h4>
+              <h4>{{ t.total_notifications }}</h4>
               <h2>{{ totalNotifications }}</h2>
-              <p>Semua waktu</p>
+              <p>{{ t.all_time }}</p>
             </div>
   
           </div>
@@ -51,9 +51,9 @@
             </div>
   
             <div>
-              <h4>Peringatan</h4>
+              <h4>{{ t.warning }}</h4>
               <h2>{{ totalDanger }}</h2>
-              <p>Perlu perhatian</p>
+              <p>{{ t.need_attention }}</p>
             </div>
   
           </div>
@@ -65,9 +65,9 @@
             </div>
   
             <div>
-              <h4>Informasi</h4>
+              <h4>{{ t.information }}</h4>
               <h2>{{ totalInfo }}</h2>
-              <p>Informasi sistem</p>
+              <p>{{ t.system_info }}</p>
             </div>
   
           </div>
@@ -79,9 +79,9 @@
             </div>
   
             <div>
-              <h4>Belum Dibaca</h4>
+              <h4>{{ t.unread }}</h4>
               <h2>{{ totalUnread }}</h2>
-              <p>Notifikasi baru</p>
+              <p>{{ t.new_notifications }}</p>
             </div>
           </div>
         </div>
@@ -93,28 +93,28 @@
           <div class="notification-box">
             <!-- HEADER -->
             <div class="box-header">
-              <h3>Daftar Notifikasi</h3>
+              <h3>{{ t.notification_list }}</h3>
               <div class="filters">
 
 <button
   :class="{ 'active-filter': activeFilter === 'all' }"
   @click="activeFilter = 'all'"
 >
-  Semua
+  {{ t.all }}
 </button>
 
 <button
   :class="{ 'active-filter': activeFilter === 'unread' }"
   @click="activeFilter = 'unread'"
 >
-  Belum Dibaca
+  {{ t.unread_status }}
 </button>
 
 <button
   :class="{ 'active-filter': activeFilter === 'latest' }"
   @click="activeFilter = 'latest'"
 >
-  Terbaru
+  {{ t.latest }}
 </button>
 
 </div>
@@ -166,19 +166,19 @@
   @click="prevPage"
   :disabled="currentPage === 1"
 >
-  Prev
+  {{ t.prev }}
 </button>
 
 <span>
-  Halaman {{ currentPage }}
-  dari {{ totalPages }}
+  {{ t.page }} {{ currentPage }}
+  {{ t.of }} {{ totalPages }}
 </span>
 
 <button
   @click="nextPage"
   :disabled="currentPage >= totalPages"
 >
-  Next
+  {{ t.next }}
 </button>
 
 </div>
@@ -191,25 +191,25 @@
             <!-- FILTER -->
             <div class="filter-card">
 
-<h3>Filter Notifikasi</h3>
+<h3>{{ t.filter_notifications }}</h3>
 
 <!-- JENIS -->
 <div class="form-group">
 
-  <label>Pilih Jenis</label>
+  <label>{{ t.choose_status }}</label>
 
   <select v-model="selectedType">
 
     <option value="">
-      Semua Jenis
+      {{ t.all_types }}
     </option>
 
     <option value="danger">
-      Peringatan
+      {{ t.warning }}
     </option>
 
     <option value="success">
-      Informasi
+      {{ t.information }}
     </option>
 
   </select>
@@ -219,20 +219,20 @@
 <!-- STATUS -->
 <div class="form-group">
 
-  <label>Pilih Status</label>
+  <label>{{ t.choose_status }}</label>
 
   <select v-model="selectedStatus">
 
     <option value="">
-      Semua Status
+      {{ t.all_status }}
     </option>
 
     <option value="false">
-      Belum Dibaca
+      {{ t.unread_status }}
     </option>
 
     <option value="true">
-      Sudah Dibaca
+      {{ t.read_status }}
     </option>
 
   </select>
@@ -242,7 +242,7 @@
 <!-- START DATE -->
 <div class="form-group">
 
-  <label>Dari Tanggal</label>
+  <label>{{ t.from_date }}</label>
 
   <input
     type="date"
@@ -254,7 +254,7 @@
 <!-- END DATE -->
 <div class="form-group">
 
-  <label>Sampai Tanggal</label>
+  <label>{{ t.until_date }}</label>
 
   <input
     type="date"
@@ -266,23 +266,23 @@
 <button
   class="filter-btn"
 >
-  Terapkan Filter
+  {{ t.apply_filter }}
 </button>
 
 </div>
   
             <!-- SETTINGS -->
             <div class="settings-card">
-              <h3>Pengaturan Notifikasi</h3>
+              <h3>{{ t.notification_settings }}</h3>
               <div class="setting-item">
                 <div class="setting-left">
                   <div class="setting-icon green-bg">
                     <Bell size="20" />
                   </div>
-                  <span>Notifikasi Email</span>
+                  <span>{{ t.email_notifications }}</span>
                 </div>
                 <span class="active-status">
-                  Aktif
+                  {{ t.active }}
                 </span>
               </div>
               <div class="setting-item">
@@ -290,10 +290,10 @@
                   <div class="setting-icon orange-bg">
                     <Smartphone size="20" />
                   </div>
-                  <span>Notifikasi WhatsApp</span>
+                  <span>{{ t.whatsapp_notifications }}</span>
                 </div>
                 <span class="active-status">
-                  Aktif
+                  {{ t.active }}
                 </span>
               </div>
               <div class="setting-item">
@@ -301,10 +301,10 @@
                   <div class="setting-icon blue-bg">
                     <Monitor size="20" />
                   </div>
-                  <span>Notifikasi Browser</span>
+                  <span>{{ t.browser_notifications }}</span>
                 </div>
                 <span class="active-status">
-                  Aktif
+                  {{ t.active }}
                 </span>
               </div>
             </div>
@@ -313,12 +313,10 @@
             <div class="info-card">
               <div class="info-top">
                 <Info size="24" />
-                <h4>Informasi</h4>
+                <h4>{{ t.info }}</h4>
               </div>
               <p>
-                Anda akan menerima notifikasi otomatis
-                ketika terjadi perubahan kondisi kompos
-                yang memerlukan perhatian.
+                {{ t.info_text }}
               </p>
             </div>
           </div>
@@ -361,6 +359,110 @@ const selectedStatus = ref('')
 const activeFilter = ref('all')
 const startDate = ref('')
 const endDate = ref('')
+
+const translations = {
+
+id: {
+
+  notifications: 'Notifikasi',
+  notification_center: 'Pusat notifikasi dan peringatan sistem',
+  total_notifications: 'Total Notifikasi',
+  all_time: 'Semua waktu',
+  warning: 'Peringatan',
+  need_attention: 'Perlu perhatian',
+  information: 'Informasi',
+  system_info: 'Informasi sistem',
+  unread: 'Belum Dibaca',
+  new_notifications: 'Notifikasi baru',
+  notification_list: 'Daftar Notifikasi',
+  all: 'Semua',
+  latest: 'Terbaru',
+  page: 'Halaman',
+  of: 'dari',
+  prev: 'Prev',
+  next: 'Next',
+  filter_notifications: 'Filter Notifikasi',
+  choose_type: 'Pilih Jenis',
+  all_types: 'Semua Jenis',
+  choose_status: 'Pilih Status',
+  all_status: 'Semua Status',
+  unread_status: 'Belum Dibaca',
+  read_status: 'Sudah Dibaca',
+  from_date: 'Dari Tanggal',
+  until_date: 'Sampai Tanggal',
+  apply_filter: 'Terapkan Filter',
+  notification_settings: 'Pengaturan Notifikasi',
+  email_notifications: 'Notifikasi Email',
+  whatsapp_notifications: 'Notifikasi WhatsApp',
+  browser_notifications: 'Notifikasi Browser',
+  active: 'Aktif',
+  info: 'Informasi',
+  info_text:
+    'Anda akan menerima notifikasi otomatis ketika terjadi perubahan kondisi kompos yang memerlukan perhatian.',
+  updated: 'Terakhir diperbarui'
+
+},
+
+en: {
+
+  notifications: 'Notifications',
+  notification_center: 'Notification center and system alerts',
+  total_notifications: 'Total Notifications',
+  all_time: 'All time',
+  warning: 'Warnings',
+  need_attention: 'Needs attention',
+  information: 'Information',
+  system_info: 'System information',
+  unread: 'Unread',
+  new_notifications: 'New notifications',
+  notification_list: 'Notification List',
+  all: 'All',
+  latest: 'Latest',
+  page: 'Page',
+  of: 'of',
+  prev: 'Prev',
+  next: 'Next',
+  filter_notifications: 'Notification Filter',
+  choose_type: 'Select Type',
+  all_types: 'All Types',
+  choose_status: 'Select Status',
+  all_status: 'All Status',
+  unread_status: 'Unread',
+  read_status: 'Read',
+  from_date: 'From Date',
+  until_date: 'Until Date',
+  apply_filter: 'Apply Filter',
+  notification_settings: 'Notification Settings',
+  email_notifications: 'Email Notifications',
+  whatsapp_notifications: 'WhatsApp Notifications',
+  browser_notifications: 'Browser Notifications',
+  active: 'Active',
+  info: 'Information',
+  info_text:
+    'You will receive automatic notifications when compost conditions require attention.',
+
+  updated: 'Last updated'
+
+}
+
+}
+
+const systemSettings =
+  JSON.parse(
+    localStorage.getItem('system_settings')
+  )
+
+const currentLang = computed(() => {
+
+  return systemSettings?.language === 'English'
+    ? 'en'
+    : 'id'
+
+})
+
+const t = computed(() => {
+  return translations[currentLang.value]
+})
 
 const fetchNotifications = async () => {
 
