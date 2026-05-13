@@ -129,22 +129,14 @@
               class="chart-svg"
             >
 
-              <polyline
-                fill="none"
-                stroke="#4CAF50"
-                stroke-width="5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                points="
-                  40,170
-                  120,150
-                  200,160
-                  280,120
-                  360,130
-                  440,90
-                  520,110
-                "
-              />
+            <polyline
+  fill="none"
+  stroke="#4CAF50"
+  stroke-width="5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  :points="chartPoints"
+/>
             </svg>
           </div>
         </div>
@@ -156,12 +148,11 @@
             <i class="ri-check-line"></i>
           </div>
 
-          <h2>Optimal</h2>
+          <h2>{{ compostCondition.title }}</h2>
 
-          <p class="status-desc">
-            Proses pengomposan berjalan dengan baik dan stabil.
-          </p>
-
+<p class="status-desc">
+  {{ compostCondition.desc }}
+</p>
           <div class="recommend-box">
 
             <h4>Rekomendasi</h4>
@@ -291,6 +282,7 @@
 
 import {
   ref,
+  computed,
   onMounted,
   onUnmounted
 } from 'vue'
@@ -307,6 +299,8 @@ const showPopup = ref(false)
 const pumpOn = ref(false)
 const fanOn = ref(false)
 const notifications = ref([])
+const temperatureHistory = ref([])
+const lastUpdated = ref('-')
 
 const sensor = ref({
   suhu_udara: 0,
@@ -317,6 +311,27 @@ const sensor = ref({
 })
 
 let client = null
+
+const chartPoints = computed(() => {
+
+if (temperatureHistory.value.length === 0) {
+  return ''
+}
+
+return temperatureHistory.value
+  .map((temp, index) => {
+
+    const x = 40 + index * 80
+
+    // semakin panas semakin naik
+    const y = 220 - (temp * 2)
+
+    return `${x},${y}`
+
+  })
+  .join(' ')
+
+})
 
 // =========================
 // GO TO SETTINGS
@@ -460,34 +475,91 @@ onMounted(async () => {
   // =========================
   client.on('message', (topic, message) => {
 
-try {
+    try {
 
-  const data = JSON.parse(
-    message.toString()
-  )
+const data = JSON.parse(
+  message.toString()
+)
 
-  sensor.value = {
-    suhu_udara: data.suhu_udara ?? 0,
-    suhu_kompos: data.suhu_kompos ?? 0,
-    kelembapan_udara: data.kelembapan_udara ?? 0,
-    kelembapan_kompos: data.kelembapan_kompos ?? 0,
-    status: data.status || 'Normal'
-  }
+sensor.value = {
+  suhu_udara: data.suhu_udara ?? 0,
+  suhu_kompos: data.suhu_kompos ?? 0,
+  kelembapan_udara: data.kelembapan_udara ?? 0,
+  kelembapan_kompos: data.kelembapan_kompos ?? 0,
+  status: data.status || 'Normal'
+}
 
-  pumpOn.value = Boolean(data.pompa)
-  fanOn.value = Boolean(data.fan)
+// histori suhu
+temperatureHistory.value.push(
+  data.suhu_kompos ?? 0
+)
 
-  console.log('📡 SENSOR:', data)
+// max 7 data
+if (temperatureHistory.value.length > 7) {
+  temperatureHistory.value.shift()
+}
+
+// waktu update
+lastUpdated.value =
+  new Date().toLocaleTimeString('id-ID')
+
+pumpOn.value = Boolean(data.pompa)
+fanOn.value = Boolean(data.fan)
+
+console.log('📡 SENSOR:', data)
 
 } catch (err) {
 
-  console.log('❌ MQTT ERROR:', err)
+console.log('❌ MQTT ERROR:', err)
 
 }
 
 })
 
 }) // <-- INI YANG KURANG
+
+
+const compostCondition = computed(() => {
+
+const temp = sensor.value.suhu_kompos
+const humidity = sensor.value.kelembapan_kompos
+
+if (
+  temp >= 40 &&
+  temp <= 60 &&
+  humidity >= 40 &&
+  humidity <= 70
+) {
+  return {
+    title: 'Optimal',
+    desc:
+      'Proses pengomposan berjalan dengan baik dan stabil.'
+  }
+}
+
+if (temp > 60) {
+  return {
+    title: 'Terlalu Panas',
+    desc:
+      'Kurangi panas dengan menambah aerasi atau membalik kompos.'
+  }
+}
+
+if (humidity < 40) {
+  return {
+    title: 'Terlalu Kering',
+    desc:
+      'Tambahkan air agar kelembapan tetap stabil.'
+  }
+}
+
+return {
+  title: 'Perlu Monitoring',
+  desc:
+    'Kondisi kompos belum stabil.'
+}
+
+})
 
 // =========================
 // ON UNMOUNTED
