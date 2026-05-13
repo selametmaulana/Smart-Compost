@@ -460,38 +460,43 @@ onMounted(async () => {
   // =========================
   client.on('message', (topic, message) => {
 
-    try {
+try {
 
-      const data = JSON.parse(
-        message.toString()
-      )
+  const data = JSON.parse(
+    message.toString()
+  )
 
-      sensor.value = {
-        suhu_udara:
-          data.suhu_udara ?? 0,
+  sensor.value = {
 
-        suhu_kompos:
-          data.suhu_kompos ?? 0,
+    suhu_udara:
+      data.suhu_udara ?? 0,
 
-        kelembapan_udara:
-          data.kelembapan_udara ?? 0,
+    suhu_kompos:
+      data.suhu_kompos ?? 0,
 
-        kelembapan_kompos:
-          data.kelembapan_kompos ?? 0,
+    kelembapan_udara:
+      data.kelembapan_udara ?? 0,
 
-        status:
-          data.status || 'Normal'
-      }
+    kelembapan_kompos:
+      data.kelembapan_kompos ?? 0,
 
-      console.log('📡 SENSOR:', data)
+    status:
+      data.status || 'Normal'
+  }
 
-    } catch (err) {
+  // =========================
+  // UPDATE STATUS AKTUATOR
+  // =========================
+  pumpOn.value = data.pompa
+  fanOn.value = data.fan
 
-      console.log('❌ MQTT ERROR:', err)
+  console.log('📡 SENSOR:', data)
 
-    }
+} catch (err) {
 
-  })
+  console.log('❌ MQTT ERROR:', err)
+
+}
 
 })
 
