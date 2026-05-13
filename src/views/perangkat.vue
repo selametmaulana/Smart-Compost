@@ -402,20 +402,19 @@ let intervalId = null
 
 const isRealtimeOnline = computed(() => {
 
-if (!sensorData.value?.created_at) {
+if (!sensorData.value?.lastSensorTime) {
   return false
 }
 
-const last = new Date(sensorData.value.created_at)
-const now = new Date()
+const now = Date.now()
 
 const diffSeconds =
-  (now - last) / 1000
+  (now - sensorData.value.lastSensorTime) / 1000
 
-// jika lebih dari 15 detik dianggap offline
 return diffSeconds < 15
 
 })
+
 
 /* =========================
    DEVICE STATUS
@@ -438,10 +437,10 @@ if (!isRealtimeOnline.value) {
 }
 
 const hasSensorData =
-  sensorData.value?.suhu_ruang !== undefined &&
-  sensorData.value?.suhu_material !== undefined &&
-  sensorData.value?.kelembapan_udara !== undefined &&
-  sensorData.value?.kelembapan_kompos !== undefined
+  sensorData.value?.suhu_ruang != null &&
+  sensorData.value?.suhu_material != null &&
+  sensorData.value?.kelembapan_udara != null &&
+  sensorData.value?.kelembapan_kompos != null
 
 return hasSensorData
   ? 'Aktif'
@@ -452,6 +451,7 @@ return hasSensorData
 const uptime = computed(() => {
   return sensorData.value?.uptime || '0 Hari'
 })
+
 
 /* =========================
    SENSOR VALUE
