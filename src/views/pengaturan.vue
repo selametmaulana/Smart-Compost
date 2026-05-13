@@ -10,11 +10,9 @@
   
           <div>
   
-            <h1>Pengaturan</h1>
+            <h1>{{ t.settings }}</h1>
   
-            <p>
-              Kelola sistem dan perangkat IoT SmartCompost
-            </p>
+            <p>{{ t.system_desc }}</p>
   
           </div>
   
@@ -48,11 +46,9 @@
   
               <div>
   
-                <h2>Pengaturan Sistem</h2>
+                <h2>{{ t.system_settings }}</h2>
   
-                <p>
-                  Atur preferensi sistem dan tampilan dashboard
-                </p>
+                <p>{{ t.system_pref_desc }}</p>
   
               </div>
   
@@ -68,8 +64,8 @@
                 </div>
   
                 <div>
-                  <h4>Zona Waktu</h4>
-                  <p>Pilih zona waktu sistem</p>
+                  <h4>{{ t.timezone }}</h4>
+                  <p>{{ t.timezone_desc }}</p>
                 </div>
   
               </div>
@@ -92,8 +88,8 @@
                 </div>
   
                 <div>
-                  <h4>Bahasa</h4>
-                  <p>Pilih bahasa tampilan</p>
+                  <h4>{{ t.language }}</h4>
+                  <p>{{ t.language_desc }}</p>
                 </div>
   
               </div>
@@ -139,8 +135,8 @@
                 </div>
   
                 <div>
-                  <h4>Tema Tampilan</h4>
-                  <p>Pilih tema dashboard</p>
+                  <h4>{{ t.theme }}</h4>
+                  <p>{{ t.theme_desc }}</p>
                 </div>
   
               </div>
@@ -181,8 +177,8 @@
                 </div>
   
                 <div>
-                  <h4>Satuan Suhu</h4>
-                  <p>Pilih satuan suhu</p>
+                  <h4>{{ t.temperature_unit }}</h4>
+                  <p>{{ t.temperature_desc }}</p>
                 </div>
   
               </div>
@@ -223,8 +219,8 @@
                 </div>
   
                 <div>
-                  <h4>Format Tanggal</h4>
-                  <p>Pilih format tanggal</p>
+                  <h4>{{ t.date_format }}</h4>
+                  <p>{{ t.date_format_desc }}</p>
                 </div>
   
               </div>
@@ -246,8 +242,8 @@
                 </div>
   
                 <div>
-                  <h4>Format Waktu</h4>
-                  <p>Pilih format waktu</p>
+                  <h4>{{ t.time_format }}</h4>
+                  <p>{{ t.time_format_desc }}</p>
                 </div>
   
               </div>
@@ -264,7 +260,7 @@
   class="save-btn"
   @click="saveSystemSettings"
 >
-  Simpan Perubahan
+{{ t.save }}
 </button>
           </div>
   
@@ -275,9 +271,9 @@
                 <Cpu size="28" />
               </div>
               <div>
-                <h2>Pengaturan Perangkat IoT</h2>
+                <h2>{{ t.iot_settings }}</h2>
                 <p>
-                  Kelola perangkat IoT dan konfigurasi sensor
+                  {{ t.system_desc }}
                 </p>
               </div>
             </div>
@@ -289,8 +285,8 @@
                   <BadgeInfo size="24" />
                 </div>
                 <div>
-                  <h4>ID Perangkat</h4>
-                  <p>Identitas unik perangkat</p>
+                  <h4>{{ t.device_id }}</h4>
+                  <p>{{ t.Unique_device }}</p>
                 </div>
               </div>
               <input type="text"
@@ -304,8 +300,8 @@
                   <CreditCard size="24" />
                 </div>
                 <div>
-                  <h4>Nama Perangkat</h4>
-                  <p>Nama untuk identifikasi</p>
+                  <h4>{{ t.device_name }}</h4>
+                  <p>{{ t.name_identification }}</p>
                 </div>
               </div>
               <input type="text" v-model="device.device_name"/>
@@ -318,8 +314,8 @@
                   <MapPin size="24" />
                 </div>
                 <div>
-                  <h4>Lokasi Perangkat</h4>
-                  <p>Lokasi penempatan perangkat</p>
+                  <h4>{{ t.device_location }}</h4>
+                  <p>{{ t.name_location }}</p>
                 </div>
               </div>
               <input type="text" v-model="device.location"/>
@@ -333,8 +329,8 @@
                   <Power size="24" />
                 </div>
                 <div>
-                  <h4>Status Perangkat</h4>
-                  <p>Aktifkan atau nonaktifkan perangkat</p>
+                  <h4>{{ t.device_status }}</h4>
+                  <p>{{ t.enable_device }}</p>
                 </div>
               </div>
               
@@ -353,8 +349,8 @@
                 </div>
   
                 <div>
-                  <h4>Koneksi WiFi</h4>
-                  <p>SSID jaringan WiFi</p>
+                  <h4>{{ t.wifi }}</h4>
+                  <p>{{ t.ssid_wifi }}</p>
                 </div>
               </div>
   
@@ -370,8 +366,8 @@
                 </div>
   
                 <div>
-                  <h4>Interval Kirim Data</h4>
-                  <p>Interval pengiriman data ke server</p>
+                  <h4>{{ t.send_interval }}</h4>
+                  <p>{{ t.interval }}</p>
                 </div>
               </div>
   
@@ -390,8 +386,8 @@
                 </div>
   
                 <div>
-                  <h4>Kalibrasi Sensor</h4>
-                  <p>Terakhir kalibrasi sensor</p>
+                  <h4>{{ t.calibration }}</h4>
+                  <p></p>
                 </div>
               </div>
   
@@ -399,7 +395,7 @@
   class="calibration-btn"
   @click="handleCalibration"
 >
-  Kalibrasi Ulang
+  {{ t.recalibrate }}
 </button>
             <p style="margin-top:10px">
               {{ device.last_calibration || 'Belum pernah' }}
@@ -412,8 +408,8 @@
   @click="saveDevice"
   :disabled="loading"
 >
-              {{ loading ? 'Menyimpan...' : 'Simpan Perubahan' }}
-            </button>
+  {{ loading ? t.saving : t.save }}
+</button>
   
           </div>
         </div>
@@ -447,6 +443,103 @@ const systemSettings = ref({
   time_format: '24 Jam'
 })
 
+
+/* =========================
+   TRANSLATION
+========================= */
+
+const translations = {
+  id: {
+    settings: 'Pengaturan',
+    system_pref_desc:'Atur preferensi sistem dan tampilan dashboard',
+    system_desc: 'Kelola sistem dan perangkat IoT SmartCompost',
+    save: 'Simpan Perubahan',
+    saving: 'Menyimpan...',
+    system_settings: 'Pengaturan Sistem',
+    iot_settings: 'Pengaturan Perangkat IoT',
+    timezone: 'Zona Waktu',
+    timezone_desc: 'Pilih zona waktu sistem',
+    language_desc: 'Pilih bahasa tampilan',
+    theme_desc: 'Pilih tema dashboard',
+    temperature_desc: 'Pilih satuan suhu',
+    date_format_desc: 'Pilih format tanggal',
+    time_format_desc: 'Pilih format waktu',
+    language: 'Bahasa',
+    refresh_interval: 'Interval Refresh Data',
+    theme: 'Tema Tampilan',
+    temperature_unit: 'Satuan Suhu',
+    date_format: 'Format Tanggal',
+    time_format: 'Format Waktu',
+    Unique_device:'Identitas unik perangkat',
+    device_id: 'ID Perangkat',
+    device_name: 'Nama Perangkat',
+    name_identification:'Nama untuk identifikasi',
+    name_location:'Lokasi penempatan perangkat',
+    enable_device:'Aktifkan atau nonaktifkan perangkat',
+    device_location: 'Lokasi Perangkat',
+    device_status: 'Status Perangkat',
+    wifi: 'Koneksi WiFi',
+    ssid_wifi:'SSID jaringan WiFi',
+    interval:'Interval pengiriman data ke server',
+    send_interval: 'Interval Kirim Data',
+    calibrate:'Terakhir kalibrasi sensor',
+    calibration: 'Kalibrasi Sensor',
+    recalibrate: 'Kalibrasi Ulang',
+    updated: 'Terakhir diperbarui'
+  },
+
+  en: {
+    settings: 'Settings',
+    system_pref_desc:'Configure system preferences and dashboard appearance',
+    system_desc: 'Manage system and IoT SmartCompost devices',
+    save: 'Save Changes',
+    saving: 'Saving...',
+    system_settings: 'System Settings',
+    iot_settings: 'IoT Device Settings',
+    timezone: 'Timezone',
+    timezone_desc: 'Choose system timezone',
+    language_desc: 'Choose display language',
+    theme_desc: 'Choose dashboard theme',
+    temperature_desc: 'Choose temperature unit',
+    date_format_desc: 'Choose date format',
+    time_format_desc: 'Choose time format',
+    language: 'Language',
+    refresh_interval: 'Data Refresh Interval',
+    theme: 'Display Theme',
+    temperature_unit: 'Temperature Unit',
+    date_format: 'Date Format',
+    time_format: 'Time Format',
+    Unique_device:'Unique device identity',
+    device_id: 'Device ID',
+    device_name: 'Device Name',
+    name_identification:'Name for identification',
+    name_location:'Device placement location',
+    device_location: 'Device Location',
+    device_status: 'Device Status',
+    enable_device:'Enable or disable the device',
+    wifi: 'WiFi Connection',
+    ssid_wifi:'WiFi network SSID',
+    send_interval: 'Data Send Interval',
+    interval:'Data delivery interval to the server',
+    calibration: 'Sensor Calibration',
+    recalibrate: 'Recalibrate',
+    calibrate:'Finally calibrate the sensor',
+    updated: 'Last updated'
+  }
+}
+
+const currentLang = computed(() => {
+
+  return systemSettings.value.language === 'English'
+    ? 'en'
+    : 'id'
+
+})
+
+const t = computed(() => {
+  return translations[currentLang.value]
+})
+
 const saveSystemSettings = () => {
 
 console.log('SYSTEM SETTINGS:', systemSettings.value)
@@ -459,7 +552,11 @@ localStorage.setItem(
 // APPLY THEME
 applyTheme(systemSettings.value.theme)
 
-alert('✅ Pengaturan sistem berhasil disimpan')
+alert(
+  currentLang.value === 'en'
+    ? '✅ Settings saved successfully'
+    : '✅ Pengaturan sistem berhasil disimpan'
+)
 
 }
 
