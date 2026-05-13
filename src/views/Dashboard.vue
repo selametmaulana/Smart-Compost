@@ -467,28 +467,15 @@ try {
   )
 
   sensor.value = {
-
-    suhu_udara:
-      data.suhu_udara ?? 0,
-
-    suhu_kompos:
-      data.suhu_kompos ?? 0,
-
-    kelembapan_udara:
-      data.kelembapan_udara ?? 0,
-
-    kelembapan_kompos:
-      data.kelembapan_kompos ?? 0,
-
-    status:
-      data.status || 'Normal'
+    suhu_udara: data.suhu_udara ?? 0,
+    suhu_kompos: data.suhu_kompos ?? 0,
+    kelembapan_udara: data.kelembapan_udara ?? 0,
+    kelembapan_kompos: data.kelembapan_kompos ?? 0,
+    status: data.status || 'Normal'
   }
 
-  // =========================
-  // UPDATE STATUS AKTUATOR
-  // =========================
-  pumpOn.value = data.pompa
-  fanOn.value = data.fan
+  pumpOn.value = Boolean(data.pompa)
+  fanOn.value = Boolean(data.fan)
 
   console.log('📡 SENSOR:', data)
 
@@ -499,6 +486,8 @@ try {
 }
 
 })
+
+}) // <-- INI YANG KURANG
 
 // =========================
 // ON UNMOUNTED
