@@ -1160,7 +1160,7 @@ gap:18px;
 
 width:80px;
 height:80px;
-background:#ffffff;
+
 border-radius:12px;
 display:flex;
 align-items:center;
@@ -1194,10 +1194,7 @@ to{
 
 }
 
-.actuator-icon.fan{
 
-background:#ffffff;
-}
 
 .actuator-left h4{
 
