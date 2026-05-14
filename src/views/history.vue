@@ -365,7 +365,7 @@ import {
   computed,
   onMounted
 } from 'vue'
-import { t } from 'vue-router/dist/index-BzEKChPW.js'
+
 
 const selectedPeriod = ref('7 Hari Terakhir')
 const startDate = ref('')
@@ -374,8 +374,8 @@ const selectedParameter = ref('Semua Parameter')
 const notifications = ref([])
 
 
-const translations = {
 
+const translations = {
 id: {
 
   title: 'Data & Riwayat',
