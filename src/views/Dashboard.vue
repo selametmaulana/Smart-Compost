@@ -349,37 +349,39 @@ const goToSettings = () => {
 
 const togglePump = () => {
 
-if(!client) return
+if (!client) return
 
-const payload = JSON.stringify({
-  device: 'pump',
-  status: pumpOn.value ? 'ON' : 'OFF'
-})
-
+// aktifkan mode manual
 client.publish(
-  'iot/kompos/ta/device1/pump',
-  payload
+  'iot/kompos/ta/device1/control',
+  'MANUAL'
 )
 
-console.log('PUMP:', payload)
+// kontrol pompa
+client.publish(
+  'iot/kompos/ta/device1/control',
+  pumpOn.value
+    ? 'POMPA_ON'
+    : 'POMPA_OFF'
+)
 
 }
 
 const toggleFan = () => {
 
-if(!client) return
-
-const payload = JSON.stringify({
-  device: 'fan',
-  status: fanOn.value ? 'ON' : 'OFF'
-})
+if (!client) return
 
 client.publish(
-  'iot/kompos/ta/device1/fan',
-  payload
+  'iot/kompos/ta/device1/control',
+  'MANUAL'
 )
 
-console.log('FAN:', payload)
+client.publish(
+  'iot/kompos/ta/device1/control',
+  fanOn.value
+    ? 'FAN_ON'
+    : 'FAN_OFF'
+)
 
 }
 

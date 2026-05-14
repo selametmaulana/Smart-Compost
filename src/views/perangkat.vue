@@ -392,11 +392,106 @@ import {
 /* =========================
    STATE
 ========================= */
-
 const sensorData = ref({})
 const notifications = ref([])
 const lastUpdated = ref('-')
 const loading = ref(false)
+
+/* =========================
+   LANGUAGE
+========================= */
+
+const currentLang = ref(
+  localStorage.getItem('lang') || 'id'
+)
+
+const translations = {
+
+  id: {
+
+    pageTitle: 'Perangkat IoT',
+    pageDesc: 'Monitoring perangkat sensor SmartCompost',
+    lastUpdated: 'Terakhir diperbarui',
+    internetConnection: 'Koneksi Internet',
+    connected: 'ESP32 Terhubung',
+    devicePower: 'Daya Perangkat',
+    optimalBattery: 'Baterai Optimal',
+    sensorStatus: 'Status Sensor',
+    sensorActive: 'Aktif',
+    sensorRunning: 'Semua sensor berjalan',
+    sensorDisconnected: 'Sensor tidak terhubung',
+    uptime: 'Uptime Sistem',
+    stableSystem: 'Stabil tanpa gangguan',
+    smartDevice: 'Perangkat SmartCompost',
+    monitoring: 'MONITORING',
+    esp32: 'ESP32 Controller',
+    esp32Desc: 'Mikrokontroler utama sistem monitoring',
+    database: 'PostgreSQL',
+    databaseDesc: 'Penyimpanan data sensor realtime',
+    cloud: 'Cloud Monitoring',
+    cloudDesc: 'Sinkronisasi data otomatis',
+    security: 'Keamanan Sistem',
+    securityDesc: 'Data monitoring terenkripsi aman',
+    sensorPanel: 'Status Sensor',
+    refresh: 'Refresh',
+    roomTemp: 'Suhu Ruang Komposter',
+    compostTemp: 'Suhu Material Kompos',
+    airHumidity: 'Kelembapan Udara',
+    compostHumidity: 'Kelembapan Kompos',
+    systemStatus: 'Status Sistem',
+    systemPerformance: 'Performa Sistem',
+    serverActive: 'Server Aktif',
+    dbOnline: 'Database Online',
+    sensorConnected: 'Sensor Tersambung',
+    online: 'Online',
+    offline: 'Offline'
+  },
+
+  en: {
+
+    pageTitle: 'IoT Device',
+    pageDesc: 'SmartCompost sensor monitoring',
+    lastUpdated: 'Last updated',
+    internetConnection: 'Internet Connection',
+    connected: 'ESP32 Connected',
+    devicePower: 'Device Power',
+    optimalBattery: 'Optimal Battery',
+    sensorStatus: 'Sensor Status',
+    sensorActive: 'Active',
+    sensorRunning: 'All sensors running',
+    sensorDisconnected: 'Sensor disconnected',
+    uptime: 'System Uptime',
+    stableSystem: 'Stable without interruption',
+    smartDevice: 'SmartCompost Device',
+    monitoring: 'MONITORING',
+    esp32: 'ESP32 Controller',
+    esp32Desc: 'Main monitoring microcontroller',
+    database: 'PostgreSQL',
+    databaseDesc: 'Realtime sensor data storage',
+    cloud: 'Cloud Monitoring',
+    cloudDesc: 'Automatic data synchronization',
+    security: 'System Security',
+    securityDesc: 'Monitoring data securely encrypted',
+    sensorPanel: 'Sensor Status',
+    refresh: 'Refresh',
+    roomTemp: 'Room Temperature',
+    compostTemp: 'Compost Material Temperature',
+    airHumidity: 'Air Humidity',
+    compostHumidity: 'Compost Humidity',
+    systemStatus: 'System Status',
+    systemPerformance: 'System Performance',
+    serverActive: 'Server Active',
+    dbOnline: 'Database Online',
+    sensorConnected: 'Sensors Connected',
+    online: 'Online',
+    offline: 'Offline'
+  }
+
+}
+
+const t = computed(() => {
+  return translations[currentLang.value]
+})
 
 let intervalId = null
 
