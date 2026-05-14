@@ -8,16 +8,16 @@
       <div class="topbar">
 
         <div>
-          <h1>Data & Riwayat</h1>
+          <h1>{{ t.title }}</h1>
           <p>
-            Riwayat data sensor dan analisis kondisi kompos
+            {{ t.desc }}
           </p>
         </div>
 
         <div class="top-right">
   
   <span class="update-text">
-    ● Terakhir diperbarui:
+    ● {{ t.updated }}
     {{ lastUpdated }}
   </span>
 
@@ -38,9 +38,9 @@
           <Database size="30" />
 
           <div>
-            <h4>Total Data</h4>
+            <h4>{{ t.total_data }}</h4>
             <h2>{{ totalData }}</h2>
-            <p>Data tersimpan</p>
+            <p>{{ t.stored_data }}</p>
           </div>
 
         </div>
@@ -50,9 +50,9 @@
           <Thermometer size="30" />
 
           <div>
-            <h4>Rata-rata Suhu Ruang Komposter</h4>
+            <h4>{{ t.avg_room_temp }}</h4>
             <h2>{{ avgSuhuRuang }} °C</h2>
-            <p>30 hari terakhir</p>
+            <p>{{ t.last_30_days }}</p>
           </div>
 
         </div>
@@ -62,9 +62,9 @@
           <Droplets size="30" />
 
           <div>
-            <h4>Rata-rata Suhu Material Kompos</h4>
+            <h4>{{ t.avg_compost_temp }}</h4>
             <h2>{{ avgSuhuKompos }} °C</h2>
-            <p>30 hari terakhir</p>
+            <p>{{ t.last_30_days }}</p>
           </div>
 
         </div>
@@ -74,9 +74,9 @@
           <FlaskConical size="30" />
 
           <div>
-            <h4>Rata-rata Kelembapan Kompos</h4>
+            <h4>{{ t.avg_compost_hum }}</h4>
             <h2>{{ avgHumKompos }} %</h2>
-            <p>30 hari terakhir</p>
+            <p>{{ t.last_30_days }}</p>
           </div>
 
         </div>
@@ -86,9 +86,9 @@
           <Wind size="30" />
 
           <div>
-            <h4>Rata-rata Kelembapan Udara</h4>
+            <h4>{{ t.avg_air_hum }}</h4>
             <h2>{{ avgHumUdara }} %</h2>
-            <p>30 hari terakhir</p>
+            <p>{{ t.last_30_days }}</p>
           </div>
 
         </div>
@@ -102,11 +102,11 @@
         <div class="chart-card">
           <div class="chart-header">
             <h3>
-              Grafik Perubahan Kondisi Kompos
+              {{ t.graph_title }}
             </h3>
 
             <button>
-              7 Hari Terakhir
+              {{ t.last_7_days }}
             </button>
           </div>
 
@@ -115,12 +115,12 @@
 
             <div>
               <span class="green"></span>
-              Suhu (°C)
+              {{ t.temp }} (°C)
             </div>
 
             <div>
               <span class="blue"></span>
-              Kelembapan (%)
+              {{ t.humidity }} (%)
             </div>
           </div>
 
@@ -133,14 +133,14 @@
         <!-- FILTER -->
         <div class="filter-card">
 
-          <h3>Filter Data</h3>
+          <h3>{{ t.filter_data }}</h3>
 
           <div class="input-group">
 
-            <label>Pilih Periode</label>
+            <label>{{ t.choose_period }}</label>
 
             <select v-model="selectedPeriod">
-              <option>7 Hari Terakhir</option>
+              <option>{{ t.last_7_days }}</option>
               <option>30 Hari</option>
             </select>
 
@@ -148,7 +148,7 @@
 
           <div class="input-group">
 
-            <label>Dari Tanggal</label>
+            <label>{{ t.from_date }}</label>
 
             <input type="date" v-model="startDate" />
 
@@ -156,7 +156,7 @@
 
           <div class="input-group">
 
-            <label>Sampai Tanggal</label>
+            <label>{{ t.until_date }}</label>
 
             <input type="date" v-model="endDate" />
 
@@ -164,10 +164,10 @@
 
           <div class="input-group">
 
-            <label>Pilih Parameter</label>
+            <label>{{ t.choose_parameter }}</label>
 
             <select v-model="selectedParameter">
-              <option>Semua Parameter</option>
+              <option>{{ t.all_parameter }}</option>
               <option>Suhu</option>
               <option>Kelembapan</option>
               <option>pH</option>
@@ -179,7 +179,7 @@
           @click="currentPage = 1">
 
             <Filter size="18" />
-            Terapkan Filter
+            {{ t.apply_filter }}
           </button>
         </div>
       </div>
@@ -189,14 +189,14 @@
 
         <div class="table-header">
 
-<h3>Riwayat Data Terbaru</h3>
+<h3>{{ t.latest_history }}</h3>
 
 <div class="table-actions">
 
   <!-- DOWNLOAD -->
   <button class="download-btn">
     <Download size="18" />
-    Unduh Data
+    {{ t.download_data }}
   </button>
 
   <!-- DELETE ALL -->
@@ -204,7 +204,7 @@
   class="delete-all-btn"
   @click="deleteAllHistory"
 >
-  Hapus Semua
+  {{ t.delete_all }}
 </button>
 
 </div>
@@ -217,14 +217,14 @@
 
   <tr>
     <th>No</th>
-    <th>Waktu</th>
-    <th>Suhu Ruang</th>
-    <th>Suhu Kompos</th>
-    <th>Kelembapan Kompos</th>
-    <th>Kelembapan Udara</th>
-    <th>Status</th>
-    <th>Keterangan</th>
-    <th>Aksi</th>
+    <th>{{ t.time }}</th>
+    <th>{{ t.room_temp }}</th>
+    <th>{{ t.compost_temp }}</th>
+    <th>{{ t.compost_hum }}</th>
+    <th>{{ t.air_hum }}</th>
+    <th>{{ t.status }}</th>
+    <th>{{ t.description }}</th>
+    <th>{{ t.action }}</th>
   </tr>
 
 </thead>
@@ -273,7 +273,7 @@
 
     <!-- KETERANGAN -->
     <td>
-      Kondisi kompos stabil
+      {{ t.stable_condition }}
     </td>
 
     <!-- AKSI -->
@@ -283,7 +283,7 @@
         class="delete-btn"
         @click="deleteHistory(item.id)"
       >
-        Hapus
+        {{ t.delete }}
       </button>
 
     </td>
@@ -305,7 +305,7 @@
 </button>
 
 <span>
-  Halaman {{ currentPage }}
+  {{ t.page }} {{ currentPage }}
 </span>
 
 <button
@@ -365,12 +365,117 @@ import {
   computed,
   onMounted
 } from 'vue'
+import { t } from 'vue-router/dist/index-BzEKChPW.js'
 
 const selectedPeriod = ref('7 Hari Terakhir')
 const startDate = ref('')
 const endDate = ref('')
 const selectedParameter = ref('Semua Parameter')
 const notifications = ref([])
+
+
+const translations = {
+
+id: {
+
+  title: 'Data & Riwayat',
+  desc: 'Riwayat data sensor dan analisis kondisi kompos',
+  updated: 'Terakhir diperbarui',
+  total_data: 'Total Data',
+  stored_data: 'Data tersimpan',
+  avg_room_temp: 'Rata-rata Suhu Ruang Komposter',
+  avg_compost_temp: 'Rata-rata Suhu Material Kompos',
+  avg_compost_hum: 'Rata-rata Kelembapan Kompos',
+  avg_air_hum: 'Rata-rata Kelembapan Udara',
+  last_30_days: '30 hari terakhir',
+  graph_title: 'Grafik Perubahan Kondisi Kompos',
+  last_7_days: '7 Hari Terakhir',
+  temp: 'Suhu (°C)',
+  humidity: 'Kelembapan (%)',
+  filter_data: 'Filter Data',
+  choose_period: 'Pilih Periode',
+  from_date: 'Dari Tanggal',
+  until_date: 'Sampai Tanggal',
+  choose_parameter: 'Pilih Parameter',
+  all_parameter: 'Semua Parameter',
+  apply_filter: 'Terapkan Filter',
+  latest_history: 'Riwayat Data Terbaru',
+  download_data: 'Unduh Data',
+  delete_all: 'Hapus Semua',
+  time: 'Waktu',
+  room_temp: 'Suhu Ruang',
+  compost_temp: 'Suhu Kompos',
+  compost_hum: 'Kelembapan Kompos',
+  air_hum: 'Kelembapan Udara',
+  status: 'Status',
+  description: 'Keterangan',
+  action: 'Aksi',
+  stable_condition: 'Kondisi kompos stabil',
+  delete: 'Hapus',
+  page: 'Halaman',
+  no_data: 'Belum ada data'
+
+},
+
+en: {
+
+  title: 'Data & History',
+  desc: 'Sensor data history and compost condition analysis',
+  updated: 'Last updated',
+  total_data: 'Total Data',
+  stored_data: 'Stored data',
+  avg_room_temp: 'Average Compost Room Temperature',
+  avg_compost_temp: 'Average Compost Material Temperature',
+  avg_compost_hum: 'Average Compost Humidity',
+  avg_air_hum: 'Average Air Humidity',
+  last_30_days: 'Last 30 days',
+  graph_title: 'Compost Condition Change Chart',
+  last_7_days: 'Last 7 Days',
+  temp: 'Temperature (°C)',
+  humidity: 'Humidity (%)',
+  filter_data: 'Filter Data',
+  choose_period: 'Select Period',
+  from_date: 'From Date',
+  until_date: 'Until Date',
+  choose_parameter: 'Select Parameter',
+  all_parameter: 'All Parameters',
+  apply_filter: 'Apply Filter',
+  latest_history: 'Latest Data History',
+  download_data: 'Download Data',
+  delete_all: 'Delete All',
+  time: 'Time',
+  room_temp: 'Room Temperature',
+  compost_temp: 'Compost Temperature',
+  compost_hum: 'Compost Humidity',
+  air_hum: 'Air Humidity',
+  status: 'Status',
+  description: 'Description',
+  action: 'Action',
+  stable_condition: 'Compost condition is stable',
+  delete: 'Delete',
+  page: 'Page',
+  no_data: 'No data yet'
+
+}
+
+}
+
+const currentLang = computed(() => {
+
+const saved =
+  JSON.parse(
+    localStorage.getItem('system_settings')
+  )
+
+return saved?.language === 'English'
+  ? 'en'
+  : 'id'
+
+})
+
+const t = computed(() => {
+return translations[currentLang.value]
+})
 
 const chartData = computed(() => {
 
