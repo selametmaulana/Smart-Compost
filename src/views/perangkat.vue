@@ -9,17 +9,17 @@
         <div class="topbar">
   
           <div>
-            <h1>Perangkat IoT</h1>
+            <h1>{{ t.pageTitle }}</h1>
   
             <p>
-              Monitoring perangkat sensor SmartCompost
+              {{ t.pageDesc }}
             </p>
           </div>
   
           <div class="top-right">
   
             <span class="update-text">
-              ● Terakhir diperbarui:
+              ● {{ t.lastUpdated }}:
               {{ lastUpdated }}
             </span>
   
@@ -41,9 +41,9 @@
             </div>
   
             <div>
-              <h4>Koneksi Internet</h4>
+              <h4>{{ t.internetConnection }}</h4>
               <h2>{{ internetStatus }}</h2>
-              <p>ESP32 Terhubung</p>
+              <p>{{ t.connected }}</p>
             </div>
   
           </div>
@@ -56,9 +56,9 @@
             </div>
   
             <div>
-              <h4>Daya Perangkat</h4>
+              <h4>{{ t.devicePower }}</h4>
               <h2>{{ batteryLevel }}%</h2>
-              <p>Baterai Optimal</p>
+              <p>{{ t.optimalBattery }}</p>
             </div>
   
           </div>
@@ -84,7 +84,7 @@
 </div>
 
 <div>
-  <h4>Status Sensor</h4>
+  <h4>{{ t.sensorStatus }}</h4>
   <h2>{{ sensorStatus }}</h2>
 
   <p>
@@ -104,9 +104,9 @@
             </div>
   
             <div>
-              <h4>Uptime Sistem</h4>
+              <h4>{{ t.uptime }}</h4>
               <h2>{{ uptime }}</h2>
-              <p>Stabil tanpa gangguan</p>
+              <p>{{ t.stableSystem }}</p>
             </div>
   
           </div>
@@ -121,7 +121,7 @@
   
             <div class="preview-header">
   
-              <h3>Perangkat SmartCompost</h3>
+              <h3>{{ t.smartDevice }}</h3>
   
               <span :style="{color:internetStatus === 
               'Online'? '#4CAF50'
@@ -142,7 +142,7 @@
   
                 <h2>SmartCompost</h2>
   
-                <p>MONITORING</p>
+                <p>{{ t.monitoring }}</p>
   
               </div>
   
@@ -162,10 +162,10 @@
   
                 <Cpu size="22" />
   
-                <h4>ESP32 Controller</h4>
+                <h4>{{ t.esp32 }}</h4>
   
                 <p>
-                  Mikrokontroler utama sistem monitoring
+                  {{ t.esp32Desc }}
                 </p>
   
               </div>
@@ -177,7 +177,7 @@
                 <h4>PostgreSQL</h4>
   
                 <p>
-                  Penyimpanan data sensor realtime
+                  {{ t.databaseDesc }}
                 </p>
   
               </div>
@@ -186,10 +186,10 @@
   
                 <Cloud size="22" />
   
-                <h4>Cloud Monitoring</h4>
+                <h4>{{ t.cloud }}</h4>
   
                 <p>
-                  Sinkronisasi data otomatis
+                  {{ t.cloudDesc }}
                 </p>
   
               </div>
@@ -198,10 +198,10 @@
   
                 <ShieldCheck size="22" />
   
-                <h4>Keamanan Sistem</h4>
+                <h4>{{ t.security }}</h4>
   
                 <p>
-                  Data monitoring terenkripsi aman
+                  {{ t.securityDesc }}
                 </p>
   
               </div>
@@ -215,10 +215,10 @@
   
             <div class="panel-header">
   
-              <h3>Status Sensor</h3>
+              <h3>{{ t.sensorPanel }}</h3>
   
               <button @click="refreshData">
-                Refresh
+                {{ t.refresh }}
               </button>
   
             </div>
@@ -230,7 +230,7 @@
                   <Thermometer size="22" />
                 </div>
                 <div>
-                  <h4>Suhu Ruang Komposter</h4>
+                  <h4>{{ t.roomTemp }}</h4>
                     <p>{{ suhuRuang }} °C</p>
                 </div>
               </div>
@@ -251,7 +251,7 @@
                 </div>
   
                 <div>
-                  <h4>Suhu Material Kompos</h4>
+                  <h4>{{ t.compostTemp }}</h4>
                     <p>{{ suhuMaterial }} °C</p>
                 </div>
               </div>
@@ -274,7 +274,7 @@
                 </div>
   
                 <div>
-                  <h4>Kelembapan Udara</h4>
+                  <h4>{{ t.airHumidity }}</h4>
                 <p>{{ kelembapanUdara }} %</p>
                 </div>
   
@@ -298,7 +298,7 @@
                 </div>
   
                 <div>
-                  <h4>Kelembapan Kompos</h4>
+                  <h4>{{ t.compostHumidity }}</h4>
                 <p>{{ kelembapanKompos }} %</p>
                 </div>
   
@@ -315,12 +315,12 @@
             <!-- SYSTEM -->
             <div class="system-card">
   
-              <h3>Status Sistem</h3>
+              <h3>{{ t.systemStatus }}</h3>
   
               <div class="system-progress">
   
                 <div class="progress-top">
-                  <span>Performa Sistem</span>
+                  <span>{{ t.systemPerformance }}</span>
                   <span>{{ systemPerformance }}%</span>
                 </div>
   
@@ -335,17 +335,17 @@
   
                 <div>
                   <CheckCircle2 size="18" />
-                  Server Aktif
+                  {{ t.serverActive }}
                 </div>
   
                 <div>
                   <CheckCircle2 size="18" />
-                  Database Online
+                  {{ t.dbOnline }}
                 </div>
   
                 <div>
                   <CheckCircle2 size="18" />
-                  Sensor Tersambung
+                  {{ t.sensorConnected }}
                 </div>
   
               </div>
