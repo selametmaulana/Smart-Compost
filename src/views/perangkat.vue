@@ -401,9 +401,7 @@ const loading = ref(false)
    LANGUAGE
 ========================= */
 
-const currentLang = ref(
-  localStorage.getItem('lang') || 'id'
-)
+
 
 const translations = {
 
@@ -489,9 +487,36 @@ const translations = {
 
 }
 
+const currentLang = ref('id')
+
+const loadSettings = () => {
+
+  const settings = JSON.parse(
+    localStorage.getItem('system_settings')
+  )
+
+  currentLang.value =
+    settings?.language === 'English'
+      ? 'en'
+      : 'id'
+
+  // DARK MODE
+  if(settings?.theme === 'dark'){
+
+    document.body.classList.add('dark-mode')
+
+  }else{
+
+    document.body.classList.remove('dark-mode')
+
+  }
+
+}
+
 const t = computed(() => {
   return translations[currentLang.value]
 })
+
 
 let intervalId = null
 
@@ -693,6 +718,8 @@ const refreshData = () => {
 ========================= */
 
 onMounted(() => {
+
+  loadSettings()
 
   refreshData()
 
