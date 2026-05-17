@@ -167,104 +167,327 @@
       <!-- =========================
      AKTUATOR MQTT
 ========================= -->
-<div class="actuator-wrapper">
+<div class="mode-layout">
 
-<div class="actuator-header">
+<!-- =========================
+     LEFT SIDE
+========================== -->
+<div class="mode-left">
 
-  <div>
-    <h3>Aktuator Perangkat</h3>
-    <p>Kontrol perangkat realtime via MQTT</p>
+  <!-- HEADER -->
+  <div class="section-header">
+
+    <div class="header-icon green">
+      <i class="ri-settings-3-line"></i>
+    </div>
+
+    <div>
+      <h1>Atur Mode</h1>
+      <p>
+        Pilih mode kontrol sistem komposter
+      </p>
+    </div>
+
   </div>
 
-  <div class="mqtt-status">
-    <span class="dot"></span>
-    MQTT Connected
-  </div>
+  <!-- MODE CARD -->
+  <div class="mode-card-wrapper">
 
-</div>
+    <!-- MANUAL -->
+    <div
+      class="mode-card"
+      :class="{ active: manualMode }"
+      @click="setManual"
+    >
 
-<div class="actuator-grid">
-
-  <!-- POMPA -->
-  <div class="actuator-card">
-
-    <div class="actuator-left">
-
-      <div class="actuator-icon">
-  <img
-    src="/pompa.png"
-    alt="Pompa"
-    class="actuator-img"
-  >
-</div>
-
-      <div>
-        <h4>Pompa Air</h4>
-        <p>Penyiraman otomatis kompos</p>
+      <div class="mode-card-icon">
+        <i class="ri-hand-heart-line"></i>
       </div>
+
+      <h3>Manual</h3>
+
+      <p>
+        Kontrol penuh oleh pengguna
+      </p>
 
     </div>
 
-    <div class="switch-wrapper">
+    <!-- AUTO -->
+    <div
+      class="mode-card"
+      :class="{ active: !manualMode }"
+      @click="setAuto"
+    >
+
+      <div class="mode-card-icon">
+        <i class="ri-robot-2-line"></i>
+      </div>
+
+      <h3>Otomatis</h3>
+
+      <p>
+        Sistem kontrol otomatis
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- CURRENT MODE -->
+  <div class="current-mode-box">
+
+    <div class="current-icon">
+      <i class="ri-checkbox-circle-line"></i>
+    </div>
+
+    <div>
+
+      <h3>
+        Mode saat ini:
+        <span>
+          {{
+            manualMode
+              ? 'Manual'
+              : 'Otomatis'
+          }}
+        </span>
+      </h3>
+
+      <p>
+        {{
+          manualMode
+            ? 'Anda memiliki kontrol penuh terhadap perangkat'
+            : 'Sistem bekerja otomatis berdasarkan sensor'
+        }}
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- MANUAL CONTROL -->
+  <div class="manual-control">
+
+    <h2>Kontrol Manual Perangkat</h2>
+
+    <!-- POMPA -->
+    <div class="device-card">
+
+      <div class="device-left">
+
+        <div class="device-icon green-light">
+          <i class="ri-water-flash-line"></i>
+        </div>
+
+        <div>
+
+          <h3>Pompa Air</h3>
+
+          <p>
+            Penyiraman otomatis kompos
+          </p>
+
+          <span>
+            Status:
+            <strong>
+              {{ pumpStatus ? 'ON' : 'OFF' }}
+            </strong>
+          </span>
+
+        </div>
+
+      </div>
 
       <label class="switch">
 
         <input
           type="checkbox"
-          v-model="pumpOn"
-          @change="togglePump"
+          v-model="pumpStatus"
+          :disabled="!manualMode"
         >
 
         <span class="slider"></span>
 
       </label>
 
-      <span
-        :class="pumpOn ? 'on-text' : 'off-text'"
-      >
-        {{ pumpOn ? 'ON' : 'OFF' }}
-      </span>
-
     </div>
 
-  </div>
+    <!-- FAN -->
+    <div class="device-card">
 
-  <!-- KIPAS -->
-  <div class="actuator-card">
+      <div class="device-left">
 
-    <div class="actuator-left">
+        <div class="device-icon green-light">
+          <i class="ri-fan-line"></i>
+        </div>
 
-      <div class="actuator-icon fan">
-        <img src="/kipas.png" alt="Kipas"
-        :class="['actuator-img',{ 'fan-spin': fanOn }]"/>
+        <div>
+
+          <h3>Kipas Aerasi</h3>
+
+          <p>
+            Sirkulasi udara komposter
+          </p>
+
+          <span>
+            Status:
+            <strong>
+              {{ fanStatus ? 'ON' : 'OFF' }}
+            </strong>
+          </span>
+
+        </div>
+
       </div>
-
-      <div>
-        <h4>Kipas</h4>
-        <p>Sirkulasi udara komposter</p>
-      </div>
-
-    </div>
-
-    <div class="switch-wrapper">
 
       <label class="switch">
 
         <input
           type="checkbox"
-          v-model="fanOn"
-          @change="toggleFan"
+          v-model="fanStatus"
+          :disabled="!manualMode"
         >
 
         <span class="slider"></span>
 
       </label>
 
-      <span
-        :class="fanOn ? 'on-text' : 'off-text'"
-      >
-        {{ fanOn ? 'ON' : 'OFF' }}
-      </span>
+    </div>
+
+  </div>
+
+  <!-- SECURITY -->
+  <div class="security-box">
+
+    <div class="security-icon">
+      <i class="ri-shield-check-line"></i>
+    </div>
+
+    <div>
+
+      <h3>Keamanan Aktif</h3>
+
+      <p>
+        Perangkat akan otomatis mati jika kondisi tidak aman
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =========================
+     RIGHT SIDE
+========================== -->
+<div class="mode-right">
+
+  <!-- HEADER -->
+  <div class="section-header">
+
+    <div class="header-icon blue">
+      <i class="ri-information-line"></i>
+    </div>
+
+    <div>
+      <h1>Info Mode</h1>
+      <p>
+        Penjelasan cara kerja setiap mode
+      </p>
+    </div>
+
+  </div>
+
+  <!-- MANUAL INFO -->
+  <div class="info-card green-border">
+
+    <div class="info-top">
+
+      <div class="info-icon green-light">
+        <i class="ri-hand-heart-line"></i>
+      </div>
+
+      <div class="info-content">
+
+        <div class="info-title">
+
+          <h2>Mode Manual</h2>
+
+          <span class="active-badge">
+            Aktif
+          </span>
+
+        </div>
+
+        <p>
+          Anda dapat mengontrol perangkat secara langsung.
+        </p>
+
+      </div>
+
+    </div>
+
+    <ul>
+      <li>Pompa dan kipas dikontrol oleh Anda</li>
+      <li>Sistem tidak akan mengubah status perangkat</li>
+      <li>Cocok untuk pengujian atau kondisi khusus</li>
+      <li>Notifikasi tetap aktif</li>
+    </ul>
+
+  </div>
+
+  <!-- AUTO INFO -->
+  <div class="info-card blue-border">
+
+    <div class="info-top">
+
+      <div class="info-icon blue-light">
+        <i class="ri-robot-2-line"></i>
+      </div>
+
+      <div class="info-content">
+
+        <div class="info-title">
+
+          <h2>Mode Otomatis</h2>
+
+          <span class="inactive-badge">
+            Nonaktif
+          </span>
+
+        </div>
+
+        <p>
+          Sistem akan mengontrol perangkat otomatis.
+        </p>
+
+      </div>
+
+    </div>
+
+    <ul>
+      <li>Pompa dan kipas bekerja otomatis</li>
+      <li>Berdasarkan suhu dan kelembapan</li>
+      <li>Menghemat waktu dan tenaga</li>
+      <li>Sistem akan menyesuaikan kondisi optimal</li>
+    </ul>
+
+  </div>
+
+  <!-- RECOMMEND -->
+  <div class="recommend-box">
+
+    <div class="recommend-icon">
+      <i class="ri-lightbulb-line"></i>
+    </div>
+
+    <div>
+
+      <h3>Rekomendasi</h3>
+
+      <p>
+        Gunakan mode otomatis untuk hasil pengomposan terbaik.
+      </p>
 
     </div>
 
@@ -620,6 +843,318 @@ onMounted(() => {
 
 body{
   background:#E9ECE8;
+}
+
+.mode-layout{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+  padding:25px;
+  background:#f8f8f8;
+  border-radius:35px;
+  font-family:'Poppins',sans-serif;
+}
+
+.mode-left,
+.mode-right{
+  background:white;
+  border-radius:30px;
+  padding:30px;
+}
+
+.section-header{
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+  margin-bottom:30px;
+}
+
+.header-icon{
+  width:60px;
+  height:60px;
+  border-radius:18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:white;
+  font-size:28px;
+}
+
+.green{
+  background:#1db954;
+}
+
+.blue{
+  background:#2563eb;
+}
+
+.section-header h1{
+  font-size:40px;
+  margin-bottom:6px;
+}
+
+.section-header p{
+  color:#666;
+}
+
+/* MODE CARD */
+
+.mode-card-wrapper{
+  display:flex;
+  gap:20px;
+}
+
+.mode-card{
+  flex:1;
+  padding:30px;
+  border-radius:25px;
+  background:#fafafa;
+  border:2px solid #eee;
+
+  cursor:pointer;
+  transition:.3s;
+}
+
+.mode-card:hover{
+  transform:translateY(-5px);
+}
+
+.mode-card.active{
+  background:#1db954;
+  color:white;
+}
+
+.mode-card-icon{
+  font-size:40px;
+  margin-bottom:15px;
+}
+
+.mode-card p{
+  margin-top:10px;
+}
+
+/* CURRENT MODE */
+
+.current-mode-box{
+  margin-top:25px;
+  background:#f7fff7;
+  border:2px solid #d7f5d7;
+  border-radius:25px;
+  padding:25px;
+
+  display:flex;
+  gap:18px;
+}
+
+.current-icon{
+  font-size:40px;
+  color:#1db954;
+}
+
+.current-mode-box span{
+  color:#1db954;
+}
+
+/* MANUAL CONTROL */
+
+.manual-control{
+  margin-top:35px;
+}
+
+.manual-control h2{
+  margin-bottom:20px;
+}
+
+.device-card{
+  background:#fafafa;
+  border-radius:25px;
+  padding:25px;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  margin-bottom:18px;
+}
+
+.device-left{
+  display:flex;
+  gap:18px;
+}
+
+.device-icon{
+  width:65px;
+  height:65px;
+  border-radius:20px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:34px;
+}
+
+.green-light{
+  background:#eaffea;
+  color:#1db954;
+}
+
+/* SWITCH */
+
+.switch{
+  position:relative;
+  width:75px;
+  height:40px;
+}
+
+.switch input{
+  display:none;
+}
+
+.slider{
+  position:absolute;
+  inset:0;
+  background:#ddd;
+  border-radius:40px;
+  transition:.3s;
+}
+
+.slider::before{
+  content:'';
+  position:absolute;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  background:white;
+  top:4px;
+  left:4px;
+  transition:.3s;
+}
+
+input:checked + .slider{
+  background:#1db954;
+}
+
+input:checked + .slider::before{
+  transform:translateX(35px);
+}
+
+/* SECURITY */
+
+.security-box{
+  margin-top:25px;
+  background:#f8fff8;
+  border-radius:25px;
+  padding:25px;
+
+  display:flex;
+  gap:18px;
+}
+
+.security-icon{
+  font-size:40px;
+  color:#1db954;
+}
+
+/* INFO CARD */
+
+.info-card{
+  border-radius:28px;
+  padding:30px;
+  margin-bottom:25px;
+}
+
+.green-border{
+  background:#f8fff8;
+  border:2px solid #d7f5d7;
+}
+
+.blue-border{
+  background:#f8fbff;
+  border:2px solid #d9e7ff;
+}
+
+.info-top{
+  display:flex;
+  gap:20px;
+}
+
+.info-icon{
+  width:70px;
+  height:70px;
+  border-radius:22px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:35px;
+}
+
+.blue-light{
+  background:#e9f1ff;
+  color:#2563eb;
+}
+
+.info-title{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.active-badge,
+.inactive-badge{
+  padding:8px 16px;
+  border-radius:30px;
+  font-size:14px;
+  font-weight:600;
+}
+
+.active-badge{
+  background:#1db954;
+  color:white;
+}
+
+.inactive-badge{
+  background:#dbeafe;
+  color:#2563eb;
+}
+
+.info-card ul{
+  margin-top:25px;
+  padding-left:20px;
+}
+
+.info-card li{
+  margin-bottom:14px;
+}
+
+/* RECOMMEND */
+
+.recommend-box{
+  background:#fff8e8;
+  border-radius:25px;
+  padding:25px;
+
+  display:flex;
+  gap:18px;
+}
+
+.recommend-icon{
+  font-size:38px;
+  color:#f59e0b;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+  .mode-layout{
+    grid-template-columns:1fr;
+  }
+
 }
 
 /* POPUP */
