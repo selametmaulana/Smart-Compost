@@ -275,9 +275,13 @@
 
       <div class="device-left">
 
-        <div class="device-icon green-light">
-          <i class="ri-water-flash-line"></i>
-        </div>
+        <div class="actuator-icon">
+  <img
+    src="/pompa.png"
+    alt="Pompa"
+    class="actuator-img"
+  >
+</div>
 
         <div>
 
@@ -317,9 +321,10 @@
 
       <div class="device-left">
 
-        <div class="device-icon green-light">
-          <i class="ri-fan-line"></i>
-        </div>
+        <div class="actuator-icon fan">
+        <img src="/kipas.png" alt="Kipas"
+        :class="['actuator-img',{ 'fan-spin': fanOn }]"/>
+      </div>
 
         <div>
 
@@ -413,9 +418,19 @@
 
           <h2>Mode Manual</h2>
 
-          <span class="active-badge">
-            Aktif
-          </span>
+          <span
+  :class="
+    manualMode
+      ? 'active-badge'
+      : 'inactive-badge'
+  "
+>
+  {{
+    manualMode
+      ? 'Aktif'
+      : 'Nonaktif'
+  }}
+</span>
 
         </div>
 
@@ -451,9 +466,19 @@
 
           <h2>Mode Otomatis</h2>
 
-          <span class="inactive-badge">
-            Nonaktif
-          </span>
+          <span
+  :class="
+    !manualMode
+      ? 'active-badge'
+      : 'inactive-badge'
+  "
+>
+  {{
+    !manualMode
+      ? 'Aktif'
+      : 'Nonaktif'
+  }}
+</span>
 
         </div>
 
@@ -507,7 +532,8 @@ import {
   ref,
   computed,
   onMounted,
-  onUnmounted
+  onUnmounted,
+  watch
 } from 'vue'
 
 import { Bell } from 'lucide-vue-next'
@@ -519,8 +545,10 @@ import mqtt from 'mqtt'
 // =========================
 const showSidebar = ref(false)
 const showPopup = ref(false)
-const pumpOn = ref(false)
-const fanOn = ref(false)
+const pumpStatus = ref(false)
+const fanStatus = ref(false)
+const manualMode = ref(false)
+const isUpdatingFromMqtt = ref(false)
 const notifications = ref([])
 const temperatureHistory = ref([])
 const lastUpdated = ref('-')
@@ -566,49 +594,71 @@ const goToSettings = () => {
 
 }
 
-// =========================
-// MQTT AKTUATOR
-// =========================
 
-const togglePump = () => {
+// =========================
+// SET MODE
+// =========================
+const setManual = () => {
 
+manualMode.value = true
+
+if(client){
+
+  client.publish(
+    'iot/kompos/ta/device1/control',
+    'MANUAL'
+  )
+
+}
+
+}
+
+const setAuto = () => {
+
+manualMode.value = false
+
+if(client){
+
+  client.publish(
+    'iot/kompos/ta/device1/control',
+    'AUTO'
+  )
+
+}
+
+}
+
+
+
+watch(pumpStatus, (val) => {
+
+if (isUpdatingFromMqtt.value) return
+if (!manualMode.value) return
 if (!client) return
 
-// aktifkan mode manual
 client.publish(
   'iot/kompos/ta/device1/control',
-  'MANUAL'
-)
-
-// kontrol pompa
-client.publish(
-  'iot/kompos/ta/device1/control',
-  pumpOn.value
+  val
     ? 'POMPA_ON'
     : 'POMPA_OFF'
 )
 
-}
+})
 
-const toggleFan = () => {
+watch(fanStatus, (val) => {
 
+if (isUpdatingFromMqtt.value) return
+if (!manualMode.value) return
 if (!client) return
 
-// aktifkan mode manual
 client.publish(
   'iot/kompos/ta/device1/control',
-  'MANUAL'
-)
-
-// kontrol kipas
-client.publish(
-  'iot/kompos/ta/device1/control',
-  fanOn.value
+  val
     ? 'KIPAS_ON'
     : 'KIPAS_OFF'
 )
 
-}
+})
 
 const fetchNotifications = async () => {
   try {
@@ -730,8 +780,16 @@ if (temperatureHistory.value.length > 7) {
 lastUpdated.value =
   new Date().toLocaleTimeString('id-ID')
 
-pumpOn.value = Boolean(data.pompa)
-fanOn.value = Boolean(data.kipas)
+  isUpdatingFromMqtt.value = true
+  pumpStatus.value = Boolean(data.pompa)
+  fanStatus.value = Boolean(data.kipas)
+
+manualMode.value =
+  data.mode === 'MANUAL'
+
+  setTimeout(() => {
+  isUpdatingFromMqtt.value = false
+}, 100)
 
 console.log('📡 SENSOR:', data)
 
@@ -744,6 +802,8 @@ console.log('❌ MQTT ERROR:', err)
 })
 
 }) // <-- INI YANG KURANG
+
+
 
 
 const compostCondition = computed(() => {
