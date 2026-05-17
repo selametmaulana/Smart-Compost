@@ -371,16 +371,18 @@ const toggleFan = () => {
 
 if (!client) return
 
+// aktifkan mode manual
 client.publish(
   'iot/kompos/ta/device1/control',
   'MANUAL'
 )
 
+// kontrol kipas
 client.publish(
   'iot/kompos/ta/device1/control',
   fanOn.value
-    ? 'FAN_ON'
-    : 'FAN_OFF'
+    ? 'KIPAS_ON'
+    : 'KIPAS_OFF'
 )
 
 }
@@ -506,7 +508,7 @@ lastUpdated.value =
   new Date().toLocaleTimeString('id-ID')
 
 pumpOn.value = Boolean(data.pompa)
-fanOn.value = Boolean(data.fan)
+fanOn.value = Boolean(data.kipas)
 
 console.log('📡 SENSOR:', data)
 
