@@ -604,10 +604,20 @@ app.delete('/notifications/:id', async (req, res) => {
 
   try {
 
-    await pool.query(`
+    const result = await pool.query(`
       DELETE FROM notifications
       WHERE id = $1
+      RETURNING *
     `, [req.params.id])
+
+    if (result.rowCount === 0) {
+
+      return res.status(404).json({
+        success: false,
+        message: 'Notification not found'
+      })
+
+    }
 
     res.json({
       success: true,
@@ -632,12 +642,13 @@ app.delete('/notifications', async (req, res) => {
 
   try {
 
-    await pool.query(`
+    const result = await pool.query(`
       DELETE FROM notifications
     `)
 
     res.json({
       success: true,
+      deleted: result.rowCount,
       message: 'All notifications deleted'
     })
 

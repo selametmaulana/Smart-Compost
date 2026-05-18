@@ -94,6 +94,13 @@
             <!-- HEADER -->
             <div class="box-header">
               <h3>{{ t.notification_list }}</h3>
+
+              <button
+      class="delete-all-btn"
+      @click="deleteAllNotifications"
+    >
+      Hapus Semua
+    </button>
               <div class="filters">
 
 <button
@@ -154,7 +161,20 @@
       {{ item.type }}
     </label>
 
-    
+    <button
+      class="read-btn"
+      @click="markAsRead(item.id)"
+    >
+      Dibaca
+    </button>
+
+    <button
+      class="delete-btn"
+      @click="deleteNotification(item.id)"
+    >
+      Hapus
+    </button>
+
 
   </div>
 
@@ -447,6 +467,56 @@ en: {
 
 }
 
+const deleteNotification = async (id) => {
+
+try {
+
+  await fetch(
+    `https://smart-compost-production.up.railway.app/notifications/${id}`,
+    {
+      method: 'DELETE'
+    }
+  )
+
+  notifications.value =
+    notifications.value.filter(
+      item => item.id !== id
+    )
+
+} catch (err) {
+
+  console.log(err)
+
+}
+
+}
+
+const deleteAllNotifications = async () => {
+
+const confirmDelete =
+  confirm('Hapus semua notifikasi?')
+
+if (!confirmDelete) return
+
+try {
+
+  await fetch(
+    'https://smart-compost-production.up.railway.app/notifications',
+    {
+      method: 'DELETE'
+    }
+  )
+
+  notifications.value = []
+
+} catch (err) {
+
+  console.log(err)
+
+}
+
+}
+
 const systemSettings =
   JSON.parse(
     localStorage.getItem('system_settings')
@@ -696,6 +766,65 @@ if(saved?.theme === 'dark'){
     padding:0;
     box-sizing:border-box;
   }
+
+  .header-actions{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.delete-all-btn{
+  border:none;
+  background:#ef4444;
+  color:white;
+
+  padding:12px 18px;
+  border-radius:12px;
+
+  cursor:pointer;
+  font-weight:600;
+}
+
+.delete-all-btn:hover{
+  opacity:.9;
+}
+
+.notif-actions{
+  margin-top:14px;
+
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+}
+
+.read-btn{
+  border:none;
+  background:#4CAF50;
+  color:white;
+
+  padding:8px 14px;
+  border-radius:10px;
+
+  cursor:pointer;
+  font-size:13px;
+}
+
+.delete-btn{
+  border:none;
+  background:#ef4444;
+  color:white;
+
+  padding:8px 14px;
+  border-radius:10px;
+
+  cursor:pointer;
+  font-size:13px;
+}
+
+.read-btn:hover,
+.delete-btn:hover{
+  opacity:.9;
+}
 
   .pagination{
   margin-top:25px;
