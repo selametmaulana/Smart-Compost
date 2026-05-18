@@ -28,7 +28,7 @@
         <!-- MENU -->
         <ul class="nav-menu">
 
-        <li class="active">
+        <li class="beranda">
             <House size="18" />
             Beranda
         </li>
