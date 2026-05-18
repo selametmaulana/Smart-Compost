@@ -29,6 +29,7 @@
         <ul class="nav-menu">
 
         <li class="active">
+            <House size="18" />
             Beranda
         </li>
 
@@ -733,12 +734,12 @@ onMounted(() => {
   }
   
   .active{
-    color:#4CAF50;
     position:relative;
   }
   
   .active::after{
     content:'';
+    display: none;
     position:absolute;
     bottom:-14px;
     left:0;
