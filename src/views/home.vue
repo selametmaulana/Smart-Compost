@@ -734,8 +734,11 @@ onMounted(() => {
   }
   
   .active{
-    position:relative;
-  }
+  position: relative;
+  background: transparent !important;
+  color: #000;
+  padding: 0 !important;
+}
   
   .active::after{
     content:'';
