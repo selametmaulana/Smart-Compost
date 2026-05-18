@@ -223,7 +223,6 @@
     <th>{{ t.compost_hum }}</th>
     <th>{{ t.air_hum }}</th>
     <th>{{ t.status }}</th>
-    <th>{{ t.description }}</th>
     <th>{{ t.action }}</th>
   </tr>
 
@@ -272,10 +271,7 @@
     </td>
 
     <!-- KETERANGAN -->
-    <td>
-      {{ t.stable_condition }}
-    </td>
-
+    
     <!-- AKSI -->
     <td>
 
@@ -486,11 +482,14 @@ const reversed =
 return {
 
   labels: reversed.map(item =>
-    new Date(item.created_at)
-      .toLocaleTimeString('id-ID', {
-        hour: '2-digit',
-        minute: '2-digit'
-      })
+  new Date(item.created_at)
+    .toLocaleString('id-ID', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
   ),
 
   datasets: [
