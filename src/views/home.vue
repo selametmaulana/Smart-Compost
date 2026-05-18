@@ -29,7 +29,6 @@
         <ul class="nav-menu">
 
         <li class="active">
-            <House size="18" />
             Beranda
         </li>
 
