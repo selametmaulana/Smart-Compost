@@ -745,7 +745,6 @@ onMounted(() => {
     left:0;
     width:100%;
     height:4px;
-    background:#4CAF50;
     border-radius:20px;
   }
   
