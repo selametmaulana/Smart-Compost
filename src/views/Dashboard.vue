@@ -2765,4 +2765,16 @@ body.dark-mode input:checked + .slider{
 background:#22c55e;
 }
 
+/* MODE LAYOUT DARK */
+body.dark-mode .mode-layout{
+
+background:
+rgba(15,23,42,.55);
+
+border:1px solid rgba(255,255,255,.05);
+
+backdrop-filter:blur(14px);
+
+}
+
 </style>
