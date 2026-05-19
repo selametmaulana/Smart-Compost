@@ -157,9 +157,7 @@
 
             <h4>Rekomendasi</h4>
 
-            <p>
-              Pertahankan kelembapan dan aerasi untuk menjaga kualitas kompos.
-            </p>
+            <p>{{ compostCondition.recommendation }}</p>
           </div>
         </div>
       </div>
@@ -322,8 +320,14 @@
       <div class="device-left">
 
         <div class="actuator-icon fan">
-        <img src="/kipas.png" alt="Kipas"
-        :class="['actuator-img',{ 'fan-spin': fanOn }]"/>
+          <img
+  src="/kipas.png"
+  alt="Kipas"
+  :class="[
+    'actuator-img',
+    { 'fan-spin': fanStatus }
+  ]"
+/>
       </div>
 
         <div>
@@ -759,16 +763,27 @@ const data = JSON.parse(
 )
 
 sensor.value = {
-  suhu_udara: data.suhu_udara ?? 0,
-  suhu_kompos: data.suhu_kompos ?? 0,
-  kelembapan_udara: data.kelembapan_udara ?? 0,
-  kelembapan_kompos: data.kelembapan_kompos ?? 0,
-  status: data.status || 'Normal'
+
+suhu_udara:
+  data.suhu_ruang ?? 0,
+
+suhu_kompos:
+  data.suhu_material ?? 0,
+
+kelembapan_udara:
+  data.kelembapan_udara ?? 0,
+
+kelembapan_kompos:
+  data.kelembapan_kompos ?? 0,
+
+status:
+  data.status || 'Normal'
+
 }
 
 // histori suhu
 temperatureHistory.value.push(
-  data.suhu_kompos ?? 0
+  data.suhu_material ?? 0
 )
 
 // max 7 data
@@ -804,8 +819,6 @@ console.log('❌ MQTT ERROR:', err)
 }) // <-- INI YANG KURANG
 
 
-
-
 const compostCondition = computed(() => {
 
 const temp = sensor.value.suhu_kompos
@@ -820,7 +833,19 @@ if (
   return {
     title: 'Optimal',
     desc:
-      'Proses pengomposan berjalan dengan baik dan stabil.'
+      'Proses pengomposan berjalan dengan baik dan stabil.',
+    recommendation:
+      'Pertahankan kelembapan dan aerasi untuk menjaga kualitas kompos.'
+  }
+}
+
+if (temp < 40) {
+  return {
+    title: 'Suhu Rendah',
+    desc:
+      'Proses pengomposan lambat, tingkatkan aktivitas mikroba.',
+    recommendation:
+      'Tambahkan bahan hijau atau tingkatkan aerasi untuk menaikkan suhu.'
   }
 }
 
@@ -828,7 +853,9 @@ if (temp > 60) {
   return {
     title: 'Terlalu Panas',
     desc:
-      'Kurangi panas dengan menambah aerasi atau membalik kompos.'
+      'Kurangi panas dengan menambah aerasi atau membalik kompos.',
+    recommendation:
+      'Aduk kompos dan kurangi penumpukan panas berlebih.'
   }
 }
 
@@ -836,17 +863,32 @@ if (humidity < 40) {
   return {
     title: 'Terlalu Kering',
     desc:
-      'Tambahkan air agar kelembapan tetap stabil.'
+      'Tambahkan air agar kelembapan tetap stabil.',
+    recommendation:
+      'Siram kompos secukupnya agar mikroba tetap aktif.'
+  }
+}
+
+if (humidity > 70) {
+  return {
+    title: 'Terlalu Basah',
+    desc:
+      'Kurangi kadar air dan tingkatkan aerasi kompos.',
+    recommendation:
+      'Tambahkan bahan kering seperti daun atau sekam.'
   }
 }
 
 return {
   title: 'Perlu Monitoring',
   desc:
-    'Kondisi kompos belum stabil.'
+    'Kondisi kompos belum stabil.',
+  recommendation:
+    'Pantau kondisi kompos secara berkala.'
 }
 
 })
+
 
 // =========================
 // ON UNMOUNTED
