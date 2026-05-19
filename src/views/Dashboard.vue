@@ -1276,14 +1276,11 @@ onMounted(() => {
   width:120px;
   height:120px;
   border-radius:50%;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   margin:auto;
   margin-bottom:24px;
-
   font-size:60px;
   color:white;
 }
@@ -1649,7 +1646,6 @@ input:checked + .slider::before{
 }
 
 /* RECOMMEND */
-
 .recommend-box{
   background:#fff8e8;
   border-radius:25px;
@@ -1659,10 +1655,6 @@ input:checked + .slider::before{
   gap:18px;
 }
 
-.recommend-icon{
-  font-size:38px;
-  color:#f59e0b;
-}
 
 /* RESPONSIVE */
 
@@ -1909,11 +1901,7 @@ input:checked + .slider::before{
 }
 
 /* CHART */
-.chart-card{
-  background:#F1F1F1;
-  border-radius:32px;
-  padding:24px;
-}
+
 
 .chart-top{
   display:flex;
@@ -1949,27 +1937,7 @@ input:checked + .slider::before{
 }
 
 /* STATUS */
-.status-card{
-  background:#F1F1F1;
-  border-radius:32px;
-  padding:28px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
 
-.status-circle{
-  width:120px;
-  height:120px;
-  background:#52B84E;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:white;
-  font-size:56px;
-  margin-bottom:22px;
-}
 
 .status-card h2{
   font-size:36px;
@@ -1985,12 +1953,6 @@ input:checked + .slider::before{
   color:#222;
 }
 
-.recommend-box{
-  width:100%;
-  background:#FAFAFA;
-  border-radius:22px;
-  padding:20px;
-}
 
 .recommend-box h4{
   font-size:24px;
@@ -2002,8 +1964,6 @@ input:checked + .slider::before{
   line-height:1.7;
   color:#333;
 }
-
-
 
 
 /* RESPONSIVE */
