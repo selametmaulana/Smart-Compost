@@ -2451,4 +2451,318 @@ justify-content:space-between;
 
 }
 
+/* =========================
+   DARK MODE COMPLETE
+========================= */
+
+/* BODY */
+body.dark-mode{
+
+background:
+radial-gradient(circle at top left,#0f3d1d,#020617 45%);
+
+color:white;
+
+}
+
+/* LAYOUT */
+body.dark-mode .dashboard-layout,
+body.dark-mode .main-content{
+
+background:transparent;
+
+}
+
+/* =========================
+   GLOBAL CARD
+========================= */
+
+body.dark-mode .sensor-card,
+body.dark-mode .chart-card,
+body.dark-mode .status-card,
+body.dark-mode .recommend-box,
+body.dark-mode .mode-left,
+body.dark-mode .mode-right,
+body.dark-mode .popup-box,
+body.dark-mode .actuator-wrapper,
+body.dark-mode .actuator-card,
+body.dark-mode .device-card,
+body.dark-mode .mode-card,
+body.dark-mode .info-card{
+
+background:
+rgba(15,23,42,.85);
+
+border:1px solid rgba(255,255,255,.05);
+
+color:white;
+
+backdrop-filter:blur(16px);
+
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+body.dark-mode .sidebar{
+
+background:
+linear-gradient(
+180deg,
+#03120a,
+#020617
+);
+
+border:1px solid rgba(0,255,120,.08);
+
+}
+
+body.dark-mode .menu-item:hover{
+background:rgba(255,255,255,.06);
+}
+
+body.dark-mode .menu-item.active{
+
+background:
+linear-gradient(
+90deg,
+#15803d,
+#22c55e
+);
+
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+body.dark-mode .topbar h1{
+color:white;
+}
+
+body.dark-mode .topbar p,
+body.dark-mode .chart-header p,
+body.dark-mode .section-header p{
+color:#94a3b8;
+}
+
+/* =========================
+   SENSOR
+========================= */
+
+body.dark-mode .sensor-info h4,
+body.dark-mode .sensor-card h3{
+color:#cbd5e1;
+}
+
+body.dark-mode .sensor-info p{
+color:#22c55e;
+}
+
+body.dark-mode .sensor-card h1,
+body.dark-mode .sensor-card h2{
+color:white;
+}
+
+/* =========================
+   CHART
+========================= */
+
+body.dark-mode .chart-btn,
+body.dark-mode .day-btn{
+
+background:#1e293b;
+color:white;
+
+}
+
+body.dark-mode .grid-line{
+stroke:#334155;
+}
+
+body.dark-mode .y-labels,
+body.dark-mode .x-labels{
+color:#94a3b8;
+}
+
+body.dark-mode .temp-text{
+fill:#4ade80;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+body.dark-mode .status-card h2{
+color:white;
+}
+
+body.dark-mode .status-desc{
+color:#cbd5e1;
+}
+
+/* RECOMMEND CARD */
+body.dark-mode .recommend-card{
+
+background:#07130c;
+
+border:2px dashed rgba(34,197,94,.25);
+
+}
+
+body.dark-mode .recommend-card h4{
+color:#4ade80;
+}
+
+body.dark-mode .recommend-card p{
+color:#cbd5e1;
+}
+
+/* =========================
+   MODE CARD
+========================= */
+
+body.dark-mode .mode-card p{
+color:#94a3b8;
+}
+
+body.dark-mode .mode-card.active{
+
+background:
+linear-gradient(
+135deg,
+#15803d,
+#22c55e
+);
+
+color:white;
+
+}
+
+body.dark-mode .mode-card.active p{
+color:white;
+}
+
+/* =========================
+   CURRENT MODE
+========================= */
+
+body.dark-mode .current-mode-box{
+
+background:#07130c;
+
+border:1px solid rgba(34,197,94,.15);
+
+}
+
+body.dark-mode .current-mode-box p{
+color:#94a3b8;
+}
+
+/* =========================
+   DEVICE CARD
+========================= */
+
+body.dark-mode .device-card h3{
+color:white;
+}
+
+body.dark-mode .device-card p,
+body.dark-mode .device-card span{
+color:#94a3b8;
+}
+
+/* =========================
+   SECURITY
+========================= */
+
+body.dark-mode .security-box{
+
+background:#07130c;
+
+border:1px solid rgba(34,197,94,.15);
+
+}
+
+body.dark-mode .security-box h3{
+color:white;
+}
+
+body.dark-mode .security-box p{
+color:#94a3b8;
+}
+
+/* =========================
+   INFO CARD
+========================= */
+
+body.dark-mode .info-card p,
+body.dark-mode .info-card li{
+color:#cbd5e1;
+}
+
+body.dark-mode .info-title h2{
+color:white;
+}
+
+/* =========================
+   RECOMMEND BOX
+========================= */
+
+body.dark-mode .recommend-box{
+
+background:#1e293b;
+
+border:1px solid rgba(255,255,255,.05);
+
+}
+
+body.dark-mode .recommend-box h3,
+body.dark-mode .recommend-box h4{
+color:white;
+}
+
+body.dark-mode .recommend-box p{
+color:#cbd5e1;
+}
+
+/* =========================
+   POPUP
+========================= */
+
+body.dark-mode .popup-box{
+background:#0f172a;
+color:white;
+}
+
+body.dark-mode .popup-box p{
+color:#cbd5e1;
+}
+
+/* =========================
+   ACTUATOR
+========================= */
+
+body.dark-mode .actuator-left h4{
+color:white;
+}
+
+body.dark-mode .actuator-left p,
+body.dark-mode .actuator-header p{
+color:#94a3b8;
+}
+
+/* =========================
+   SWITCH
+========================= */
+
+body.dark-mode .slider{
+background:#334155;
+}
+
+body.dark-mode input:checked + .slider{
+background:#22c55e;
+}
+
 </style>
