@@ -764,11 +764,11 @@ const data = JSON.parse(
 
 sensor.value = {
 
-suhu_udara:
-  data.suhu_ruang ?? 0,
+suhu_ruang:
+  data.suhu_udara ?? 0,
 
-suhu_kompos:
-  data.suhu_material ?? 0,
+suhu_material:
+  data.suhu_kompos ?? 0,
 
 kelembapan_udara:
   data.kelembapan_udara ?? 0,
