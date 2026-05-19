@@ -1236,11 +1236,9 @@ onMounted(() => {
   position:absolute;
   left:0;
   top:10px;
-
   display:flex;
   flex-direction:column;
   gap:18px;
-
   color:#666;
   font-size:14px;
 }
@@ -1250,7 +1248,6 @@ onMounted(() => {
   justify-content:space-around;
   margin-left:70px;
   margin-top:-15px;
-
   color:#666;
   font-size:14px;
 }
@@ -1270,6 +1267,10 @@ onMounted(() => {
   border-radius:30px;
   padding:30px;
   text-align:center;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
 }
 
 .status-circle{
@@ -1302,36 +1303,42 @@ onMounted(() => {
 }
 
 .status-card h2{
-  font-size:28px;
+  font-size:22px;
   font-weight:800;
   margin-bottom:14px;
+  line-height:1.3;
 }
 
 .status-desc{
-  font-size:18px;
-  line-height:1.6;
-  color:#333;
-  margin-bottom:30px;
+  font-size:15px;
+  line-height:1.7;
+  color:#555;
+  margin-bottom:24px;
 }
 
-/* RECOMMEND */
+/* =========================
+   RECOMMEND
+========================= */
 
 .recommend-card{
   border:2px dashed #b8dfb9;
   border-radius:24px;
-  padding:24px;
+  padding:20px;
   background:#fbfffb;
+  margin-top:auto;
 }
 
 .recommend-left{
   display:flex;
-  gap:18px;
+  align-items:flex-start;
+  gap:14px;
   text-align:left;
 }
 
 .recommend-icon{
-  width:60px;
-  height:60px;
+  min-width:52px;
+  width:52px;
+  height:52px;
   border-radius:50%;
   background:#e7f7e7;
 
@@ -1340,19 +1347,28 @@ onMounted(() => {
   justify-content:center;
 
   color:#43A047;
-  font-size:28px;
+  font-size:24px;
 }
 
 .recommend-card h4{
-  font-size:28px;
+  font-size:22px;
   color:#2e7d32;
-  margin-bottom:10px;
+  margin-bottom:8px;
+  font-weight:700;
 }
 
 .recommend-card p{
-  font-size:18px;
+  font-size:15px;
   line-height:1.7;
-  color:#333;
+  color:#444;
+  margin:0;
+}
+
+.dashboard-bottom{
+  display:grid;
+  grid-template-columns: 2fr 1fr;
+  gap:24px;
+  align-items:stretch;
 }
 
 body{
