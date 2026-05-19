@@ -1834,11 +1834,7 @@ input:checked + .slider::before{
 }
 
 /* MAIN */
-.main-content{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-}
+
 
 /* TOPBAR */
 .topbar{
@@ -1917,8 +1913,6 @@ input:checked + .slider::before{
 }
 
 /* CHART */
-
-
 .chart-top{
   display:flex;
   justify-content:space-between;
