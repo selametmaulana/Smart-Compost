@@ -63,7 +63,7 @@
 
           <div class="sensor-info">
             <h4>Suhu Ruang Komposter</h4>
-            <h2>{{ sensor.suhu_udara }}°C</h2>
+            <h2>{{ sensor.suhu_ruang }}°C</h2>
             <p>{{ sensor.status }}</p>
           </div>
         </div>
@@ -76,7 +76,7 @@
 
           <div class="sensor-info">
             <h4>Suhu Material Kompos</h4>
-            <h2>{{ sensor.suhu_kompos }}°C</h2>
+            <h2>{{ sensor.suhu_material }}°C</h2>
             <p>{{ sensor.status }}</p>
           </div>
         </div>
@@ -783,7 +783,7 @@ status:
 
 // histori suhu
 temperatureHistory.value.push(
-  data.suhu_material ?? 0
+  data.suhu_kompos ?? 0
 )
 
 // max 7 data
@@ -821,7 +821,7 @@ console.log('❌ MQTT ERROR:', err)
 
 const compostCondition = computed(() => {
 
-const temp = sensor.value.suhu_kompos
+const temp = sensor.value.suhu_material
 const humidity = sensor.value.kelembapan_kompos
 
 if (
