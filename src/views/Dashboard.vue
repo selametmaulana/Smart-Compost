@@ -1323,16 +1323,18 @@ onMounted(() => {
 .recommend-card{
   border:2px dashed #b8dfb9;
   border-radius:24px;
-  padding:20px;
+  padding:24px 18px;
   background:#fbfffb;
   margin-top:auto;
+  width:100%;
 }
 
 .recommend-left{
   display:flex;
-  align-items:flex-start;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
   gap:14px;
-  text-align:left;
 }
 
 .recommend-icon{
@@ -1341,19 +1343,17 @@ onMounted(() => {
   height:52px;
   border-radius:50%;
   background:#e7f7e7;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   color:#43A047;
   font-size:24px;
 }
 
 .recommend-card h4{
-  font-size:22px;
+  font-size:18px;
   color:#2e7d32;
-  margin-bottom:8px;
+  margin-bottom:10px;
   font-weight:700;
 }
 
