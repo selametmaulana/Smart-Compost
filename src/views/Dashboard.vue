@@ -1780,8 +1780,14 @@ input:checked + .slider::before{
   min-height:100vh;
   display:flex;
   gap:20px;
-  padding:18px;
-  background:#E9ECE8;
+
+  padding:0; /* HAPUS 18px */
+  background:transparent;
+}
+
+.main-content{
+  flex:1;
+  padding:24px;
 }
 
 /* SIDEBAR */
