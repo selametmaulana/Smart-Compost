@@ -110,57 +110,165 @@
 </div>
 
       <!-- BOTTOM -->
-      <div class="bottom-grid">
-        <!-- CHART -->
-        <div class="chart-card">
-          <div class="chart-header">
+      <!-- =========================
+     BOTTOM GRID
+========================= -->
+<div class="bottom-grid">
 
-            <div>
-              <h3>Grafik Suhu</h3>
-              <p>Data 7 hari terakhir</p>
-            </div>
-            <button>7 Hari</button>
-          </div>
-          <div class="chart-area">
+<!-- CHART -->
+<div class="chart-card">
 
-            <svg
-              viewBox="0 0 600 250"
-              preserveAspectRatio="none"
-              class="chart-svg"
-            >
+  <div class="chart-header">
 
-            <polyline
-  fill="none"
-  stroke="#4CAF50"
-  stroke-width="5"
-  stroke-linecap="round"
-  stroke-linejoin="round"
-  :points="chartPoints"
+    <div>
+      <h3>Grafik Suhu</h3>
+      <p>Data 7 hari terakhir</p>
+    </div>
+
+    <button class="chart-btn">
+      <i class="ri-time-line"></i>
+      7 Hari
+    </button>
+
+  </div>
+
+  <!-- LABEL -->
+  <div class="chart-wrapper">
+
+    <div class="y-labels">
+      <span v-for="(label,index) in yLabels" :key="index">
+  {{ label }}°C
+</span>
+
+</div>
+
+    <!-- SVG -->
+    <svg
+      viewBox="0 0 700 260"
+      class="chart-svg"
+    >
+
+      <!-- GRID -->
+      <line
+  v-for="(label,index) in yLabels"
+  :key="index"
+  x1="70"
+  :y1="30 + (index * 40)"
+  x2="650"
+  :y2="30 + (index * 40)"
+  class="grid-line"
 />
-            </svg>
-          </div>
-        </div>
 
-        <!-- STATUS -->
-        <div class="status-card">
+      <!-- AREA -->
+      <defs>
+        <linearGradient id="tempGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4CAF50" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#4CAF50" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
 
-          <div class="status-circle">
-            <i class="ri-check-line"></i>
-          </div>
+      <path
+        :d="chartArea"
+        fill="url(#tempGradient)"
+      />
 
-          <h2>{{ compostCondition.title }}</h2>
+      <!-- LINE -->
+      <polyline
+        :points="chartPoints"
+        fill="none"
+        stroke="#43A047"
+        stroke-width="4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
 
-<p class="status-desc">
-  {{ compostCondition.desc }}
-</p>
-          <div class="recommend-box">
+      <!-- POINT -->
+      <template
+        v-for="(temp,index) in temperatureHistory"
+        :key="index"
+      >
 
-            <h4>Rekomendasi</h4>
+        <circle
+          :cx="80 + index * 90"
+          :cy="230 - (temp * 4)"
+          r="6"
+          fill="#43A047"
+        />
 
-            <p>{{ compostCondition.recommendation }}</p>
-          </div>
-        </div>
+        <!-- VALUE -->
+        <text
+          :x="80 + index * 90"
+          :y="220 - (temp * 4)"
+          text-anchor="middle"
+          class="temp-text"
+        >
+          {{ temp }}
+        </text>
+
+      </template>
+
+    </svg>
+
+    <!-- X LABEL -->
+    <div class="x-labels">
+
+<span
+  v-for="(label,index) in chartLabels"
+  :key="index"
+>
+  {{ label }}
+</span>
+
+</div>
+
+  </div>
+
+</div>
+
+<!-- STATUS -->
+<div class="status-card">
+
+  <div
+    class="status-circle"
+    :class="statusClass"
+  >
+    <i :class="statusIcon"></i>
+  </div>
+
+  <h2 :class="statusTextClass">
+    {{ compostCondition.title }}
+  </h2>
+
+  <p class="status-desc">
+    {{ compostCondition.desc }}
+  </p>
+
+  <!-- RECOMMEND -->
+  <div class="recommend-card">
+
+    <div class="recommend-left">
+
+      <div class="recommend-icon">
+        <i class="ri-lightbulb-flash-line"></i>
       </div>
+
+      <div>
+
+        <h4>Rekomendasi</h4>
+
+        <p>
+          {{ compostCondition.recommendation }}
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
 
       <!-- =========================
      AKTUATOR MQTT
@@ -730,6 +838,8 @@ onMounted(async () => {
 
   }
 
+  
+
   // =========================
   // MQTT CONNECT
   // =========================
@@ -890,6 +1000,129 @@ return {
 })
 
 
+const statusClass = computed(() => {
+
+const temp = sensor.value.suhu_material
+
+if (temp < 40) return 'green'
+if (temp > 60) return 'red'
+
+return 'green'
+
+})
+
+const statusTextClass = computed(() => {
+
+const temp = sensor.value.suhu_material
+
+if (temp < 40) return 'green-text'
+if (temp > 60) return 'red-text'
+
+return 'green-text'
+
+})
+
+const statusIcon = computed(() => {
+
+const temp = sensor.value.suhu_material
+
+if (temp > 60) {
+  return 'ri-error-warning-line'
+}
+
+return 'ri-check-line'
+
+})
+
+const chartArea = computed(() => {
+
+if (temperatureHistory.value.length === 0) {
+  return ''
+}
+
+let path = ''
+
+temperatureHistory.value.forEach((temp, index) => {
+
+  const x = 80 + index * 90
+  const y = 230 - (temp * 4)
+
+  if (index === 0) {
+    path += `M ${x} ${y}`
+  } else {
+    path += ` L ${x} ${y}`
+  }
+
+})
+
+const lastX =
+  80 + ((temperatureHistory.value.length - 1) * 90)
+
+path += ` L ${lastX} 230`
+path += ` L 80 230 Z`
+
+return path
+
+})
+
+const chartLabels = computed(() => {
+
+const today = new Date()
+
+return temperatureHistory.value.map((_, index) => {
+
+  const date = new Date()
+
+  // mundur sesuai jumlah data
+  date.setDate(
+    today.getDate()
+    - (
+      temperatureHistory.value.length
+      - 1
+      - index
+    )
+  )
+
+  return date.toLocaleDateString(
+    'id-ID',
+    {
+      day: 'numeric',
+      month: 'short'
+    }
+  )
+
+})
+
+})
+
+
+const yLabels = computed(() => {
+
+// ambil suhu tertinggi
+const maxTemp = Math.max(
+  ...temperatureHistory.value,
+  40
+)
+
+// pembulatan ke atas kelipatan 10
+const roundedMax =
+  Math.ceil(maxTemp / 10) * 10
+
+const labels = []
+
+for (
+  let i = roundedMax + 20;
+  i >= 20;
+  i -= 10
+) {
+  labels.push(i)
+}
+
+return labels
+
+})
+
+
 // =========================
 // ON UNMOUNTED
 // =========================
@@ -904,6 +1137,8 @@ onUnmounted(() => {
   }
 
 })
+
+
 
 
 onMounted(() => {
@@ -941,6 +1176,186 @@ onMounted(() => {
   padding:0;
   box-sizing:border-box;
   font-family:'Poppins',sans-serif;
+}
+
+
+/* =========================
+   CHART STYLE
+========================= */
+
+.chart-card{
+  background:#F5F5F5;
+  border-radius:30px;
+  padding:28px;
+}
+
+.chart-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
+}
+
+.chart-header h3{
+  font-size:34px;
+  font-weight:800;
+}
+
+.chart-header p{
+  color:#666;
+  margin-top:4px;
+}
+
+.chart-btn{
+  border:none;
+  background:white;
+  padding:12px 18px;
+  border-radius:14px;
+  font-weight:600;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  cursor:pointer;
+}
+
+.chart-wrapper{
+  position:relative;
+}
+
+.chart-svg{
+  width:100%;
+  height:300px;
+}
+
+.grid-line{
+  stroke:#d7d7d7;
+  stroke-dasharray:6;
+}
+
+.y-labels{
+  position:absolute;
+  left:0;
+  top:10px;
+
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+
+  color:#666;
+  font-size:14px;
+}
+
+.x-labels{
+  display:flex;
+  justify-content:space-around;
+  margin-left:70px;
+  margin-top:-15px;
+
+  color:#666;
+  font-size:14px;
+}
+
+.temp-text{
+  fill:#43A047;
+  font-size:14px;
+  font-weight:700;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status-card{
+  background:#F5F5F5;
+  border-radius:30px;
+  padding:30px;
+  text-align:center;
+}
+
+.status-circle{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  margin:auto;
+  margin-bottom:24px;
+
+  font-size:60px;
+  color:white;
+}
+
+.status-circle.green{
+  background:#4CAF50;
+}
+
+.status-circle.red{
+  background:#ef4444;
+}
+
+.green-text{
+  color:#2e7d32;
+}
+
+.red-text{
+  color:#ef4444;
+}
+
+.status-card h2{
+  font-size:28px;
+  font-weight:800;
+  margin-bottom:14px;
+}
+
+.status-desc{
+  font-size:18px;
+  line-height:1.6;
+  color:#333;
+  margin-bottom:30px;
+}
+
+/* RECOMMEND */
+
+.recommend-card{
+  border:2px dashed #b8dfb9;
+  border-radius:24px;
+  padding:24px;
+  background:#fbfffb;
+}
+
+.recommend-left{
+  display:flex;
+  gap:18px;
+  text-align:left;
+}
+
+.recommend-icon{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  background:#e7f7e7;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:#43A047;
+  font-size:28px;
+}
+
+.recommend-card h4{
+  font-size:28px;
+  color:#2e7d32;
+  margin-bottom:10px;
+}
+
+.recommend-card p{
+  font-size:18px;
+  line-height:1.7;
+  color:#333;
 }
 
 body{
