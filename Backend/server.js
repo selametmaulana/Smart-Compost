@@ -442,7 +442,14 @@ app.put('/devices/:id', async (req, res) => {
     is_active,
     wifi_ssid,
     send_interval,
-    last_calibration
+    last_calibration,
+  
+    temp_min,
+    temp_max,
+  
+    humidity_min,
+    humidity_max
+  
   } = req.body
 
   try {
