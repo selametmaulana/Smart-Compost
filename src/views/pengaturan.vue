@@ -279,33 +279,73 @@
             </div>
   
             <!-- ITEM -->
-            <div class="setting-item">
-              <div class="setting-left">
-                <div class="icon-box blue-bg">
-                  <BadgeInfo size="24" />
-                </div>
-                <div>
-                  <h4>{{ t.device_id }}</h4>
-                  <p>{{ t.Unique_device }}</p>
-                </div>
-              </div>
-              <input type="text"
-              v-model="device.device_id"/>
-            </div>
-  
             <!-- ITEM -->
-            <div class="setting-item">
-              <div class="setting-left">
-                <div class="icon-box green-bg">
-                  <CreditCard size="24" />
-                </div>
-                <div>
-                  <h4>{{ t.device_name }}</h4>
-                  <p>{{ t.name_identification }}</p>
-                </div>
-              </div>
-              <input type="text" v-model="device.device_name"/>
-            </div>
+<div class="setting-item">
+
+<div class="setting-left">
+
+  <div class="icon-box orange-bg">
+    <Thermometer size="24" />
+  </div>
+
+  <div>
+    <h4>Settings Suhu</h4>
+    <p>Atur batas minimum dan maksimum suhu kompos</p>
+  </div>
+
+</div>
+
+<div class="threshold-group">
+
+  <input
+    type="number"
+    placeholder="Min °C"
+    v-model="device.temp_min"
+  />
+
+  <input
+    type="number"
+    placeholder="Max °C"
+    v-model="device.temp_max"
+  />
+
+</div>
+
+</div>
+
+<!-- ITEM -->
+<div class="setting-item">
+
+<div class="setting-left">
+
+  <div class="icon-box blue-bg">
+    <Droplets size="24" />
+  </div>
+
+  <div>
+    <h4>Settings Kelembapan</h4>
+    <p>Atur batas minimum dan maksimum kelembapan kompos</p>
+  </div>
+
+</div>
+
+<div class="threshold-group">
+
+  <input
+    type="number"
+    placeholder="Min %"
+    v-model="device.humidity_min"
+  />
+
+  <input
+    type="number"
+    placeholder="Max %"
+    v-model="device.humidity_max"
+  />
+
+</div>
+
+</div>
   
             <!-- ITEM -->
             <div class="setting-item">
@@ -425,7 +465,13 @@ const notifications = ref([])
 
 const device = ref({
   device_id: 'device1',
-  device_name: '',
+
+  temp_min: 30,
+  temp_max: 60,
+
+  humidity_min: 30,
+  humidity_max: 80,
+
   location: '',
   is_active: true,
   wifi_ssid: '',
@@ -618,7 +664,8 @@ onMounted(() => {
     Power,
     Wifi,
     CloudUpload,
-    SlidersHorizontal
+    SlidersHorizontal,
+    Droplets
   } from 'lucide-vue-next'
 
 
@@ -659,13 +706,19 @@ loading.value = true
 try {
 
   const payload = {
-    device_name: device.value.device_name,
-    location: device.value.location,
-    is_active: device.value.is_active,
-    wifi_ssid: device.value.wifi_ssid,
-    send_interval: Number(device.value.send_interval),
-    last_calibration: device.value.last_calibration
-  }
+
+temp_min: Number(device.value.temp_min),
+temp_max: Number(device.value.temp_max),
+
+humidity_min: Number(device.value.humidity_min),
+humidity_max: Number(device.value.humidity_max),
+
+location: device.value.location,
+is_active: device.value.is_active,
+wifi_ssid: device.value.wifi_ssid,
+send_interval: Number(device.value.send_interval),
+last_calibration: device.value.last_calibration
+}
 
   const res = await fetch(
     `https://smart-compost-production.up.railway.app/devices/${device.value.device_id}`,
@@ -752,6 +805,16 @@ body{
   margin:0;
   padding:0;
   background:#f1f5f9;
+}
+
+.threshold-group{
+  display:flex;
+  gap:10px;
+  width:260px;
+}
+
+.threshold-group input{
+  width:120px;
 }
 
 body.dark-mode{

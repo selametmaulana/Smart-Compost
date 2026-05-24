@@ -112,37 +112,156 @@ const handleNotifications = async (data) => {
 
   const now = Date.now()
 
-  // 🔥 SUHU TINGGI
-  if (data.suhu_kompos > 20 && now - lastTempNotif > 60000) {
+  try {
 
-    await pool.query(`
-      INSERT INTO notifications (title, message, type, category)
-      VALUES ($1,$2,$3,$4)
-    `, [
-      'Suhu Tinggi Terdeteksi',
-      `Suhu kompos ${data.suhu_kompos}°C`,
-      'danger',
-      'temperature'
-    ])
+    // =========================
+    // AMBIL SETTINGS DEVICE
+    // =========================
+    const result = await pool.query(`
+      SELECT
+        temp_min,
+        temp_max,
+        humidity_min,
+        humidity_max
+      FROM devices
+      WHERE device_id = 'device1'
+      LIMIT 1
+    `)
 
-    lastTempNotif = now
+    const settings = result.rows[0]
+
+    // =========================
+    // DEFAULT VALUE
+    // =========================
+    const tempMin =
+      settings?.temp_min || 20
+
+    const tempMax =
+      settings?.temp_max || 60
+
+    const humidityMin =
+      settings?.humidity_min || 30
+
+    const humidityMax =
+      settings?.humidity_max || 80
+
+    // =========================
+    // 🔥 SUHU TERLALU TINGGI
+    // =========================
+    if (
+      data.suhu_kompos > tempMax &&
+      now - lastTempNotif > 60000
+    ) {
+
+      await pool.query(`
+        INSERT INTO notifications
+        (
+          title,
+          message,
+          type,
+          category
+        )
+        VALUES ($1,$2,$3,$4)
+      `, [
+        'Suhu Kompos Terlalu Tinggi',
+        `Suhu kompos ${data.suhu_kompos}°C`,
+        'danger',
+        'temperature'
+      ])
+
+      lastTempNotif = now
+    }
+
+    // =========================
+    // 🧊 SUHU TERLALU RENDAH
+    // =========================
+    if (
+      data.suhu_kompos < tempMin &&
+      now - lastTempNotif > 60000
+    ) {
+
+      await pool.query(`
+        INSERT INTO notifications
+        (
+          title,
+          message,
+          type,
+          category
+        )
+        VALUES ($1,$2,$3,$4)
+      `, [
+        'Suhu Kompos Terlalu Rendah',
+        `Suhu kompos ${data.suhu_kompos}°C`,
+        'warning',
+        'temperature'
+      ])
+
+      lastTempNotif = now
+    }
+
+    // =========================
+    // 💧 KELEMBAPAN RENDAH
+    // =========================
+    if (
+      data.kelembapan_kompos < humidityMin &&
+      now - lastHumidityNotif > 60000
+    ) {
+
+      await pool.query(`
+        INSERT INTO notifications
+        (
+          title,
+          message,
+          type,
+          category
+        )
+        VALUES ($1,$2,$3,$4)
+      `, [
+        'Kelembapan Kompos Rendah',
+        `Kelembapan ${data.kelembapan_kompos}%`,
+        'warning',
+        'humidity'
+      ])
+
+      lastHumidityNotif = now
+    }
+
+    // =========================
+    // 💦 KELEMBAPAN TERLALU TINGGI
+    // =========================
+    if (
+      data.kelembapan_kompos > humidityMax &&
+      now - lastHumidityNotif > 60000
+    ) {
+
+      await pool.query(`
+        INSERT INTO notifications
+        (
+          title,
+          message,
+          type,
+          category
+        )
+        VALUES ($1,$2,$3,$4)
+      `, [
+        'Kelembapan Kompos Terlalu Tinggi',
+        `Kelembapan ${data.kelembapan_kompos}%`,
+        'danger',
+        'humidity'
+      ])
+
+      lastHumidityNotif = now
+    }
+
+  } catch (err) {
+
+    console.log(
+      'NOTIFICATION ERROR:',
+      err.message
+    )
+
   }
 
-  // 💧 KELEMBAPAN RENDAH
-  if (data.kelembapan_kompos < 30 && now - lastHumidityNotif > 60000) {
-
-    await pool.query(`
-      INSERT INTO notifications (title, message, type, category)
-      VALUES ($1,$2,$3,$4)
-    `, [
-      'Kelembapan Rendah',
-      `Kelembapan ${data.kelembapan_kompos}%`,
-      'warning',
-      'humidity'
-    ])
-
-    lastHumidityNotif = now
-  }
 }
 
 
@@ -336,31 +455,53 @@ app.put('/devices/:id', async (req, res) => {
         is_active,
         wifi_ssid,
         send_interval,
+        temp_min,
+        temp_max,
+        humidity_min,
+        humidity_max,
         last_calibration
       )
       VALUES (
-        $1, $2, $3, $4, $5, $6, $7
+        $1,$2,$3,$4,$5,
+        $6,$7,$8,$9,$10,$11
       )
-
+    
       ON CONFLICT (device_id)
-
+    
       DO UPDATE SET
         device_name = EXCLUDED.device_name,
         location = EXCLUDED.location,
         is_active = EXCLUDED.is_active,
         wifi_ssid = EXCLUDED.wifi_ssid,
         send_interval = EXCLUDED.send_interval,
+    
+        temp_min = EXCLUDED.temp_min,
+        temp_max = EXCLUDED.temp_max,
+    
+        humidity_min = EXCLUDED.humidity_min,
+        humidity_max = EXCLUDED.humidity_max,
+    
         last_calibration = EXCLUDED.last_calibration,
+    
         updated_at = NOW()
-
+    
       RETURNING *
     `, [
       id,
-      device_name,
+    
+      device_name || 'ESP32 Smart Compost',
+    
       location,
       is_active,
       wifi_ssid,
       send_interval,
+    
+      temp_min,
+      temp_max,
+    
+      humidity_min,
+      humidity_max,
+    
       last_calibration
     ])
 
