@@ -87,9 +87,9 @@ client.on('message', async (topic, message) => {
     // UPDATE RAM
     sensorData = {
       suhu_ruang: data.suhu_ruang ?? 0,
-  suhu_material: data.suhu_material ?? 0,
-  kelembapan_udara: data.kelembapan_udara ?? 0,
-  kelembapan_kompos: data.kelembapan_kompos ?? 0,
+      suhu_material: data.suhu_material ?? 0,
+      kelembapan_udara: data.kelembapan_udara ?? 0,
+      kelembapan_kompos: data.kelembapan_kompos ?? 0,
       status: data.status || 'AUTO',
       lastSensorTime: Date.now()
     }
@@ -99,7 +99,7 @@ client.on('message', async (topic, message) => {
 
     console.log('📡 MQTT:', sensorData)
 
-    await handleNotifications(data)
+    await handleNotifications(sensorData)
 
   } catch (err) {
     console.log('MQTT ERROR:', err.message)
