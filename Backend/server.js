@@ -134,24 +134,44 @@ const handleNotifications = async (data) => {
     // DEFAULT VALUE
     // =========================
     const tempMin =
-      settings?.temp_min || 20
+      Number(settings?.temp_min || 20)
 
     const tempMax =
-      settings?.temp_max || 60
+      Number(settings?.temp_max || 60)
 
     const humidityMin =
-      settings?.humidity_min || 30
+      Number(settings?.humidity_min || 30)
 
     const humidityMax =
-      settings?.humidity_max || 80
+      Number(settings?.humidity_max || 80)
+
+    // =========================
+    // SENSOR VALUE
+    // =========================
+    const suhuKompos =
+      Number(data.suhu_material)
+
+    const kelembapanKompos =
+      Number(data.kelembapan_kompos)
+
+    console.log({
+      suhuKompos,
+      tempMin,
+      tempMax,
+      kelembapanKompos,
+      humidityMin,
+      humidityMax
+    })
 
     // =========================
     // 🔥 SUHU TERLALU TINGGI
     // =========================
     if (
-      data.suhu_kompos > tempMax &&
+      suhuKompos > tempMax &&
       now - lastTempNotif > 60000
     ) {
+
+      console.log('🔥 NOTIF SUHU TINGGI')
 
       await pool.query(`
         INSERT INTO notifications
@@ -164,7 +184,7 @@ const handleNotifications = async (data) => {
         VALUES ($1,$2,$3,$4)
       `, [
         'Suhu Kompos Terlalu Tinggi',
-        `Suhu kompos ${data.suhu_kompos}°C`,
+        `Suhu kompos ${suhuKompos}°C`,
         'danger',
         'temperature'
       ])
@@ -176,9 +196,11 @@ const handleNotifications = async (data) => {
     // 🧊 SUHU TERLALU RENDAH
     // =========================
     if (
-      data.suhu_kompos < tempMin &&
+      suhuKompos < tempMin &&
       now - lastTempNotif > 60000
     ) {
+
+      console.log('🧊 NOTIF SUHU RENDAH')
 
       await pool.query(`
         INSERT INTO notifications
@@ -191,7 +213,7 @@ const handleNotifications = async (data) => {
         VALUES ($1,$2,$3,$4)
       `, [
         'Suhu Kompos Terlalu Rendah',
-        `Suhu kompos ${data.suhu_kompos}°C`,
+        `Suhu kompos ${suhuKompos}°C`,
         'warning',
         'temperature'
       ])
@@ -203,9 +225,11 @@ const handleNotifications = async (data) => {
     // 💧 KELEMBAPAN RENDAH
     // =========================
     if (
-      data.kelembapan_kompos < humidityMin &&
+      kelembapanKompos < humidityMin &&
       now - lastHumidityNotif > 60000
     ) {
+
+      console.log('💧 NOTIF KELEMBAPAN RENDAH')
 
       await pool.query(`
         INSERT INTO notifications
@@ -218,7 +242,7 @@ const handleNotifications = async (data) => {
         VALUES ($1,$2,$3,$4)
       `, [
         'Kelembapan Kompos Rendah',
-        `Kelembapan ${data.kelembapan_kompos}%`,
+        `Kelembapan ${kelembapanKompos}%`,
         'warning',
         'humidity'
       ])
@@ -227,12 +251,14 @@ const handleNotifications = async (data) => {
     }
 
     // =========================
-    // 💦 KELEMBAPAN TERLALU TINGGI
+    // 💦 KELEMBAPAN TINGGI
     // =========================
     if (
-      data.kelembapan_kompos > humidityMax &&
+      kelembapanKompos > humidityMax &&
       now - lastHumidityNotif > 60000
     ) {
+
+      console.log('💦 NOTIF KELEMBAPAN TINGGI')
 
       await pool.query(`
         INSERT INTO notifications
@@ -245,7 +271,7 @@ const handleNotifications = async (data) => {
         VALUES ($1,$2,$3,$4)
       `, [
         'Kelembapan Kompos Terlalu Tinggi',
-        `Kelembapan ${data.kelembapan_kompos}%`,
+        `Kelembapan ${kelembapanKompos}%`,
         'danger',
         'humidity'
       ])
