@@ -663,6 +663,7 @@ const manualMode = ref(false)
 const isUpdatingFromMqtt = ref(false)
 const notifications = ref([])
 const temperatureHistory = ref([])
+const historyLabels = ref([])
 const lastUpdated = ref('-')
 
 const sensor = ref({
@@ -774,6 +775,7 @@ client.publish(
 
 const fetchNotifications = async () => {
   try {
+
     const res = await fetch(
       'https://smart-compost-production.up.railway.app/notifications'
     )
@@ -783,9 +785,65 @@ const fetchNotifications = async () => {
     notifications.value = data || []
 
   } catch (err) {
+
     console.log('ERROR NOTIF:', err)
+
     notifications.value = []
+
   }
+
+}
+
+
+// =========================
+// FETCH HISTORY
+// =========================
+const fetchHistory = async () => {
+
+  try {
+
+    const res = await fetch(
+      'https://smart-compost-production.up.railway.app/history'
+    )
+
+    const data = await res.json()
+
+    console.log('HISTORY:', data)
+
+    // ambil 7 data terakhir
+    const last7 = data.slice(-7)
+
+    // data suhu
+    temperatureHistory.value =
+      last7.map(item =>
+        Number(item.suhu_material || 0)
+      )
+
+    // label tanggal
+    historyLabels.value =
+      last7.map(item => {
+
+        return new Date(
+          item.created_at
+        ).toLocaleDateString(
+          'id-ID',
+          {
+            day: 'numeric',
+            month: 'short'
+          }
+        )
+
+      })
+
+  } catch (err) {
+
+    console.log(
+      'ERROR HISTORY:',
+      err
+    )
+
+  }
+
 }
 
 // =========================
@@ -797,6 +855,8 @@ onMounted(async () => {
   // CHECK DEVICE
   // =========================
   fetchNotifications()
+
+  fetchHistory()
 
   try {
 
@@ -898,7 +958,11 @@ temperatureHistory.value.push(
 
 // max 7 data
 if (temperatureHistory.value.length > 7) {
-  temperatureHistory.value.shift()
+
+temperatureHistory.value.shift()
+
+historyLabels.value.shift()
+
 }
 
 // waktu update
@@ -1066,33 +1130,7 @@ return path
 })
 
 const chartLabels = computed(() => {
-
-const today = new Date()
-
-return temperatureHistory.value.map((_, index) => {
-
-  const date = new Date()
-
-  // mundur sesuai jumlah data
-  date.setDate(
-    today.getDate()
-    - (
-      temperatureHistory.value.length
-      - 1
-      - index
-    )
-  )
-
-  return date.toLocaleDateString(
-    'id-ID',
-    {
-      day: 'numeric',
-      month: 'short'
-    }
-  )
-
-})
-
+  return historyLabels.value
 })
 
 
