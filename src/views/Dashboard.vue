@@ -800,49 +800,67 @@ const fetchNotifications = async () => {
 // =========================
 const fetchHistory = async () => {
 
-  try {
+try {
 
-    const res = await fetch(
-      'https://smart-compost-production.up.railway.app/history'
-    )
+  const res = await fetch(
+    'https://smart-compost-production.up.railway.app/history'
+  )
 
-    const data = await res.json()
+  const data = await res.json()
 
-    console.log('HISTORY:', data)
+  console.log('HISTORY:', data)
 
-    // ambil 7 data terakhir
-    const last7 = data.slice(-7)
+  // GROUP DATA PER HARI
+  const grouped = {}
 
-    // data suhu
-    temperatureHistory.value =
-      last7.map(item =>
-        Number(item.suhu_material || 0)
+  data.forEach(item => {
+
+    const date =
+      new Date(item.created_at)
+      .toLocaleDateString(
+        'id-ID',
+        {
+          day: 'numeric',
+          month: 'short'
+        }
       )
 
-    // label tanggal
-    historyLabels.value =
-      last7.map(item => {
+    // simpan data terakhir tiap hari
+    grouped[date] = item
 
-        return new Date(
-          item.created_at
-        ).toLocaleDateString(
-          'id-ID',
-          {
-            day: 'numeric',
-            month: 'short'
-          }
-        )
+  })
 
-      })
+  // ambil max 7 hari
+  const dailyData =
+    Object.values(grouped).slice(-7)
 
-  } catch (err) {
-
-    console.log(
-      'ERROR HISTORY:',
-      err
+  // suhu
+  temperatureHistory.value =
+    dailyData.map(item =>
+      Number(item.suhu_material || 0)
     )
 
-  }
+  // label tanggal
+  historyLabels.value =
+    dailyData.map(item =>
+      new Date(item.created_at)
+      .toLocaleDateString(
+        'id-ID',
+        {
+          day: 'numeric',
+          month: 'short'
+        }
+      )
+    )
+
+} catch (err) {
+
+  console.log(
+    'ERROR HISTORY:',
+    err
+  )
+
+}
 
 }
 
