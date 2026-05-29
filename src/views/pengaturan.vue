@@ -176,21 +176,29 @@
 
     <div class="manual-buttons">
 
-      <button
-        class="manual-btn on-btn"
-        @click="device.pump_manual = true"
-      >
-        ON
-      </button>
+<button
+  type="button"
+  class="manual-btn"
+  :class="{
+    'active-on': device.pump_manual
+  }"
+  @click="() => device.pump_manual = true"
+>
+  ON
+</button>
 
-      <button
-        class="manual-btn off-btn"
-        @click="device.pump_manual = false"
-      >
-        OFF
-      </button>
+<button
+  type="button"
+  class="manual-btn"
+  :class="{
+    'active-off': !device.pump_manual
+  }"
+  @click="() => device.pump_manual = false"
+>
+  OFF
+</button>
 
-    </div>
+</div>
 
   </div>
 
@@ -252,21 +260,29 @@
 
     <div class="manual-buttons">
 
-      <button
-        class="manual-btn on-btn"
-        @click="device.fan_manual = true"
-      >
-        ON
-      </button>
+<button
+  type="button"
+  class="manual-btn"
+  :class="{
+    'active-on': device.fan_manual
+  }"
+  @click="() => device.fan_manual = true"
+>
+  ON
+</button>
 
-      <button
-        class="manual-btn off-btn"
-        @click="device.fan_manual = false"
-      >
-        OFF
-      </button>
+<button
+  type="button"
+  class="manual-btn"
+  :class="{
+    'active-off': !device.fan_manual
+  }"
+  @click="() => device.fan_manual = false"
+>
+  OFF
+</button>
 
-    </div>
+</div>
 
   </div>
 
@@ -339,7 +355,12 @@ const device = ref({
   humidity_min: 30,
   humidity_max: 80,
   fan_mode: 'auto',
+  fan_manual: false,
   pump_mode: 'auto',
+  pump_manual: false,
+  pump_humidity_limit: 40,
+  fan_temp_on: 45,
+  fan_temp_off: 40,
   location: '',
   is_active: true,
   wifi_ssid: '',
@@ -585,11 +606,20 @@ humidity_max: Number(device.value.humidity_max),
 pump_mode: device.value.pump_mode,
 fan_mode: device.value.fan_mode,
 
-location: device.value.location,
-is_active: device.value.is_active,
-wifi_ssid: device.value.wifi_ssid,
-send_interval: Number(device.value.send_interval),
-last_calibration: device.value.last_calibration
+pump_manual: device.value.pump_manual,
+fan_manual: device.value.fan_manual,
+
+pump_humidity_threshold:
+  Number(device.value.pump_humidity_threshold),
+
+fan_temp_on:
+  Number(device.value.fan_temp_on),
+
+fan_temp_off:
+  Number(device.value.fan_temp_off),
+
+send_interval:
+  Number(device.value.send_interval)
 }
 
   const res = await fetch(
@@ -822,6 +852,30 @@ body{
 
 .control-column select{
   width:180px;
+}
+
+.manual-buttons{
+  display:flex;
+  gap:10px;
+}
+
+.manual-btn{
+  border:none;
+  padding:12px 18px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+  background:#f1f5f9;
+}
+
+.active-on{
+  background:#22c55e;
+  color:white;
+}
+
+.active-off{
+  background:#ef4444;
+  color:white;
 }
 
 body.dark-mode{
