@@ -209,7 +209,7 @@
 
     <input
       type="number"
-      v-model="pump_humidity_threshold"
+      v-model="device.pump_humidity_threshold"
     />
 
   </div>
