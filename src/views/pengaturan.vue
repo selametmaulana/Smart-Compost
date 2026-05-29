@@ -1,46 +1,28 @@
 <template>
     <div class="settings-page">
-  
-  
       <!-- MAIN -->
       <main class="main-content">
-  
         <!-- TOPBAR -->
         <div class="topbar">
-  
           <div>
-  
             <h1>{{ t.settings }}</h1>
-  
             <p>{{ t.system_desc }}</p>
-  
           </div>
-  
           <div class="top-right">
-  
-  <span class="update-text">
-    ● Terakhir diperbarui:
-    {{ lastUpdated }}
-  </span>
-
-  <div class="notif">
-    <Bell size="20" />
-    <div class="notif-dot">
-      {{ notifications.length }}
-    </div>
-  </div>
-</div>
-    </div>
-
+            <span class="update-text">
+              ● Terakhir diperbarui:
+              {{ lastUpdated }}
+            </span>
+            <div class="notif">
+              <Bell size="20" />
+              <div class="notif-dot">
+                {{ notifications.length }}
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- CONTENT -->
         <div class="settings-grid">
-  
-          <!-- SYSTEM -->
-          <div class="settings-card">
-  
-            
-          </div>
-  
           <!-- IOT -->
           <div class="settings-card">
             <div class="card-header">
@@ -54,76 +36,50 @@
                 </p>
               </div>
             </div>
-  
             <!-- ITEM -->
+            <div class="setting-item">
+              <div class="setting-left">
+                <div class="icon-box orange-bg">
+                  <Thermometer size="24" />
+                </div>
+                <div>
+                  <h4>Settings Suhu</h4>
+                  <p>Atur batas minimum dan maksimum suhu kompos</p>
+                </div>
+              </div>
+              <div class="threshold-group">
+                <input
+                type="number"
+                placeholder="Min °C"
+                v-model="device.temp_min"/>
+                <input
+                type="number"
+                placeholder="Max °C"
+                v-model="device.temp_max"/>
+              </div>
+            </div>
             <!-- ITEM -->
-<div class="setting-item">
-
-<div class="setting-left">
-
-  <div class="icon-box orange-bg">
-    <Thermometer size="24" />
-  </div>
-
-  <div>
-    <h4>Settings Suhu</h4>
-    <p>Atur batas minimum dan maksimum suhu kompos</p>
-  </div>
-
-</div>
-
-<div class="threshold-group">
-
-  <input
-    type="number"
-    placeholder="Min °C"
-    v-model="device.temp_min"
-  />
-
-  <input
-    type="number"
-    placeholder="Max °C"
-    v-model="device.temp_max"
-  />
-
-</div>
-
-</div>
-
-<!-- ITEM -->
-<div class="setting-item">
-
-<div class="setting-left">
-
-  <div class="icon-box blue-bg">
-    <Droplets size="24" />
-  </div>
-
-  <div>
-    <h4>Settings Kelembapan</h4>
-    <p>Atur batas minimum dan maksimum kelembapan kompos</p>
-  </div>
-
-</div>
-
-<div class="threshold-group">
-
-  <input
-    type="number"
-    placeholder="Min %"
-    v-model="device.humidity_min"
-  />
-
-  <input
-    type="number"
-    placeholder="Max %"
-    v-model="device.humidity_max"
-  />
-
-</div>
-
-</div>
-  
+            <div class="setting-item">
+              <div class="setting-left">
+                <div class="icon-box blue-bg">
+                  <Droplets size="24" />
+                </div>
+                <div>
+                  <h4>Settings Kelembapan</h4>
+                  <p>Atur batas minimum dan maksimum kelembapan kompos</p>
+                </div>
+              </div>
+              <div class="threshold-group">
+                <input
+                type="number"
+                placeholder="Min %"
+                v-model="device.humidity_min"/>
+                <input
+                type="number"
+                placeholder="Max %"
+                v-model="device.humidity_max"/>
+              </div>
+            </div>
             <!-- ITEM -->
             <div class="setting-item">
               <div class="setting-left">
@@ -136,9 +92,7 @@
                 </div>
               </div>
               <input type="text" v-model="device.location"/>
-  
             </div>
-  
             <!-- ITEM -->
             <div class="setting-item">
               <div class="setting-left">
@@ -150,84 +104,45 @@
                   <p>{{ t.enable_device }}</p>
                 </div>
               </div>
-              
-              <label class="switch">
-                <input type="checkbox"
-                v-model="device.is_active"/>
-                <span class="slider"></span>
-              </label>
             </div>
-  
-            <!-- ITEM -->
+            <!-- ITEM WIFI-->
             <div class="setting-item">
               <div class="setting-left">
                 <div class="icon-box blue-bg">
                   <Wifi size="24" />
                 </div>
-  
                 <div>
                   <h4>{{ t.wifi }}</h4>
                   <p>{{ t.ssid_wifi }}</p>
                 </div>
               </div>
-  
               <input type="text"
               v-model="device.wifi_ssid"/>
             </div>
-  
             <!-- ITEM -->
             <div class="setting-item">
               <div class="setting-left">
                 <div class="icon-box orange-bg">
                   <CloudUpload size="24" />
                 </div>
-  
                 <div>
                   <h4>{{ t.send_interval }}</h4>
                   <p>{{ t.interval }}</p>
                 </div>
               </div>
-  
               <select v-model="device.send_interval">
                 <option :value="10">10 detik</option>
-<option :value="30">30 detik</option>
-<option :value="60">1 menit</option>
+                <option :value="30">30 detik</option>
+                <option :value="60">1 menit</option>
               </select>
             </div>
-  
-            <!-- ITEM -->
-            <div class="setting-item">
-              <div class="setting-left">
-                <div class="icon-box purple-bg">
-                  <SlidersHorizontal size="24" />
-                </div>
-  
-                <div>
-                  <h4>{{ t.calibration }}</h4>
-                  <p></p>
-                </div>
-              </div>
-  
-              <button
-  class="calibration-btn"
-  @click="handleCalibration"
->
-  {{ t.recalibrate }}
-</button>
-            <p style="margin-top:10px">
-              {{ device.last_calibration || 'Belum pernah' }}
-            </p>
-          </div>
-  
             <!-- BUTTON -->
             <button
-  class="save-btn"
-  @click="saveDevice"
-  :disabled="loading"
->
-  {{ loading ? t.saving : t.save }}
-</button>
-  
+            class="save-btn"
+            @click="saveDevice"
+            :disabled="loading">
+            {{ loading ? t.saving : t.save }}
+          </button>
           </div>
         </div>
       </main>
@@ -237,18 +152,26 @@
   <script setup>
 import { ref, onMounted, computed } from 'vue'
 
+import {
+    Cpu,
+    Bell,
+    Thermometer,
+    MapPin,
+    Power,
+    Wifi,
+    CloudUpload,
+    Droplets
+  } from 'lucide-vue-next'
+
 const loading = ref(false)
 const notifications = ref([])
 
 const device = ref({
   device_id: 'device1',
-
   temp_min: 30,
   temp_max: 60,
-
   humidity_min: 30,
   humidity_max: 80,
-
   location: '',
   is_active: true,
   wifi_ssid: '',
@@ -256,247 +179,64 @@ const device = ref({
   last_calibration: ''
 })
 
-const systemSettings = ref({
-  timezone: 'Asia/Jakarta (WIB)',
-  language: 'Bahasa Indonesia',
-  refresh_interval: '10 detik',
-  theme: 'light',
-  temperature_unit: 'C',
-  date_format: 'DD/MM/YYYY',
-  time_format: '24 Jam'
-})
-
-
-/* =========================
-   TRANSLATION
-========================= */
-
-const translations = {
-  id: {
-    settings: 'Pengaturan',
-    system_pref_desc:'Atur preferensi sistem dan tampilan dashboard',
-    system_desc: 'Kelola sistem dan perangkat IoT SmartCompost',
-    save: 'Simpan Perubahan',
-    saving: 'Menyimpan...',
-    system_settings: 'Pengaturan Sistem',
-    iot_settings: 'Pengaturan Perangkat IoT',
-    timezone: 'Zona Waktu',
-    timezone_desc: 'Pilih zona waktu sistem',
-    language_desc: 'Pilih bahasa tampilan',
-    theme_desc: 'Pilih tema dashboard',
-    temperature_desc: 'Pilih satuan suhu',
-    date_format_desc: 'Pilih format tanggal',
-    time_format_desc: 'Pilih format waktu',
-    language: 'Bahasa',
-    refresh_interval: 'Interval Refresh Data',
-    theme: 'Tema Tampilan',
-    temperature_unit: 'Satuan Suhu',
-    date_format: 'Format Tanggal',
-    time_format: 'Format Waktu',
-    Unique_device:'Identitas unik perangkat',
-    device_id: 'ID Perangkat',
-    device_name: 'Nama Perangkat',
-    name_identification:'Nama untuk identifikasi',
-    name_location:'Lokasi penempatan perangkat',
-    enable_device:'Aktifkan atau nonaktifkan perangkat',
-    device_location: 'Lokasi Perangkat',
-    device_status: 'Status Perangkat',
-    wifi: 'Koneksi WiFi',
-    ssid_wifi:'SSID jaringan WiFi',
-    interval:'Interval pengiriman data ke server',
-    send_interval: 'Interval Kirim Data',
-    calibrate:'Terakhir kalibrasi sensor',
-    calibration: 'Kalibrasi Sensor',
-    recalibrate: 'Kalibrasi Ulang',
-    updated: 'Terakhir diperbarui'
-  },
-
-  en: {
-    settings: 'Settings',
-    system_pref_desc:'Configure system preferences and dashboard appearance',
-    system_desc: 'Manage system and IoT SmartCompost devices',
-    save: 'Save Changes',
-    saving: 'Saving...',
-    system_settings: 'System Settings',
-    iot_settings: 'IoT Device Settings',
-    timezone: 'Timezone',
-    timezone_desc: 'Choose system timezone',
-    language_desc: 'Choose display language',
-    theme_desc: 'Choose dashboard theme',
-    temperature_desc: 'Choose temperature unit',
-    date_format_desc: 'Choose date format',
-    time_format_desc: 'Choose time format',
-    language: 'Language',
-    refresh_interval: 'Data Refresh Interval',
-    theme: 'Display Theme',
-    temperature_unit: 'Temperature Unit',
-    date_format: 'Date Format',
-    time_format: 'Time Format',
-    Unique_device:'Unique device identity',
-    device_id: 'Device ID',
-    device_name: 'Device Name',
-    name_identification:'Name for identification',
-    name_location:'Device placement location',
-    device_location: 'Device Location',
-    device_status: 'Device Status',
-    enable_device:'Enable or disable the device',
-    wifi: 'WiFi Connection',
-    ssid_wifi:'WiFi network SSID',
-    send_interval: 'Data Send Interval',
-    interval:'Data delivery interval to the server',
-    calibration: 'Sensor Calibration',
-    recalibrate: 'Recalibrate',
-    calibrate:'Finally calibrate the sensor',
-    updated: 'Last updated'
-  }
-}
-
-const currentLang = computed(() => {
-
-  return systemSettings.value.language === 'English'
-    ? 'en'
-    : 'id'
-
-})
-
-const t = computed(() => {
-  return translations[currentLang.value]
-})
-
 const lastUpdated = ref(
   new Date().toLocaleString('id-ID')
 )
 
-const saveSystemSettings = () => {
-
-console.log('SYSTEM SETTINGS:', systemSettings.value)
-
-localStorage.setItem(
-  'system_settings',
-  JSON.stringify(systemSettings.value)
-)
-
-// APPLY THEME
-applyTheme(systemSettings.value.theme)
-
-alert(
-  currentLang.value === 'en'
-    ? '✅ Settings saved successfully'
-    : '✅ Pengaturan sistem berhasil disimpan'
-)
-
-}
-
 const applyTheme = (theme) => {
-
 if (theme === 'dark') {
-
   document.body.classList.add('dark-mode')
-
 } else {
-
   document.body.classList.remove('dark-mode')
-
 }
-
 }
 
 onMounted(() => {
 
   const saved =
     localStorage.getItem('system_settings')
-
   if (saved) {
-
     systemSettings.value =
       JSON.parse(saved)
-
     // APPLY THEME SAAT PAGE LOAD
     applyTheme(systemSettings.value.theme)
-
   }
-
   loadDevice()
-
 })
-
-  import {
-    Leaf,
-    LayoutDashboard,
-    Cpu,
-    Files,
-    Bell,
-    Settings,
-    Settings2,
-    Clock3,
-    Globe,
-    RefreshCw,
-    Monitor,
-    Thermometer,
-    Calendar,
-    Clock,
-    BadgeInfo,
-    CreditCard,
-    MapPin,
-    Power,
-    Wifi,
-    CloudUpload,
-    SlidersHorizontal,
-    Droplets
-  } from 'lucide-vue-next'
-
-
 
 const currentDeviceId = ref('device1')
 
 const loadDevice = async () => {
-
   try {
-
     const res = await fetch(
       `https://smart-compost-production.up.railway.app/devices/${currentDeviceId.value}`
     )
-
     const data = await res.json()
-
     if (data) {
-
       device.value = {
         ...device.value,
         ...data
       }
-
     }
-
   } catch (err) {
-
     console.log(err)
-
   }
-
 }
 
 const saveDevice = async () => {
-
 loading.value = true
-
 try {
-
   const payload = {
-
 temp_min: Number(device.value.temp_min),
 temp_max: Number(device.value.temp_max),
-
 humidity_min: Number(device.value.humidity_min),
 humidity_max: Number(device.value.humidity_max),
-
 location: device.value.location,
 is_active: device.value.is_active,
 wifi_ssid: device.value.wifi_ssid,
 send_interval: Number(device.value.send_interval),
 last_calibration: device.value.last_calibration
 }
-
   const res = await fetch(
     `https://smart-compost-production.up.railway.app/devices/${device.value.device_id}`,
     {
@@ -507,58 +247,35 @@ last_calibration: device.value.last_calibration
       body: JSON.stringify(payload)
     }
   )
-
   const data = await res.json()
-
   console.log(data)
-
   if (!res.ok) {
-
     alert('❌ Gagal menyimpan')
     return
-
   }
 
   alert('✅ Device berhasil disimpan')
-
   // =========================
   // REDIRECT KE DASHBOARD
   // =========================
   window.location.href = '/dashboard'
 
 } catch (err) {
-
   console.log(err)
-
   alert('❌ Server error')
-
 } finally {
-
   loading.value = false
-
+}
 }
 
-}
-
-const handleCalibration = async () => {
-
-device.value.last_calibration =
-  new Date().toLocaleString('id-ID')
-
-await saveDevice()
-
-}
 
 const fetchNotifications = async () => {
   try {
     const res = await fetch(
       'https://smart-compost-production.up.railway.app/notifications'
     )
-
     const data = await res.json()
-
     notifications.value = data || []
-
   } catch (err) {
     console.log('ERROR NOTIF:', err)
     notifications.value = []
@@ -566,10 +283,8 @@ const fetchNotifications = async () => {
 }
 
 onMounted(() => {
-
 loadDevice()
 fetchNotifications()
-
 })
   </script>
   
