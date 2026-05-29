@@ -93,18 +93,6 @@
               </div>
               <input type="text" v-model="device.location"/>
             </div>
-            <!-- ITEM -->
-            <div class="setting-item">
-              <div class="setting-left">
-                <div class="icon-box green-bg">
-                  <Power size="24" />
-                </div>
-                <div>
-                  <h4>{{ t.device_status }}</h4>
-                  <p>{{ t.enable_device }}</p>
-                </div>
-              </div>
-            </div>
             <!-- ITEM WIFI-->
             <div class="setting-item">
               <div class="setting-left">
