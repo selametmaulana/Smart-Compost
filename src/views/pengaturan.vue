@@ -89,23 +89,23 @@
 
 <div>
 
-  <h4>Kipas</h4>
+<h4>Kipas</h4>
 
-  <p>
-    ON jika suhu kompos
+<p>
+  ON jika suhu kompos
 
-    <span class="green-text">
-      < {{ device.fan_temp_on }}°C
-    </span>
-  </p>
+  <span class="green-text">
+    &gt; {{ device.fan_temp_on }}°C
+  </span>
+</p>
 
-  <p>
-    OFF jika suhu kompos
+<p>
+  OFF jika suhu kompos
 
-    <span class="red-text">
-  &lt; {{ device.fan_temp_off }}°C
-</span>
-  </p>
+  <span class="red-text">
+    &lt; {{ device.fan_temp_off }}°C
+  </span>
+</p>
 
 </div>
 
