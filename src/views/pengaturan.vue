@@ -152,17 +152,6 @@
   <script setup>
 import { ref, onMounted, computed } from 'vue'
 
-import {
-    Cpu,
-    Bell,
-    Thermometer,
-    MapPin,
-    Power,
-    Wifi,
-    CloudUpload,
-    Droplets
-  } from 'lucide-vue-next'
-
 const loading = ref(false)
 const notifications = ref([])
 
@@ -179,64 +168,247 @@ const device = ref({
   last_calibration: ''
 })
 
+const systemSettings = ref({
+  timezone: 'Asia/Jakarta (WIB)',
+  language: 'Bahasa Indonesia',
+  refresh_interval: '10 detik',
+  theme: 'light',
+  temperature_unit: 'C',
+  date_format: 'DD/MM/YYYY',
+  time_format: '24 Jam'
+})
+
+
+/* =========================
+   TRANSLATION
+========================= */
+
+const translations = {
+  id: {
+    settings: 'Pengaturan',
+    system_pref_desc:'Atur preferensi sistem dan tampilan dashboard',
+    system_desc: 'Kelola sistem dan perangkat IoT SmartCompost',
+    save: 'Simpan Perubahan',
+    saving: 'Menyimpan...',
+    system_settings: 'Pengaturan Sistem',
+    iot_settings: 'Pengaturan Perangkat IoT',
+    timezone: 'Zona Waktu',
+    timezone_desc: 'Pilih zona waktu sistem',
+    language_desc: 'Pilih bahasa tampilan',
+    theme_desc: 'Pilih tema dashboard',
+    temperature_desc: 'Pilih satuan suhu',
+    date_format_desc: 'Pilih format tanggal',
+    time_format_desc: 'Pilih format waktu',
+    language: 'Bahasa',
+    refresh_interval: 'Interval Refresh Data',
+    theme: 'Tema Tampilan',
+    temperature_unit: 'Satuan Suhu',
+    date_format: 'Format Tanggal',
+    time_format: 'Format Waktu',
+    Unique_device:'Identitas unik perangkat',
+    device_id: 'ID Perangkat',
+    device_name: 'Nama Perangkat',
+    name_identification:'Nama untuk identifikasi',
+    name_location:'Lokasi penempatan perangkat',
+    enable_device:'Aktifkan atau nonaktifkan perangkat',
+    device_location: 'Lokasi Perangkat',
+    device_status: 'Status Perangkat',
+    wifi: 'Koneksi WiFi',
+    ssid_wifi:'SSID jaringan WiFi',
+    interval:'Interval pengiriman data ke server',
+    send_interval: 'Interval Kirim Data',
+    calibrate:'Terakhir kalibrasi sensor',
+    calibration: 'Kalibrasi Sensor',
+    recalibrate: 'Kalibrasi Ulang',
+    updated: 'Terakhir diperbarui'
+  },
+
+  en: {
+    settings: 'Settings',
+    system_pref_desc:'Configure system preferences and dashboard appearance',
+    system_desc: 'Manage system and IoT SmartCompost devices',
+    save: 'Save Changes',
+    saving: 'Saving...',
+    system_settings: 'System Settings',
+    iot_settings: 'IoT Device Settings',
+    timezone: 'Timezone',
+    timezone_desc: 'Choose system timezone',
+    language_desc: 'Choose display language',
+    theme_desc: 'Choose dashboard theme',
+    temperature_desc: 'Choose temperature unit',
+    date_format_desc: 'Choose date format',
+    time_format_desc: 'Choose time format',
+    language: 'Language',
+    refresh_interval: 'Data Refresh Interval',
+    theme: 'Display Theme',
+    temperature_unit: 'Temperature Unit',
+    date_format: 'Date Format',
+    time_format: 'Time Format',
+    Unique_device:'Unique device identity',
+    device_id: 'Device ID',
+    device_name: 'Device Name',
+    name_identification:'Name for identification',
+    name_location:'Device placement location',
+    device_location: 'Device Location',
+    device_status: 'Device Status',
+    enable_device:'Enable or disable the device',
+    wifi: 'WiFi Connection',
+    ssid_wifi:'WiFi network SSID',
+    send_interval: 'Data Send Interval',
+    interval:'Data delivery interval to the server',
+    calibration: 'Sensor Calibration',
+    recalibrate: 'Recalibrate',
+    calibrate:'Finally calibrate the sensor',
+    updated: 'Last updated'
+  }
+}
+
+const currentLang = computed(() => {
+
+  return systemSettings.value.language === 'English'
+    ? 'en'
+    : 'id'
+
+})
+
+const t = computed(() => {
+  return translations[currentLang.value]
+})
+
 const lastUpdated = ref(
   new Date().toLocaleString('id-ID')
 )
 
-const applyTheme = (theme) => {
-if (theme === 'dark') {
-  document.body.classList.add('dark-mode')
-} else {
-  document.body.classList.remove('dark-mode')
+const saveSystemSettings = () => {
+
+console.log('SYSTEM SETTINGS:', systemSettings.value)
+
+localStorage.setItem(
+  'system_settings',
+  JSON.stringify(systemSettings.value)
+)
+
+// APPLY THEME
+applyTheme(systemSettings.value.theme)
+
+alert(
+  currentLang.value === 'en'
+    ? '✅ Settings saved successfully'
+    : '✅ Pengaturan sistem berhasil disimpan'
+)
+
 }
+
+const applyTheme = (theme) => {
+
+if (theme === 'dark') {
+
+  document.body.classList.add('dark-mode')
+
+} else {
+
+  document.body.classList.remove('dark-mode')
+
+}
+
 }
 
 onMounted(() => {
 
   const saved =
     localStorage.getItem('system_settings')
+
   if (saved) {
+
     systemSettings.value =
       JSON.parse(saved)
+
     // APPLY THEME SAAT PAGE LOAD
     applyTheme(systemSettings.value.theme)
+
   }
+
   loadDevice()
+
 })
+
+  import {
+    Leaf,
+    LayoutDashboard,
+    Cpu,
+    Files,
+    Bell,
+    Settings,
+    Settings2,
+    Clock3,
+    Globe,
+    RefreshCw,
+    Monitor,
+    Thermometer,
+    Calendar,
+    Clock,
+    BadgeInfo,
+    CreditCard,
+    MapPin,
+    Power,
+    Wifi,
+    CloudUpload,
+    SlidersHorizontal,
+    Droplets
+  } from 'lucide-vue-next'
+
+
 
 const currentDeviceId = ref('device1')
 
 const loadDevice = async () => {
+
   try {
+
     const res = await fetch(
       `https://smart-compost-production.up.railway.app/devices/${currentDeviceId.value}`
     )
+
     const data = await res.json()
+
     if (data) {
+
       device.value = {
         ...device.value,
         ...data
       }
+
     }
+
   } catch (err) {
+
     console.log(err)
+
   }
+
 }
 
 const saveDevice = async () => {
+
 loading.value = true
+
 try {
+
   const payload = {
+
 temp_min: Number(device.value.temp_min),
 temp_max: Number(device.value.temp_max),
+
 humidity_min: Number(device.value.humidity_min),
 humidity_max: Number(device.value.humidity_max),
+
 location: device.value.location,
 is_active: device.value.is_active,
 wifi_ssid: device.value.wifi_ssid,
 send_interval: Number(device.value.send_interval),
 last_calibration: device.value.last_calibration
 }
+
   const res = await fetch(
     `https://smart-compost-production.up.railway.app/devices/${device.value.device_id}`,
     {
@@ -247,35 +419,58 @@ last_calibration: device.value.last_calibration
       body: JSON.stringify(payload)
     }
   )
+
   const data = await res.json()
+
   console.log(data)
+
   if (!res.ok) {
+
     alert('❌ Gagal menyimpan')
     return
+
   }
 
   alert('✅ Device berhasil disimpan')
+
   // =========================
   // REDIRECT KE DASHBOARD
   // =========================
   window.location.href = '/dashboard'
 
 } catch (err) {
+
   console.log(err)
+
   alert('❌ Server error')
+
 } finally {
+
   loading.value = false
-}
+
 }
 
+}
+
+const handleCalibration = async () => {
+
+device.value.last_calibration =
+  new Date().toLocaleString('id-ID')
+
+await saveDevice()
+
+}
 
 const fetchNotifications = async () => {
   try {
     const res = await fetch(
       'https://smart-compost-production.up.railway.app/notifications'
     )
+
     const data = await res.json()
+
     notifications.value = data || []
+
   } catch (err) {
     console.log('ERROR NOTIF:', err)
     notifications.value = []
@@ -283,8 +478,10 @@ const fetchNotifications = async () => {
 }
 
 onMounted(() => {
+
 loadDevice()
 fetchNotifications()
+
 })
   </script>
   
