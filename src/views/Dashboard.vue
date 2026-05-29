@@ -810,47 +810,32 @@ try {
 
   console.log('HISTORY:', data)
 
-  // GROUP DATA PER HARI
-  const grouped = {}
+  // ambil 7 data terakhir
+  const latest7 = data
+    .sort(
+      (a, b) =>
+        new Date(a.created_at) -
+        new Date(b.created_at)
+    )
+    .slice(-7)
 
-  data.forEach(item => {
-
-    const date =
-      new Date(item.created_at)
-      .toLocaleDateString(
-        'id-ID',
-        {
-          day: 'numeric',
-          month: 'short'
-        }
-      )
-
-    // simpan data terakhir tiap hari
-    grouped[date] = item
-
-  })
-
-  // ambil max 7 hari
-  const dailyData =
-    Object.values(grouped).slice(-7)
-
-  // suhu
+  // data suhu
   temperatureHistory.value =
-    dailyData.map(item =>
+    latest7.map(item =>
       Number(item.suhu_material || 0)
     )
 
   // label tanggal
   historyLabels.value =
-    dailyData.map(item =>
+    latest7.map(item =>
       new Date(item.created_at)
-      .toLocaleDateString(
-        'id-ID',
-        {
-          day: 'numeric',
-          month: 'short'
-        }
-      )
+        .toLocaleDateString(
+          'id-ID',
+          {
+            day: 'numeric',
+            month: 'short'
+          }
+        )
     )
 
 } catch (err) {
@@ -942,7 +927,7 @@ onMounted(async () => {
   // =========================
   // MQTT MESSAGE
   // =========================
-  client.on('message', (topic, message) => {
+client.on('message', (topic, message) => {
 
     try {
 
@@ -969,10 +954,31 @@ status:
 
 }
 
+
 // histori suhu
 temperatureHistory.value.push(
   data.suhu_kompos ?? 0
 )
+
+// histori tanggal
+historyLabels.value.push(
+  new Date().toLocaleDateString(
+    'id-ID',
+    {
+      day: 'numeric',
+      month: 'short'
+    }
+  )
+)
+
+// max 7 data
+if (temperatureHistory.value.length > 7) {
+
+  temperatureHistory.value.shift()
+
+  historyLabels.value.shift()
+
+}
 
 // max 7 data
 if (temperatureHistory.value.length > 7) {
@@ -1300,12 +1306,22 @@ onMounted(() => {
 }
 
 .x-labels{
-  display:flex;
-  justify-content:space-around;
+  width:580px;
   margin-left:70px;
-  margin-top:-15px;
-  color:#666;
+
+  display:flex;
+  justify-content:space-between;
+
   font-size:14px;
+  color:#666;
+
+  overflow:visible;
+}
+
+.x-labels span{
+  min-width:70px;
+  text-align:center;
+  flex-shrink:0;
 }
 
 .temp-text{
