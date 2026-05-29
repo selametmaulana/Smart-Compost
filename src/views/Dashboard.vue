@@ -810,33 +810,84 @@ try {
 
   console.log('HISTORY:', data)
 
-  // ambil 7 data terakhir
-  const latest7 = data
-    .sort(
-      (a, b) =>
-        new Date(a.created_at) -
-        new Date(b.created_at)
-    )
-    .slice(-7)
+  // =========================
+  // TANGGAL HARI INI
+  // =========================
+  const today = new Date()
 
-  // data suhu
-  temperatureHistory.value =
-    latest7.map(item =>
+  // =========================
+  // 7 HARI KE BELAKANG
+  // =========================
+  const last7Days = []
+
+  for (let i = 6; i >= 0; i--) {
+
+    const d = new Date()
+
+    d.setDate(today.getDate() - i)
+
+    last7Days.push(
+      d.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'short'
+      })
+    )
+
+  }
+
+  // =========================
+  // GROUP DATA PER TANGGAL
+  // =========================
+  const grouped = {}
+
+  data.forEach(item => {
+
+    const label =
+      new Date(item.created_at)
+        .toLocaleDateString('id-ID', {
+          day: 'numeric',
+          month: 'short'
+        })
+
+    if (!grouped[label]) {
+      grouped[label] = []
+    }
+
+    grouped[label].push(
       Number(item.suhu_material || 0)
     )
 
-  // label tanggal
-  historyLabels.value =
-    latest7.map(item =>
-      new Date(item.created_at)
-        .toLocaleDateString(
-          'id-ID',
-          {
-            day: 'numeric',
-            month: 'short'
-          }
+  })
+
+  // =========================
+  // LABEL GRAFIK
+  // =========================
+  historyLabels.value = last7Days
+
+  // =========================
+  // AMBIL RATA2 SUHU
+  // =========================
+  temperatureHistory.value =
+    last7Days.map(day => {
+
+      if (!grouped[day]) return 0
+
+      const total =
+        grouped[day].reduce(
+          (a, b) => a + b,
+          0
         )
-    )
+
+      return Math.round(
+        total / grouped[day].length
+      )
+
+    })
+
+  console.log(
+    historyLabels.value,
+    temperatureHistory.value
+  )
 
 } catch (err) {
 
