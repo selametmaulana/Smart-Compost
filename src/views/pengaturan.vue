@@ -81,31 +81,45 @@
               </div>
             </div>
             <!-- ITEM -->
-            <div class="setting-item">
-              <div class="setting-left">
-                <div class="icon-box purple-bg">
-                  <MapPin size="24" />
-                </div>
-                <div>
-                  <h4>{{ t.device_location }}</h4>
-                  <p>{{ t.name_location }}</p>
-                </div>
-              </div>
-              <input type="text" v-model="device.location"/>
-            </div>
-            <!-- ITEM WIFI-->
+            <!-- POMPA -->
             <div class="setting-item">
               <div class="setting-left">
                 <div class="icon-box blue-bg">
-                  <Wifi size="24" />
+                  <Droplets size="24" />
                 </div>
                 <div>
-                  <h4>{{ t.wifi }}</h4>
-                  <p>{{ t.ssid_wifi }}</p>
+                  <h4>Pompa</h4>
+                  <p>ON jika kelembapan kompos &lt; 40%</p>
                 </div>
               </div>
-              <input type="text"
-              v-model="device.wifi_ssid"/>
+              <div class="control-group">
+                <select v-model="device.pump_mode">
+                  <option value="auto">Otomatis</option>
+                  <option value="on">ON</option>
+                  <option value="off">OFF</option>
+                </select>
+              </div>
+            </div>
+            <!-- ITEM WIFI-->
+            <!-- KIPAS -->
+            <div class="setting-item">
+              <div class="setting-left">
+                <div class="icon-box orange-bg">
+                  <Fan size="24" />
+                </div>
+                <div>
+                  <h4>Kipas</h4>
+                  <p>ON jika suhu &gt; 45°C <br>
+                    OFF jika suhu &lt; 40°C</p>
+                </div>
+              </div>
+              <div class="control-group">
+                <select v-model="device.fan_mode">
+                  <option value="auto">Otomatis</option>
+                  <option value="on">ON</option>
+                  <option value="off">OFF</option>
+                </select>
+              </div>
             </div>
             <!-- ITEM -->
             <div class="setting-item">
@@ -149,6 +163,8 @@ const device = ref({
   temp_max: 60,
   humidity_min: 30,
   humidity_max: 80,
+  fan_mode: 'auto',
+  pump_mode: 'auto',
   location: '',
   is_active: true,
   wifi_ssid: '',
@@ -342,7 +358,8 @@ onMounted(() => {
     Wifi,
     CloudUpload,
     SlidersHorizontal,
-    Droplets
+    Droplets,
+    Fan
   } from 'lucide-vue-next'
 
 
@@ -389,6 +406,9 @@ temp_max: Number(device.value.temp_max),
 
 humidity_min: Number(device.value.humidity_min),
 humidity_max: Number(device.value.humidity_max),
+
+pump_mode: device.value.pump_mode,
+fan_mode: device.value.fan_mode,
 
 location: device.value.location,
 is_active: device.value.is_active,
@@ -482,6 +502,16 @@ body{
   margin:0;
   padding:0;
   background:#f1f5f9;
+}
+
+.control-group{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.control-group select{
+  width:180px;
 }
 
 .threshold-group{
