@@ -125,7 +125,7 @@
     ON jika kelembapan kompos
 
     <span class="red-text">
-      < {{ device.pump_humidity_limit }}%
+      {{ device.pump_humidity_threshold }}%
     </span>
   </p>
 
@@ -209,7 +209,7 @@
 
     <input
       type="number"
-      v-model="device.pump_humidity_limit"
+      v-model="pump_humidity_threshold"
     />
 
   </div>
@@ -358,7 +358,7 @@ const device = ref({
   fan_manual: false,
   pump_mode: 'auto',
   pump_manual: false,
-  pump_humidity_limit: 40,
+  pump_humidity_threshold: 40,
   fan_temp_on: 45,
   fan_temp_off: 40,
   location: '',
