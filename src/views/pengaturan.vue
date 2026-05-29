@@ -646,10 +646,6 @@ send_interval:
 
   alert('✅ Device berhasil disimpan')
 
-  // =========================
-  // REDIRECT KE DASHBOARD
-  // =========================
-  window.location.href = '/dashboard'
 
 } catch (err) {
 
