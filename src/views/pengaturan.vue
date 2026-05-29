@@ -88,83 +88,214 @@
 </div>
 
 <div>
+
   <h4>Kipas</h4>
 
   <p>
     ON jika suhu kompos
+
     <span class="green-text">
-      &gt; 45°C
+      > {{ device.fan_temp_on }}°C
     </span>
   </p>
 
   <p>
     OFF jika suhu kompos
+
     <span class="red-text">
-      &lt; 40°C
+      < {{ device.fan_temp_off }}°C
     </span>
   </p>
-</div>
+
 </div>
 
- <!-- CARD POMPA -->
- <div class="info-card blue-card">
+</div>
+
+<div class="info-card blue-card">
 
 <div class="info-icon">
   <Droplets size="26" />
 </div>
 
 <div>
+
   <h4>Pompa</h4>
 
   <p>
     ON jika kelembapan kompos
 
     <span class="red-text">
-      &lt; 40%
+      < {{ device.pump_humidity_limit }}%
     </span>
   </p>
+
 </div>
+
 </div>
 
             <!-- POMPA -->
             <div class="setting-item">
-              <div class="setting-left">
-                <div class="icon-box blue-bg">
-                  <Droplets size="24" />
-                </div>
-                <div>
-                  <h4>Pompa</h4>
-                  <p>ON jika kelembapan kompos &lt; 40%</p>
-                </div>
-              </div>
-              <div class="control-group">
-                <select v-model="device.pump_mode">
-                  <option value="auto">Otomatis</option>
-                  <option value="on">ON</option>
-                  <option value="off">OFF</option>
-                </select>
-              </div>
-            </div>
+
+<div class="setting-left">
+
+  <div class="icon-box blue-bg">
+    <Droplets size="24" />
+  </div>
+
+  <div>
+    <h4>Pompa</h4>
+
+    <p>
+      Kontrol pompa air untuk menjaga kelembapan kompos
+    </p>
+  </div>
+
+</div>
+
+<div class="device-controls">
+
+  <!-- MODE -->
+  <div class="control-column">
+
+    <label>Status Pompa</label>
+
+    <select v-model="device.pump_mode">
+      <option value="auto">Otomatis</option>
+      <option value="manual">Manual</option>
+    </select>
+
+  </div>
+
+  <!-- MANUAL -->
+  <div
+    v-if="device.pump_mode === 'manual'"
+    class="control-column"
+  >
+
+    <label>Mode Manual</label>
+
+    <div class="manual-buttons">
+
+      <button
+        class="manual-btn on-btn"
+        @click="device.pump_manual = true"
+      >
+        ON
+      </button>
+
+      <button
+        class="manual-btn off-btn"
+        @click="device.pump_manual = false"
+      >
+        OFF
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- SETTING -->
+  <div class="control-column">
+
+    <label>Kelembapan Minimum (%)</label>
+
+    <input
+      type="number"
+      v-model="device.pump_humidity_limit"
+    />
+
+  </div>
+
+</div>
+
+</div>
             <!-- KIPAS -->
             <div class="setting-item">
-              <div class="setting-left">
-                <div class="icon-box orange-bg">
-                  <Fan size="24" />
-                </div>
-                <div>
-                  <h4>Kipas</h4>
-                  <p>ON jika suhu &gt; 45°C <br>
-                    OFF jika suhu &lt; 40°C</p>
-                </div>
-              </div>
-              <div class="control-group">
-                <select v-model="device.fan_mode">
-                  <option value="auto">Otomatis</option>
-                  <option value="on">ON</option>
-                  <option value="off">OFF</option>
-                </select>
-              </div>
-            </div>
+
+<div class="setting-left">
+
+  <div class="icon-box orange-bg">
+    <Fan size="24" />
+  </div>
+
+  <div>
+    <h4>Kipas</h4>
+
+    <p>
+      Kontrol kipas untuk menjaga suhu material kompos
+    </p>
+  </div>
+
+</div>
+
+<div class="device-controls">
+
+  <!-- MODE -->
+  <div class="control-column">
+
+    <label>Status Kipas</label>
+
+    <select v-model="device.fan_mode">
+      <option value="auto">Otomatis</option>
+      <option value="manual">Manual</option>
+    </select>
+
+  </div>
+
+  <!-- MANUAL -->
+  <div
+    v-if="device.fan_mode === 'manual'"
+    class="control-column"
+  >
+
+    <label>Mode Manual</label>
+
+    <div class="manual-buttons">
+
+      <button
+        class="manual-btn on-btn"
+        @click="device.fan_manual = true"
+      >
+        ON
+      </button>
+
+      <button
+        class="manual-btn off-btn"
+        @click="device.fan_manual = false"
+      >
+        OFF
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="control-column">
+
+    <label>Suhu ON (°C)</label>
+
+    <input
+      type="number"
+      v-model="device.fan_temp_on"
+    />
+
+  </div>
+
+  <div class="control-column">
+
+    <label>Suhu OFF (°C)</label>
+
+    <input
+      type="number"
+      v-model="device.fan_temp_off"
+    />
+
+  </div>
+
+</div>
+
+</div>
             <!-- ITEM -->
             <div class="setting-item">
               <div class="setting-left">
@@ -576,14 +707,10 @@ body{
 
 .info-card{
   width:320px;
-
   border-radius:20px;
-
   padding:20px;
-
   display:flex;
   gap:16px;
-
   align-items:flex-start;
 }
 
@@ -641,6 +768,60 @@ body{
 
 .threshold-group input{
   width:120px;
+}
+
+.device-controls{
+  display:flex;
+  gap:20px;
+  align-items:flex-end;
+  flex-wrap:wrap;
+}
+
+.control-column{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.control-column label{
+  font-size:13px;
+  color:#666;
+  font-weight:600;
+}
+
+.manual-buttons{
+  display:flex;
+  gap:10px;
+}
+
+.manual-btn{
+  border:none;
+  padding:12px 18px;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.on-btn{
+  background:#dcfce7;
+  color:#15803d;
+}
+
+.off-btn{
+  background:#fee2e2;
+  color:#dc2626;
+}
+
+.manual-btn:hover{
+  transform:translateY(-2px);
+}
+
+.control-column input{
+  width:140px;
+}
+
+.control-column select{
+  width:180px;
 }
 
 body.dark-mode{
