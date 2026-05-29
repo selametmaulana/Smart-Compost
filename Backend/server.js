@@ -474,7 +474,18 @@ app.put('/devices/:id', async (req, res) => {
     temp_max,
   
     humidity_min,
-    humidity_max
+    humidity_max,
+  
+    pump_mode,
+    fan_mode,
+  
+    pump_manual,
+    fan_manual,
+  
+    pump_humidity_threshold,
+  
+    fan_temp_on,
+    fan_temp_off
   
   } = req.body
 
@@ -488,20 +499,38 @@ app.put('/devices/:id', async (req, res) => {
         is_active,
         wifi_ssid,
         send_interval,
+    
         temp_min,
         temp_max,
+    
         humidity_min,
         humidity_max,
+    
+        pump_mode,
+        fan_mode,
+    
+        pump_manual,
+        fan_manual,
+    
+        pump_humidity_threshold,
+    
+        fan_temp_on,
+        fan_temp_off,
+    
         last_calibration
       )
+    
       VALUES (
         $1,$2,$3,$4,$5,
-        $6,$7,$8,$9,$10,$11
+        $6,$7,$8,$9,$10,
+        $11,$12,$13,$14,
+        $15,$16,$17,$18
       )
     
       ON CONFLICT (device_id)
     
       DO UPDATE SET
+    
         device_name = EXCLUDED.device_name,
         location = EXCLUDED.location,
         is_active = EXCLUDED.is_active,
@@ -514,12 +543,25 @@ app.put('/devices/:id', async (req, res) => {
         humidity_min = EXCLUDED.humidity_min,
         humidity_max = EXCLUDED.humidity_max,
     
+        pump_mode = EXCLUDED.pump_mode,
+        fan_mode = EXCLUDED.fan_mode,
+    
+        pump_manual = EXCLUDED.pump_manual,
+        fan_manual = EXCLUDED.fan_manual,
+    
+        pump_humidity_threshold =
+          EXCLUDED.pump_humidity_threshold,
+    
+        fan_temp_on = EXCLUDED.fan_temp_on,
+        fan_temp_off = EXCLUDED.fan_temp_off,
+    
         last_calibration = EXCLUDED.last_calibration,
     
         updated_at = NOW()
     
       RETURNING *
     `, [
+    
       id,
     
       device_name || 'ESP32 Smart Compost',
@@ -534,6 +576,17 @@ app.put('/devices/:id', async (req, res) => {
     
       humidity_min,
       humidity_max,
+    
+      pump_mode,
+      fan_mode,
+    
+      pump_manual,
+      fan_manual,
+    
+      pump_humidity_threshold,
+    
+      fan_temp_on,
+      fan_temp_off,
     
       last_calibration
     ])
