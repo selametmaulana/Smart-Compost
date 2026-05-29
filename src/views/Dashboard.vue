@@ -1,33 +1,7 @@
 <template>
   <div class="dashboard-layout">
 
-    <!-- POPUP -->
-<div
-  v-if="showPopup"
-  class="popup-overlay"
->
-  <div class="popup-box">
 
-    <div class="popup-icon">
-      <i class="ri-settings-3-line"></i>
-    </div>
-
-    <h2>Pengaturan Diperlukan</h2>
-
-    <p>
-      Sebelum menggunakan dashboard monitoring,
-      silakan lakukan pengaturan sistem terlebih dahulu.
-    </p>
-
-    <button
-      class="popup-btn"
-      @click="goToSettings"
-    >
-      Ke Pengaturan
-    </button>
-
-  </div>
-</div>
     <!-- MAIN -->
     <main class="main-content">
 
@@ -656,7 +630,6 @@ import mqtt from 'mqtt'
 // STATE
 // =========================
 const showSidebar = ref(false)
-const showPopup = ref(false)
 const pumpStatus = ref(false)
 const fanStatus = ref(false)
 const manualMode = ref(false)
@@ -696,16 +669,6 @@ return temperatureHistory.value
   .join(' ')
 
 })
-
-// =========================
-// GO TO SETTINGS
-// =========================
-const goToSettings = () => {
-
-  window.location.href =
-    '/dashboard/pengaturan'
-
-}
 
 
 // =========================
@@ -910,49 +873,7 @@ onMounted(async () => {
   // =========================
   fetchNotifications()
 
-  fetchHistory()
-
-  try {
-
-    const res = await fetch(
-      'https://smart-compost-production.up.railway.app/devices'
-    )
-
-    const devices = await res.json()
-
-    console.log('DEVICES:', devices)
-
-    // CARI DEVICE YANG VALID
-    const validDevice = devices.find(device =>
-      device.device_name &&
-      device.location &&
-      device.wifi_ssid
-    )
-
-    // JIKA BELUM ADA DEVICE VALID
-    if (!validDevice) {
-
-      showPopup.value = true
-
-      console.log('❌ DEVICE BELUM LENGKAP')
-
-    } else {
-
-      showPopup.value = false
-
-      console.log('✅ DEVICE VALID:', validDevice)
-
-    }
-
-  } catch (err) {
-
-    console.log('❌ ERROR DEVICE:', err)
-
-    showPopup.value = true
-
-  }
-
-  
+  fetchHistory()  
 
   // =========================
   // MQTT CONNECT
