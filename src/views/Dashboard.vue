@@ -954,41 +954,6 @@ status:
 
 }
 
-
-// histori suhu
-temperatureHistory.value.push(
-  data.suhu_kompos ?? 0
-)
-
-// histori tanggal
-historyLabels.value.push(
-  new Date().toLocaleDateString(
-    'id-ID',
-    {
-      day: 'numeric',
-      month: 'short'
-    }
-  )
-)
-
-// max 7 data
-if (temperatureHistory.value.length > 7) {
-
-  temperatureHistory.value.shift()
-
-  historyLabels.value.shift()
-
-}
-
-// max 7 data
-if (temperatureHistory.value.length > 7) {
-
-temperatureHistory.value.shift()
-
-historyLabels.value.shift()
-
-}
-
 // waktu update
 lastUpdated.value =
   new Date().toLocaleTimeString('id-ID')
