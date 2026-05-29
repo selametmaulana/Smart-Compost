@@ -95,7 +95,7 @@
     ON jika suhu kompos
 
     <span class="green-text">
-      > {{ device.fan_temp_on }}°C
+      < {{ device.fan_temp_on }}°C
     </span>
   </p>
 
@@ -103,8 +103,8 @@
     OFF jika suhu kompos
 
     <span class="red-text">
-      < {{ device.fan_temp_off }}°C
-    </span>
+  &lt; {{ device.fan_temp_off }}°C
+</span>
   </p>
 
 </div>
