@@ -80,7 +80,52 @@
                 v-model="device.humidity_max"/>
               </div>
             </div>
-            <!-- ITEM -->
+            <!-- CARD KIPAS-->
+            <div class="info-card orange-card">
+
+<div class="info-icon">
+  <Fan size="26" />
+</div>
+
+<div>
+  <h4>Kipas</h4>
+
+  <p>
+    ON jika suhu kompos
+    <span class="green-text">
+      &gt; 45°C
+    </span>
+  </p>
+
+  <p>
+    OFF jika suhu kompos
+    <span class="red-text">
+      &lt; 40°C
+    </span>
+  </p>
+</div>
+</div>
+
+ <!-- CARD POMPA -->
+ <div class="info-card blue-card">
+
+<div class="info-icon">
+  <Droplets size="26" />
+</div>
+
+<div>
+  <h4>Pompa</h4>
+
+  <p>
+    ON jika kelembapan kompos
+
+    <span class="red-text">
+      &lt; 40%
+    </span>
+  </p>
+</div>
+</div>
+
             <!-- POMPA -->
             <div class="setting-item">
               <div class="setting-left">
@@ -100,7 +145,6 @@
                 </select>
               </div>
             </div>
-            <!-- ITEM WIFI-->
             <!-- KIPAS -->
             <div class="setting-item">
               <div class="setting-left">
@@ -512,6 +556,81 @@ body{
 
 .control-group select{
   width:180px;
+}
+
+.special-item{
+  align-items:flex-start;
+}
+
+.input-group{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.input-group label{
+  font-size:14px;
+  color:#666;
+  font-weight:500;
+}
+
+.info-card{
+  width:320px;
+
+  border-radius:20px;
+
+  padding:20px;
+
+  display:flex;
+  gap:16px;
+
+  align-items:flex-start;
+}
+
+.orange-card{
+  background:#fffaf1;
+  border:1px solid #fcd9a4;
+}
+
+.blue-card{
+  background:#f5f9ff;
+  border:1px solid #c8dbff;
+}
+
+.info-icon{
+  font-size:24px;
+}
+
+.info-card h4{
+  margin-bottom:10px;
+}
+
+.info-card p{
+  font-size:15px;
+  margin-bottom:6px;
+}
+
+.green-text{
+  color:#16a34a;
+  font-weight:700;
+}
+
+.red-text{
+  color:#dc2626;
+  font-weight:700;
+}
+
+.threshold-group{
+  display:flex;
+  gap:20px;
+}
+
+.threshold-group input{
+  width:170px;
+}
+
+.control-group select{
+  width:220px;
 }
 
 .threshold-group{
