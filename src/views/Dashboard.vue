@@ -178,436 +178,292 @@
         >
           {{ temp }}
         </text>
-
       </template>
-
     </svg>
 
     <!-- X LABEL -->
     <div class="x-labels">
-
-<span
-  v-for="(label,index) in chartLabels"
-  :key="index"
->
-  {{ label }}
-</span>
-
-</div>
-
+      <span v-for="(label,index) in chartLabels"
+      :key="index"> {{ label }} 
+      </span>
+    </div>
   </div>
-
 </div>
 
 <!-- STATUS -->
 <div class="status-card">
-
   <div
     class="status-circle"
     :class="statusClass"
   >
     <i :class="statusIcon"></i>
   </div>
-
   <h2 :class="statusTextClass">
     {{ compostCondition.title }}
   </h2>
-
   <p class="status-desc">
     {{ compostCondition.desc }}
   </p>
 
   <!-- RECOMMEND -->
   <div class="recommend-card">
-
     <div class="recommend-left">
-
       <div class="recommend-icon">
         <i class="ri-lightbulb-flash-line"></i>
       </div>
-
       <div>
-
         <h4>Rekomendasi</h4>
-
         <p>
           {{ compostCondition.recommendation }}
         </p>
-
       </div>
-
     </div>
-
   </div>
-
 </div>
 
 </div>
-
-      <!-- =========================
-     AKTUATOR MQTT
+<!-- =========================
+    AKTUATOR MQTT
 ========================= -->
 <div class="mode-layout">
 
 <!-- =========================
-     LEFT SIDE
+    LEFT SIDE
 ========================== -->
 <div class="mode-left">
-
   <!-- HEADER -->
   <div class="section-header">
-
     <div class="header-icon green">
       <i class="ri-settings-3-line"></i>
     </div>
-
     <div>
       <h1>Atur Mode</h1>
       <p>
         Pilih mode kontrol sistem komposter
       </p>
     </div>
-
   </div>
 
   <!-- MODE CARD -->
   <div class="mode-card-wrapper">
-
     <!-- MANUAL -->
     <div
       class="mode-card"
-      :class="{ active: manualMode }"
+      :class="{ active: isManualMode }"
       @click="setManual"
     >
-
       <div class="mode-card-icon">
         <i class="ri-hand-heart-line"></i>
       </div>
-
       <h3>Manual</h3>
-
       <p>
         Kontrol penuh oleh pengguna
       </p>
-
     </div>
-
     <!-- AUTO -->
     <div
       class="mode-card"
-      :class="{ active: !manualMode }"
+      :class="{ active: !isManualMode }"
       @click="setAuto"
     >
-
       <div class="mode-card-icon">
         <i class="ri-robot-2-line"></i>
       </div>
-
       <h3>Otomatis</h3>
-
       <p>
         Sistem kontrol otomatis
       </p>
-
     </div>
-
   </div>
 
   <!-- CURRENT MODE -->
   <div class="current-mode-box">
-
     <div class="current-icon">
       <i class="ri-checkbox-circle-line"></i>
     </div>
-
     <div>
-
       <h3>
         Mode saat ini:
         <span>
-          {{
-            manualMode
-              ? 'Manual'
-              : 'Otomatis'
-          }}
+          {{ isManualMode ? 'Manual' : 'Otomatis' }}
         </span>
       </h3>
 
       <p>
         {{
-          manualMode
+          isManualMode
             ? 'Anda memiliki kontrol penuh terhadap perangkat'
             : 'Sistem bekerja otomatis berdasarkan sensor'
         }}
       </p>
-
     </div>
-
   </div>
 
   <!-- MANUAL CONTROL -->
   <div class="manual-control">
-
     <h2>Kontrol Manual Perangkat</h2>
-
     <!-- POMPA -->
     <div class="device-card">
-
       <div class="device-left">
-
         <div class="actuator-icon">
-  <img
-    src="/pompa.png"
-    alt="Pompa"
-    class="actuator-img"
-  >
-</div>
-
+          <img src="/pompa.png" alt="Pompa" class="actuator-img"></div>
         <div>
-
           <h3>Pompa Air</h3>
-
           <p>
             Penyiraman otomatis kompos
           </p>
-
           <span>
             Status:
             <strong>
               {{ pumpStatus ? 'ON' : 'OFF' }}
             </strong>
           </span>
-
         </div>
-
       </div>
-
       <label class="switch">
-
         <input
           type="checkbox"
           v-model="pumpStatus"
-          :disabled="!manualMode"
+          :disabled="!isManualMode"
         >
-
         <span class="slider"></span>
-
       </label>
-
     </div>
-
     <!-- FAN -->
     <div class="device-card">
-
       <div class="device-left">
-
         <div class="actuator-icon fan">
-          <img
-  src="/kipas.png"
-  alt="Kipas"
-  :class="[
-    'actuator-img',
-    { 'fan-spin': fanStatus }
-  ]"
-/>
+          <img src="/kipas.png" alt="Kipas":class="['actuator-img',
+          { 'fan-spin': fanStatus }]"/>
       </div>
-
         <div>
-
           <h3>Kipas Aerasi</h3>
-
           <p>
             Sirkulasi udara komposter
           </p>
-
           <span>
             Status:
             <strong>
               {{ fanStatus ? 'ON' : 'OFF' }}
             </strong>
           </span>
-
         </div>
-
       </div>
-
       <label class="switch">
-
         <input
           type="checkbox"
           v-model="fanStatus"
-          :disabled="!manualMode"
+          :disabled="!isManualMode"
         >
-
         <span class="slider"></span>
-
       </label>
-
     </div>
-
   </div>
 
   <!-- SECURITY -->
   <div class="security-box">
-
     <div class="security-icon">
       <i class="ri-shield-check-line"></i>
     </div>
-
     <div>
-
       <h3>Keamanan Aktif</h3>
-
       <p>
         Perangkat akan otomatis mati jika kondisi tidak aman
       </p>
-
     </div>
-
   </div>
-
 </div>
 
 <!-- =========================
      RIGHT SIDE
 ========================== -->
 <div class="mode-right">
-
   <!-- HEADER -->
   <div class="section-header">
-
     <div class="header-icon blue">
       <i class="ri-information-line"></i>
     </div>
-
     <div>
       <h1>Info Mode</h1>
       <p>
         Penjelasan cara kerja setiap mode
       </p>
     </div>
-
   </div>
-
   <!-- MANUAL INFO -->
   <div class="info-card green-border">
-
     <div class="info-top">
-
       <div class="info-icon green-light">
         <i class="ri-hand-heart-line"></i>
       </div>
-
       <div class="info-content">
-
         <div class="info-title">
-
           <h2>Mode Manual</h2>
-
           <span
-  :class="
-    manualMode
-      ? 'active-badge'
-      : 'inactive-badge'
-  "
->
-  {{
-    manualMode
-      ? 'Aktif'
-      : 'Nonaktif'
-  }}
-</span>
-
+          :class="
+          isManualMode
+          ? 'active-badge'
+          : 'inactive-badge'">
+          {{ isManualMode ? 'Aktif' : 'Nonaktif' }}
+        </span>
         </div>
-
         <p>
           Anda dapat mengontrol perangkat secara langsung.
         </p>
-
       </div>
-
     </div>
-
     <ul>
       <li>Pompa dan kipas dikontrol oleh Anda</li>
       <li>Sistem tidak akan mengubah status perangkat</li>
       <li>Cocok untuk pengujian atau kondisi khusus</li>
       <li>Notifikasi tetap aktif</li>
     </ul>
-
   </div>
 
   <!-- AUTO INFO -->
   <div class="info-card blue-border">
-
     <div class="info-top">
-
       <div class="info-icon blue-light">
         <i class="ri-robot-2-line"></i>
       </div>
-
       <div class="info-content">
-
         <div class="info-title">
-
           <h2>Mode Otomatis</h2>
-
           <span
-  :class="
-    !manualMode
-      ? 'active-badge'
-      : 'inactive-badge'
-  "
->
-  {{
-    !manualMode
-      ? 'Aktif'
-      : 'Nonaktif'
-  }}
-</span>
-
+          :class="
+          !isManualMode
+          ? 'active-badge'
+          : 'inactive-badge'">
+          {{ !isManualMode ? 'Aktif' : 'Nonaktif' }}
+        </span>
         </div>
-
         <p>
           Sistem akan mengontrol perangkat otomatis.
         </p>
-
       </div>
-
     </div>
-
     <ul>
       <li>Pompa dan kipas bekerja otomatis</li>
       <li>Berdasarkan suhu dan kelembapan</li>
       <li>Menghemat waktu dan tenaga</li>
       <li>Sistem akan menyesuaikan kondisi optimal</li>
     </ul>
-
   </div>
 
   <!-- RECOMMEND -->
   <div class="recommend-box">
-
     <div class="recommend-icon">
       <i class="ri-lightbulb-line"></i>
     </div>
-
     <div>
-
       <h3>Rekomendasi</h3>
-
       <p>
         Gunakan mode otomatis untuk hasil pengomposan terbaik.
       </p>
-
     </div>
-
   </div>
-
 </div>
-
 </div>
-
     </main>
   </div>
 </template>
@@ -632,8 +488,8 @@ import mqtt from 'mqtt'
 const showSidebar = ref(false)
 const pumpStatus = ref(false)
 const fanStatus = ref(false)
-const manualMode = ref(false)
 const isUpdatingFromMqtt = ref(false)
+const deviceSettings = ref(null)
 const notifications = ref([])
 const temperatureHistory = ref([])
 const historyLabels = ref([])
@@ -671,45 +527,121 @@ return temperatureHistory.value
 })
 
 
-// =========================
-// SET MODE
-// =========================
-const setManual = () => {
+// TAMBAHKAN DI SINI
+const isManualMode = computed(() => {
+  if (!deviceSettings.value) return false
 
-manualMode.value = true
+  return (
+    deviceSettings.value.pump_mode === 'manual' ||
+    deviceSettings.value.fan_mode === 'manual'
+  )
+})
 
-if(client){
+const loadDeviceSettings = async () => {
 
-  client.publish(
-    'iot/kompos/ta/device1/control',
-    'MANUAL'
+try {
+
+  const res = await fetch(
+    'https://smart-compost-production.up.railway.app/devices/device1'
   )
 
-}
+  const data = await res.json()
 
-}
+  deviceSettings.value = data
 
-const setAuto = () => {
+} catch(err) {
 
-manualMode.value = false
-
-if(client){
-
-  client.publish(
-    'iot/kompos/ta/device1/control',
-    'AUTO'
-  )
+  console.log(err)
 
 }
 
 }
+
+watch(sensor, (val) => {
+
+if(!deviceSettings.value) return
+
+// =====================
+// POMPA AUTO
+// =====================
+
+if(
+  deviceSettings.value.pump_mode === 'auto'
+){
+
+  pumpStatus.value =
+    val.kelembapan_kompos <
+    deviceSettings.value.pump_humidity_threshold
+
+}
+
+// =====================
+// KIPAS AUTO
+// =====================
+
+if(
+  deviceSettings.value.fan_mode === 'auto'
+){
+
+  if(
+    val.suhu_material >=
+    deviceSettings.value.fan_temp_on
+  ){
+
+    fanStatus.value = true
+
+  }
+
+  if(
+    val.suhu_material <=
+    deviceSettings.value.fan_temp_off
+  ){
+
+    fanStatus.value = false
+
+  }
+
+}
+
+}, {
+deep:true
+})
+
+watch(deviceSettings, (val) => {
+
+if(!val) return
+
+// =====================
+// POMPA MANUAL
+// =====================
+
+if(val.pump_mode === 'manual'){
+
+  pumpStatus.value =
+    val.pump_manual
+
+}
+
+// =====================
+// FAN MANUAL
+// =====================
+
+if(val.fan_mode === 'manual'){
+
+  fanStatus.value =
+    val.fan_manual
+
+}
+
+}, {
+deep:true
+})
 
 
 
 watch(pumpStatus, (val) => {
 
 if (isUpdatingFromMqtt.value) return
-if (!manualMode.value) return
 if (!client) return
 
 client.publish(
@@ -724,7 +656,6 @@ client.publish(
 watch(fanStatus, (val) => {
 
 if (isUpdatingFromMqtt.value) return
-if (!manualMode.value) return
 if (!client) return
 
 client.publish(
@@ -873,6 +804,8 @@ onMounted(async () => {
   // =========================
   fetchNotifications()
 
+  loadDeviceSettings()
+
   fetchHistory()  
 
   // =========================
@@ -933,9 +866,6 @@ lastUpdated.value =
   isUpdatingFromMqtt.value = true
   pumpStatus.value = Boolean(data.pompa)
   fanStatus.value = Boolean(data.kipas)
-
-manualMode.value =
-  data.mode === 'MANUAL'
 
   setTimeout(() => {
   isUpdatingFromMqtt.value = false

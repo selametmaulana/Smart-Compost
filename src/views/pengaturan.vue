@@ -644,6 +644,12 @@ send_interval:
 
   }
 
+  // SIMPAN LOCAL
+localStorage.setItem(
+  'device_settings',
+  JSON.stringify(payload)
+)
+
   alert('✅ Device berhasil disimpan')
 
 
