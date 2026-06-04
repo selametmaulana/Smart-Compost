@@ -194,10 +194,12 @@
 <div class="table-actions">
 
   <!-- DOWNLOAD -->
-  <button class="download-btn">
-    <Download size="18" />
-    {{ t.download_data }}
-  </button>
+  <button
+  class="download-btn"
+  @click="downloadExcel"
+>
+  📊 Unduh Dataset K-NN
+</button>
 
   <!-- DELETE ALL -->
   <button
@@ -369,7 +371,130 @@ const endDate = ref('')
 const selectedParameter = ref('Semua Parameter')
 const notifications = ref([])
 
+import * as XLSX from 'xlsx'
 
+const downloadExcel = async () => {
+
+  try {
+
+    const res = await fetch(
+      'https://smart-compost-production.up.railway.app/history'
+    )
+
+    const data = await res.json()
+
+    // =====================
+    // SHEET 1
+    // =====================
+
+    const trainingData = data.map((item, index) => ({
+
+      No: index + 1,
+
+      'Suhu Kompos':
+        item.suhu_material,
+
+      'Kelembapan Kompos':
+        item.kelembapan_kompos,
+
+      'Suhu Udara':
+        item.suhu_udara,
+
+      'Kelembapan Udara':
+        item.kelembapan_udara,
+
+      Kelas:
+        item.status
+
+    }))
+
+    // =====================
+    // SHEET 2
+    // =====================
+
+    const testingData = data.slice(-20).map((item, index) => ({
+
+      No: index + 1,
+
+      'Suhu Kompos':
+        item.suhu_material,
+
+      'Kelembapan Kompos':
+        item.kelembapan_kompos,
+
+      'Suhu Udara':
+        item.suhu_udara,
+
+      'Kelembapan Udara':
+        item.kelembapan_udara
+
+    }))
+
+    // =====================
+    // SHEET 3
+    // =====================
+
+    const hasilKnn = data.slice(-20).map((item, index) => ({
+
+      No: index + 1,
+
+      'Suhu Kompos':
+        item.suhu_material,
+
+      'Kelembapan Kompos':
+        item.kelembapan_kompos,
+
+      K: 3,
+
+      'Hasil Prediksi':
+        item.status
+
+    }))
+
+    const workbook =
+      XLSX.utils.book_new()
+
+    const ws1 =
+      XLSX.utils.json_to_sheet(trainingData)
+
+    const ws2 =
+      XLSX.utils.json_to_sheet(testingData)
+
+    const ws3 =
+      XLSX.utils.json_to_sheet(hasilKnn)
+
+    XLSX.utils.book_append_sheet(
+      workbook,
+      ws1,
+      'Data Training'
+    )
+
+    XLSX.utils.book_append_sheet(
+      workbook,
+      ws2,
+      'Data Testing'
+    )
+
+    XLSX.utils.book_append_sheet(
+      workbook,
+      ws3,
+      'Hasil KNN'
+    )
+
+    XLSX.writeFile(
+      workbook,
+      'SmartCompost_KNN.xlsx'
+    )
+
+  } catch(err) {
+
+    console.log(err)
+
+    alert('Gagal mengunduh data')
+
+  }
+
+}
 
 const translations = {
 id: {
