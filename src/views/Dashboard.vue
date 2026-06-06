@@ -83,73 +83,63 @@
 
 </div>
 
-      <!-- BOTTOM -->
-      <!-- =========================
-     BOTTOM GRID
-========================= -->
+
 <div class="bottom-grid">
 
-
-
-
 <!-- STATUS KOMPOS -->
-<div class="status-card compost-status-card">
+<div class="status-card">
 
-<div class="status-header">
-  <h3>Status Kompos</h3>
-</div>
+<h3>Status Kompos</h3>
 
-<div class="compost-status-content">
+<h2 class="status-title">
+  {{ compostAge >= targetDays
+    ? 'Siap Digunakan'
+    : 'Belum Siap Digunakan' }}
+</h2>
 
-  <div class="status-icon-box">
-    <i class="ri-calendar-check-line"></i>
+<div class="status-detail">
+
+  <div>
+    <span>Usia Kompos</span>
+    <strong>{{ compostAge }} Hari</strong>
   </div>
 
-  <div class="status-info">
-    <h2 class="status-warning">
-      Belum Siap Digunakan
-    </h2>
+  <div>
+    <span>Target Pematangan</span>
+    <strong>{{ targetDays }} Hari</strong>
+  </div>
 
-    <div class="status-detail">
-      <span>Usia Kompos</span>
-      <span>{{ compostAge }} Hari</span>
-    </div>
-
-    <div class="status-detail">
-      <span>Target Pematangan</span>
-      <span>{{ minimumDays }} Hari</span>
-    </div>
-
-    <div class="status-detail">
-      <span>Sisa Waktu</span>
-      <span>{{ remainingDays }} Hari Lagi</span>
-    </div>
-
-    <div class="progress-wrapper">
-      <div class="progress-bar">
-        <div
-          class="progress-fill"
-          :style="{ width: progressPercentage + '%' }"
-        ></div>
-      </div>
-
-      <span class="progress-text">
-        {{ progressPercentage }}%
-      </span>
-    </div>
-
-    <div class="harvest-date">
-      Perkiraan Panen:
-      <strong>
-        {{ estimatedHarvestDate }}
-      </strong>
-    </div>
-
+  <div>
+    <span>Sisa Waktu</span>
+    <strong>{{ remainingDays }} Hari Lagi</strong>
   </div>
 
 </div>
 
+<div class="progress-wrapper">
+
+  <div class="progress-bar">
+    <div
+      class="progress-fill"
+      :style="{
+        width: progressPercent + '%'
+      }"
+    ></div>
+  </div>
+
+  <span>
+    {{ progressPercent }}%
+  </span>
+
 </div>
+
+<div class="harvest-date">
+  Perkiraan Panen:
+  <strong>{{ harvestDate }}</strong>
+</div>
+
+</div>
+
 
 </div>
 <!-- =========================
@@ -1098,80 +1088,65 @@ onMounted(() => {
 }
 
 
-.compost-status-card{
-  background:#fffaf0;
-  border:1px solid #f3d999;
+.status-card{
+  background:#fffdf7;
+  border:1px solid #f0d08a;
   border-radius:20px;
   padding:24px;
+  width:100%;
 }
 
-.status-header h3{
-  margin:0 0 20px;
-  font-size:20px;
+.status-title{
+  color:#f39c12;
+  font-size:36px;
   font-weight:700;
-}
-
-.compost-status-content{
-  display:flex;
-  gap:20px;
-}
-
-.status-icon-box{
-  width:70px;
-  height:70px;
-  border-radius:50%;
-  background:#fff3d6;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:32px;
-  color:#f59e0b;
-}
-
-.status-info{
-  flex:1;
-}
-
-.status-warning{
-  color:#f59e0b;
-  margin-bottom:18px;
+  margin:20px 0;
 }
 
 .status-detail{
   display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.status-detail div{
+  display:flex;
   justify-content:space-between;
-  margin-bottom:10px;
-  font-size:15px;
+}
+
+.status-detail span{
+  color:#555;
+}
+
+.status-detail strong{
+  font-weight:700;
 }
 
 .progress-wrapper{
   display:flex;
   align-items:center;
   gap:10px;
-  margin-top:15px;
+  margin-bottom:20px;
 }
 
 .progress-bar{
   flex:1;
-  height:10px;
-  background:#e5e7eb;
+  height:12px;
+  background:#e5e5e5;
   border-radius:20px;
   overflow:hidden;
 }
 
 .progress-fill{
   height:100%;
-  background:#f59e0b;
+  background:#43a047;
   border-radius:20px;
 }
 
-.progress-text{
-  font-weight:700;
-}
-
 .harvest-date{
-  margin-top:18px;
-  font-size:15px;
+  font-size:16px;
+  font-weight:600;
 }
 
 .recommend-card-new{
