@@ -405,7 +405,7 @@ const device = ref({
   is_active: true,
   wifi_ssid: '',
   send_interval: '10',
-  compost_start_date: null,
+  compost_start_date: "",
   minimum_compost_days: 30,
   last_calibration: ''
 })
