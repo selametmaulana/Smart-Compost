@@ -661,7 +661,15 @@ fan_temp_off:
   Number(device.value.fan_temp_off),
 
 send_interval:
-  Number(device.value.send_interval)
+  Number(device.value.send_interval),
+
+   // TAMBAHAN
+  compost_start_date:
+    device.value.compost_start_date,
+
+  minimum_compost_days:
+    Number(device.value.minimum_compost_days)
+  
 }
 
   const res = await fetch(
