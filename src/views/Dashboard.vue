@@ -446,6 +446,86 @@ return temperatureHistory.value
 
 })
 
+// =========================
+// STATUS KOMPOS
+// =========================
+
+const targetDays = computed(() => {
+
+return Number(
+  deviceSettings.value?.minimum_compost_days || 30
+)
+
+})
+
+const compostAge = computed(() => {
+
+if (
+  !deviceSettings.value?.compost_start_date
+) {
+  return 0
+}
+
+const start = new Date(
+  deviceSettings.value.compost_start_date
+)
+
+const now = new Date()
+
+return Math.floor(
+  (now - start) /
+  (1000 * 60 * 60 * 24)
+)
+
+})
+
+const remainingDays = computed(() => {
+
+return Math.max(
+  targetDays.value - compostAge.value,
+  0
+)
+
+})
+
+const progressPercent = computed(() => {
+
+return Math.min(
+  Math.round(
+    (compostAge.value / targetDays.value) * 100
+  ),
+  100
+)
+
+})
+
+const harvestDate = computed(() => {
+
+if (
+  !deviceSettings.value?.compost_start_date
+) {
+  return '-'
+}
+
+const harvest = new Date(
+  deviceSettings.value.compost_start_date
+)
+
+harvest.setDate(
+  harvest.getDate() + targetDays.value
+)
+
+return harvest.toLocaleDateString(
+  'id-ID',
+  {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  }
+)
+
+})
+
 
 // TAMBAHKAN DI SINI
 const isManualMode = computed(() => {
@@ -608,65 +688,6 @@ const fetchNotifications = async () => {
 
 }
 
-
-const minimumDays = computed(() => {
-  return device.value?.minimum_compost_days || 30
-})
-
-const compostAge = computed(() => {
-
-  if (!device.value?.compost_start_date) return 0
-
-  const start = new Date(device.value.compost_start_date)
-
-  const now = new Date()
-
-  return Math.floor(
-    (now - start) / (1000 * 60 * 60 * 24)
-  )
-
-})
-
-const remainingDays = computed(() => {
-
-  return Math.max(
-    minimumDays.value - compostAge.value,
-    0
-  )
-
-})
-
-const progressPercentage = computed(() => {
-
-  return Math.min(
-    Math.round(
-      (compostAge.value / minimumDays.value) * 100
-    ),
-    100
-  )
-
-})
-
-const estimatedHarvestDate = computed(() => {
-
-  if (!device.value?.compost_start_date)
-    return '-'
-
-  const harvest = new Date(
-    device.value.compost_start_date
-  )
-
-  harvest.setDate(
-    harvest.getDate() + minimumDays.value
-  )
-
-  return harvest.toLocaleDateString('id-ID', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  })
-
-})
 
 
 // =========================
