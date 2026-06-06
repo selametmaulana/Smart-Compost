@@ -485,7 +485,10 @@ app.put('/devices/:id', async (req, res) => {
     pump_humidity_threshold,
   
     fan_temp_on,
-    fan_temp_off
+    fan_temp_off,
+
+    compost_start_date,
+    minimum_compost_days
   
   } = req.body
 
@@ -517,14 +520,17 @@ app.put('/devices/:id', async (req, res) => {
         fan_temp_on,
         fan_temp_off,
     
-        last_calibration
+        last_calibration,
+        compost_start_date,
+        minimum_compost_days
       )
     
       VALUES (
         $1,$2,$3,$4,$5,
         $6,$7,$8,$9,$10,
         $11,$12,$13,$14,
-        $15,$16,$17,$18
+        $15,$16,$17,$18, 
+        $19,$20
       )
     
       ON CONFLICT (device_id)
@@ -556,6 +562,10 @@ app.put('/devices/:id', async (req, res) => {
         fan_temp_off = EXCLUDED.fan_temp_off,
     
         last_calibration = EXCLUDED.last_calibration,
+
+        compost_start_date = EXCLUDED.compost_start_date,
+        minimum_compost_days = EXCLUDED.minimum_compost_days,
+
     
         updated_at = NOW()
     
@@ -588,7 +598,9 @@ app.put('/devices/:id', async (req, res) => {
       fan_temp_on,
       fan_temp_off,
     
-      last_calibration
+      last_calibration,
+      compost_start_date,
+      minimum_compost_days
     ])
 
     res.json(result.rows[0])

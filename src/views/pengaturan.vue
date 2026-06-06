@@ -348,6 +348,27 @@
     v-model="device.compost_start_date"
   />
 </div>
+<div class="setting-item">
+  <div class="setting-left">
+
+    <div class="icon-box green-bg">
+      ⏳
+    </div>
+
+    <div>
+      <h4>Minimal Hari Kompos Matang</h4>
+      <p>Jumlah hari minimum sebelum kompos dianggap siap dipanen</p>
+    </div>
+
+  </div>
+
+  <input
+    type="number"
+    class="date-input"
+    min="1"
+    v-model="device.minimum_compost_days"
+  />
+</div>
             <!-- BUTTON -->
             <button
             class="save-btn"
@@ -384,6 +405,8 @@ const device = ref({
   is_active: true,
   wifi_ssid: '',
   send_interval: '10',
+  compost_start_date: null,
+  minimum_compost_days: 30,
   last_calibration: ''
 })
 
