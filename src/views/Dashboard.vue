@@ -147,9 +147,7 @@
 ========================= -->
 <div class="mode-layout">
 
-<!-- =========================
-    LEFT SIDE
-========================== -->
+
 <div class="mode-left">
   <!-- HEADER -->
   <div class="section-header">
@@ -1675,6 +1673,16 @@ input:checked + .slider::before{
 
 .info-card li{
   margin-bottom:14px;
+}
+
+.mode-right .info-card{
+  display:flex !important;
+  flex-direction:column !important;
+
+  width:100% !important;
+  gap:20px !important;
+
+  align-items:stretch !important;
 }
 
 /* RECOMMEND */
