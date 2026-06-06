@@ -329,6 +329,25 @@
                 <option :value="60">1 menit</option>
               </select>
             </div>
+
+            <!-- TANGGAL MULAI KOMPOS -->
+<div class="setting-item">
+  <div class="setting-left">
+    <div class="icon-box green-bg">
+      📅
+    </div>
+
+    <div>
+      <h4>Tanggal Mulai Pengomposan</h4>
+      <p>Tanggal awal proses pembuatan kompos</p>
+    </div>
+  </div>
+
+  <input
+    type="date"
+    v-model="device.compost_start_date"
+  />
+</div>
             <!-- BUTTON -->
             <button
             class="save-btn"
