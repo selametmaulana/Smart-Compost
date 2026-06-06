@@ -191,34 +191,63 @@
 </div>
 
 <!-- STATUS -->
-<div class="status-card">
-  <div
-    class="status-circle"
-    :class="statusClass"
-  >
-    <i :class="statusIcon"></i>
-  </div>
-  <h2 :class="statusTextClass">
-    {{ compostCondition.title }}
-  </h2>
-  <p class="status-desc">
-    {{ compostCondition.desc }}
-  </p>
+<!-- STATUS KOMPOS -->
+<div class="status-card compost-status-card">
 
-  <!-- RECOMMEND -->
-  <div class="recommend-card">
-    <div class="recommend-left">
-      <div class="recommend-icon">
-        <i class="ri-lightbulb-flash-line"></i>
-      </div>
-      <div>
-        <h4>Rekomendasi</h4>
-        <p>
-          {{ compostCondition.recommendation }}
-        </p>
-      </div>
-    </div>
+<div class="status-header">
+  <h3>Status Kompos</h3>
+</div>
+
+<div class="compost-status-content">
+
+  <div class="status-icon-box">
+    <i class="ri-calendar-check-line"></i>
   </div>
+
+  <div class="status-info">
+    <h2 class="status-warning">
+      Belum Siap Digunakan
+    </h2>
+
+    <div class="status-detail">
+      <span>Usia Kompos</span>
+      <span>{{ compostAge }} Hari</span>
+    </div>
+
+    <div class="status-detail">
+      <span>Target Pematangan</span>
+      <span>{{ minimumDays }} Hari</span>
+    </div>
+
+    <div class="status-detail">
+      <span>Sisa Waktu</span>
+      <span>{{ remainingDays }} Hari Lagi</span>
+    </div>
+
+    <div class="progress-wrapper">
+      <div class="progress-bar">
+        <div
+          class="progress-fill"
+          :style="{ width: progressPercentage + '%' }"
+        ></div>
+      </div>
+
+      <span class="progress-text">
+        {{ progressPercentage }}%
+      </span>
+    </div>
+
+    <div class="harvest-date">
+      Perkiraan Panen:
+      <strong>
+        {{ estimatedHarvestDate }}
+      </strong>
+    </div>
+
+  </div>
+
+</div>
+
 </div>
 
 </div>
@@ -689,6 +718,66 @@ const fetchNotifications = async () => {
 }
 
 
+const minimumDays = computed(() => {
+  return device.value?.minimum_compost_days || 30
+})
+
+const compostAge = computed(() => {
+
+  if (!device.value?.compost_start_date) return 0
+
+  const start = new Date(device.value.compost_start_date)
+
+  const now = new Date()
+
+  return Math.floor(
+    (now - start) / (1000 * 60 * 60 * 24)
+  )
+
+})
+
+const remainingDays = computed(() => {
+
+  return Math.max(
+    minimumDays.value - compostAge.value,
+    0
+  )
+
+})
+
+const progressPercentage = computed(() => {
+
+  return Math.min(
+    Math.round(
+      (compostAge.value / minimumDays.value) * 100
+    ),
+    100
+  )
+
+})
+
+const estimatedHarvestDate = computed(() => {
+
+  if (!device.value?.compost_start_date)
+    return '-'
+
+  const harvest = new Date(
+    device.value.compost_start_date
+  )
+
+  harvest.setDate(
+    harvest.getDate() + minimumDays.value
+  )
+
+  return harvest.toLocaleDateString('id-ID', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  })
+
+})
+
+
 // =========================
 // FETCH HISTORY
 // =========================
@@ -1107,6 +1196,97 @@ onMounted(() => {
   font-family:'Poppins',sans-serif;
 }
 
+
+.compost-status-card{
+  background:#fffaf0;
+  border:1px solid #f3d999;
+  border-radius:20px;
+  padding:24px;
+}
+
+.status-header h3{
+  margin:0 0 20px;
+  font-size:20px;
+  font-weight:700;
+}
+
+.compost-status-content{
+  display:flex;
+  gap:20px;
+}
+
+.status-icon-box{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  background:#fff3d6;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:32px;
+  color:#f59e0b;
+}
+
+.status-info{
+  flex:1;
+}
+
+.status-warning{
+  color:#f59e0b;
+  margin-bottom:18px;
+}
+
+.status-detail{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+  font-size:15px;
+}
+
+.progress-wrapper{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:15px;
+}
+
+.progress-bar{
+  flex:1;
+  height:10px;
+  background:#e5e7eb;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  background:#f59e0b;
+  border-radius:20px;
+}
+
+.progress-text{
+  font-weight:700;
+}
+
+.harvest-date{
+  margin-top:18px;
+  font-size:15px;
+}
+
+.recommend-card-new{
+  margin-top:15px;
+  background:#f5faf5;
+  border:1px solid #d8ead8;
+  border-radius:16px;
+  padding:18px;
+  display:flex;
+  gap:15px;
+}
+
+.recommend-card-new .recommend-icon{
+  font-size:24px;
+  color:#16a34a;
+}
 
 /* =========================
    CHART STYLE
