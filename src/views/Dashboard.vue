@@ -89,6 +89,68 @@
 ========================= -->
 <div class="bottom-grid">
 
+
+
+
+<!-- STATUS KOMPOS -->
+<div class="status-card compost-status-card">
+
+<div class="status-header">
+  <h3>Status Kompos</h3>
+</div>
+
+<div class="compost-status-content">
+
+  <div class="status-icon-box">
+    <i class="ri-calendar-check-line"></i>
+  </div>
+
+  <div class="status-info">
+    <h2 class="status-warning">
+      Belum Siap Digunakan
+    </h2>
+
+    <div class="status-detail">
+      <span>Usia Kompos</span>
+      <span>{{ compostAge }} Hari</span>
+    </div>
+
+    <div class="status-detail">
+      <span>Target Pematangan</span>
+      <span>{{ minimumDays }} Hari</span>
+    </div>
+
+    <div class="status-detail">
+      <span>Sisa Waktu</span>
+      <span>{{ remainingDays }} Hari Lagi</span>
+    </div>
+
+    <div class="progress-wrapper">
+      <div class="progress-bar">
+        <div
+          class="progress-fill"
+          :style="{ width: progressPercentage + '%' }"
+        ></div>
+      </div>
+
+      <span class="progress-text">
+        {{ progressPercentage }}%
+      </span>
+    </div>
+
+    <div class="harvest-date">
+      Perkiraan Panen:
+      <strong>
+        {{ estimatedHarvestDate }}
+      </strong>
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
 </div>
 <!-- =========================
     AKTUATOR MQTT
