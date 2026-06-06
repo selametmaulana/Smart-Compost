@@ -606,28 +606,33 @@ const currentDeviceId = ref('device1')
 
 const loadDevice = async () => {
 
-  try {
+try {
 
-    const res = await fetch(
-      `https://smart-compost-production.up.railway.app/devices/${currentDeviceId.value}`
-    )
+  const res = await fetch(
+    `https://smart-compost-production.up.railway.app/devices/${currentDeviceId.value}`
+  )
 
-    const data = await res.json()
+  const data = await res.json()
 
-    if (data) {
+  if (data) {
 
-      device.value = {
-        ...device.value,
-        ...data
-      }
+    device.value = {
+      ...device.value,
+      ...data,
 
+      compost_start_date:
+        data.compost_start_date
+          ? data.compost_start_date.split('T')[0]
+          : null
     }
 
-  } catch (err) {
-
-    console.log(err)
-
   }
+
+} catch (err) {
+
+  console.log(err)
+
+}
 
 }
 
