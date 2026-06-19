@@ -290,6 +290,17 @@ const handleNotifications = async (data) => {
 
 }
 
+const getLabelKNN = (usiaHari) => {
+
+  if (usiaHari <= 19)
+    return 'Belum Matang'
+
+  if (usiaHari <= 29)
+    return 'Hampir Matang'
+
+  return 'Matang'
+}
+
 
 setInterval(async () => {
 
@@ -308,21 +319,58 @@ setInterval(async () => {
 
     console.log('💾 Saving to database...', latestSensorData)
 
-    await pool.query(`
-      INSERT INTO history_sensor (
-        suhu_ruang,
-        suhu_material,
-        kelembapan_udara,
-        kelembapan_kompos,
-        status
-      ) VALUES ($1,$2,$3,$4,$5)
-    `, [
-      latestSensorData.suhu_ruang,
-      latestSensorData.suhu_material,
-      latestSensorData.kelembapan_udara,
-      latestSensorData.kelembapan_kompos,
-      latestSensorData.status
-    ])
+    // ambil tanggal mulai kompos
+const deviceResult = await pool.query(`
+  SELECT compost_start_date
+  FROM devices
+  WHERE device_id = 'device1'
+  LIMIT 1
+`)
+
+const compostStart =
+  deviceResult.rows[0]?.compost_start_date
+
+let usiaHari = 0
+
+if (compostStart) {
+
+  const start =
+    new Date(compostStart)
+
+  const today =
+    new Date()
+
+  usiaHari =
+    Math.floor(
+      (today - start) /
+      (1000 * 60 * 60 * 24)
+    )
+
+}
+
+const labelKNN =
+  getLabelKNN(usiaHari)
+
+await pool.query(`
+  INSERT INTO history_sensor (
+    suhu_ruang,
+    suhu_material,
+    kelembapan_udara,
+    kelembapan_kompos,
+    status,
+    usia_hari,
+    label_knn
+  )
+  VALUES ($1,$2,$3,$4,$5,$6,$7)
+`, [
+  latestSensorData.suhu_ruang,
+  latestSensorData.suhu_material,
+  latestSensorData.kelembapan_udara,
+  latestSensorData.kelembapan_kompos,
+  latestSensorData.status,
+  usiaHari,
+  labelKNN
+])
 
     console.log('✅ Saved every 1 minute')
 
