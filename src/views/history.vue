@@ -421,7 +421,7 @@ Label:
     // =====================
     // SHEET 2
     // =====================
-    const testingData = data.slice(-20).map((item, index) => ({
+    const testingData = data.slice(0,20).map((item, index) => ({
 
 No: index + 1,
 
@@ -439,7 +439,7 @@ No: index + 1,
     // =====================
     // SHEET 3
     // =====================
-    const hasilKnn = data.slice(-20).map((item, index) => ({
+    const hasilKnn = data.slice(0,20).map((item, index) => ({
 
 No: index + 1,
 
