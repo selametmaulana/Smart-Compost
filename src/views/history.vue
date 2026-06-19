@@ -224,6 +224,8 @@
     <th>{{ t.compost_temp }}</th>
     <th>{{ t.compost_hum }}</th>
     <th>{{ t.air_hum }}</th>
+    <th>Usia Hari</th>
+    <th>Label K-NN</th>
     <th>{{ t.status }}</th>
     <th>{{ t.action }}</th>
   </tr>
@@ -267,12 +269,21 @@
       {{ item.kelembapan_udara }}%
     </td>
 
+    <!-- USIA HARI -->
+<td>
+  {{ item.usia_hari }} Hari
+</td>
+
+<!-- LABEL KNN -->
+<td>
+  {{ item.label_knn }}
+</td>
+
     <!-- STATUS -->
     <td class="status">
       ● {{ item.status }}
     </td>
 
-    <!-- KETERANGAN -->
     
     <!-- AKSI -->
     <td>
@@ -389,67 +400,62 @@ const downloadExcel = async () => {
 
     const trainingData = data.map((item, index) => ({
 
-      No: index + 1,
+No: index + 1,
 
-      'Suhu Kompos':
-        item.suhu_material,
+'Suhu Kompos':
+  item.suhu_material,
 
-      'Kelembapan Kompos':
-        item.kelembapan_kompos,
+'Kelembapan Kompos':
+  item.kelembapan_kompos,
 
-      'Suhu Udara':
-        item.suhu_udara,
+'Usia Hari':
+  getUsiaHari(),
 
-      'Kelembapan Udara':
-        item.kelembapan_udara,
+Label:
+  getLabelKNN(getUsiaHari())
 
-      Kelas:
-        item.status
-
-    }))
+}))
 
     // =====================
     // SHEET 2
     // =====================
-
     const testingData = data.slice(-20).map((item, index) => ({
 
-      No: index + 1,
+No: index + 1,
 
-      'Suhu Kompos':
-        item.suhu_material,
+'Suhu Kompos':
+  item.suhu_material,
 
-      'Kelembapan Kompos':
-        item.kelembapan_kompos,
+'Kelembapan Kompos':
+  item.kelembapan_kompos,
 
-      'Suhu Udara':
-        item.suhu_udara,
+'Usia Hari':
+  getUsiaHari()
 
-      'Kelembapan Udara':
-        item.kelembapan_udara
-
-    }))
-
+}))
+    
     // =====================
     // SHEET 3
     // =====================
-
     const hasilKnn = data.slice(-20).map((item, index) => ({
 
-      No: index + 1,
+No: index + 1,
 
-      'Suhu Kompos':
-        item.suhu_material,
+'Suhu Kompos':
+  item.suhu_material,
 
-      'Kelembapan Kompos':
-        item.kelembapan_kompos,
+'Kelembapan Kompos':
+  item.kelembapan_kompos,
 
-      K: 3,
+'Usia Hari':
+  getUsiaHari(),
 
-      'Hasil Prediksi':
-        item.status
+K: 3,
 
-    }))
+'Hasil Prediksi':
+  getLabelKNN(getUsiaHari())
+
+}))
 
     const workbook =
       XLSX.utils.book_new()
@@ -736,6 +742,39 @@ return new Date(latest)
    HISTORY DATA
 ========================= */
 const histories = ref([])
+
+/* =========================
+   HITUNG USIA KOMPOS
+========================= */
+const tanggalMulaiKompos = new Date('2026-05-19') // sesuaikan
+
+const getUsiaHari = () => {
+
+  const sekarang = new Date()
+
+  const selisih =
+    sekarang - tanggalMulaiKompos
+
+  return Math.floor(
+    selisih / (1000 * 60 * 60 * 24)
+  )
+
+}
+
+/* =========================
+   LABEL KNN BERDASARKAN USIA
+========================= */
+const getLabelKNN = (usiaHari) => {
+
+  if (usiaHari <= 19)
+    return 'Belum Matang'
+
+  if (usiaHari <= 29)
+    return 'Hampir Matang'
+
+  return 'Matang'
+
+}
 
 /* =========================
    PAGINATION
