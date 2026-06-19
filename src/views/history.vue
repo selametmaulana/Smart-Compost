@@ -409,10 +409,12 @@ No: index + 1,
   item.kelembapan_kompos,
 
 'Usia Hari':
-  getUsiaHari(),
+  getUsiaHariByDate(item.created_at),
 
 Label:
-  getLabelKNN(getUsiaHari())
+  getLabelKNN(
+    getUsiaHariByDate(item.created_at)
+  )
 
 }))
 
@@ -746,18 +748,19 @@ const histories = ref([])
 /* =========================
    HITUNG USIA KOMPOS
 ========================= */
-const tanggalMulaiKompos = new Date('2026-05-19') // sesuaikan
+const getUsiaHariByDate = (createdAt) => {
 
-const getUsiaHari = () => {
+const startDate = new Date('2026-05-19')
 
-  const sekarang = new Date()
+const dataDate = new Date(createdAt)
 
-  const selisih =
-    sekarang - tanggalMulaiKompos
-
-  return Math.floor(
-    selisih / (1000 * 60 * 60 * 24)
+const diff =
+  Math.floor(
+    (dataDate - startDate)
+    / (1000 * 60 * 60 * 24)
   )
+
+return diff
 
 }
 
