@@ -432,7 +432,7 @@ No: index + 1,
   item.kelembapan_kompos,
 
 'Usia Hari':
-  getUsiaHari()
+  getUsiaHariByDate(item.created_at)
 
 }))
     
@@ -450,12 +450,14 @@ No: index + 1,
   item.kelembapan_kompos,
 
 'Usia Hari':
-  getUsiaHari(),
+  getUsiaHariByDate(item.created_at),
 
 K: 3,
 
 'Hasil Prediksi':
-  getLabelKNN(getUsiaHari())
+  getLabelKNN(
+    getUsiaHariByDate(item.created_at)
+  )
 
 }))
 
