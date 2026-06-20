@@ -525,6 +525,27 @@ return harvest.toLocaleDateString(
 })
 
 
+const setManual = () => {
+
+if (!client) return
+
+client.publish(
+  'iot/kompos/ta/device1/control',
+  'MANUAL'
+)
+}
+
+const setAuto = () => {
+
+if (!client) return
+
+client.publish(
+  'iot/kompos/ta/device1/control',
+  'AUTO'
+)
+}
+
+
 // TAMBAHKAN DI SINI
 const isManualMode = computed(() => {
   if (!deviceSettings.value) return false
