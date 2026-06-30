@@ -290,45 +290,6 @@
 </button>
 
 </div>
-  
-            <!-- SETTINGS -->
-            <div class="settings-card">
-              <h3>{{ t.notification_settings }}</h3>
-              <div class="setting-item">
-                <div class="setting-left">
-                  <div class="setting-icon green-bg">
-                    <Bell size="20" />
-                  </div>
-                  <span>{{ t.email_notifications }}</span>
-                </div>
-                <span class="active-status">
-                  {{ t.active }}
-                </span>
-              </div>
-              <div class="setting-item">
-                <div class="setting-left">
-                  <div class="setting-icon orange-bg">
-                    <Smartphone size="20" />
-                  </div>
-                  <span>{{ t.whatsapp_notifications }}</span>
-                </div>
-                <span class="active-status">
-                  {{ t.active }}
-                </span>
-              </div>
-              <div class="setting-item">
-                <div class="setting-left">
-                  <div class="setting-icon blue-bg">
-                    <Monitor size="20" />
-                  </div>
-                  <span>{{ t.browser_notifications }}</span>
-                </div>
-                <span class="active-status">
-                  {{ t.active }}
-                </span>
-              </div>
-            </div>
-  
             <!-- INFO -->
             <div class="info-card">
               <div class="info-top">
