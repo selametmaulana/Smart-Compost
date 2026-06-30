@@ -290,16 +290,7 @@
 </button>
 
 </div>
-            <!-- INFO -->
-            <div class="info-card">
-              <div class="info-top">
-                <Info size="24" />
-                <h4>{{ t.info }}</h4>
-              </div>
-              <p>
-                {{ t.info_text }}
-              </p>
-            </div>
+            
           </div>
         </div>
       </main>
