@@ -151,11 +151,9 @@
   <div class="notif-right">
 
     <span>
-      {{
-        new Date(item.created_at)
-        .toLocaleTimeString('id-ID')
-      }}
-    </span>
+    {{ formatDateTime(item.created_at) }}
+  </span>
+
 
     <label class="danger-label">
       {{ item.type }}
@@ -417,6 +415,17 @@ en: {
 
 }
 
+}
+
+
+const formatDateTime = (date) => {
+  return new Date(date).toLocaleString('id-ID', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
 }
 
 const deleteNotification = async (id) => {
