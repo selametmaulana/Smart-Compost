@@ -49,20 +49,7 @@
           </div>
   
           <!-- CARD -->
-          <div class="device-status-card">
-  
-            <div class="device-icon blue">
-              <BatteryCharging size="26" />
-            </div>
-  
-            <div>
-              <h4>{{ t.devicePower }}</h4>
-              <h2>{{ batteryLevel }}%</h2>
-              <p>{{ t.optimalBattery }}</p>
-            </div>
-  
-          </div>
-  
+          
           <!-- CARD -->
           <div class="device-status-card">
 
@@ -97,20 +84,7 @@
 </div>
   
           <!-- CARD -->
-          <div class="device-status-card">
-  
-            <div class="device-icon purple">
-              <Clock3 size="26" />
-            </div>
-  
-            <div>
-              <h4>{{ t.uptime }}</h4>
-              <h2>{{ uptime }}</h2>
-              <p>{{ t.stableSystem }}</p>
-            </div>
-  
-          </div>
-  
+          
         </div>
   
         <!-- DEVICE -->
