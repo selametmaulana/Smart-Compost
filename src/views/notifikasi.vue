@@ -58,20 +58,7 @@
   
           </div>
   
-          <div class="summary-card">
-  
-            <div class="summary-icon green">
-              <BadgeCheck size="28" />
-            </div>
-  
-            <div>
-              <h4>{{ t.information }}</h4>
-              <h2>{{ totalInfo }}</h2>
-              <p>{{ t.system_info }}</p>
-            </div>
-  
-          </div>
-  
+          
           <div class="summary-card">
   
             <div class="summary-icon blue">
