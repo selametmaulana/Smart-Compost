@@ -389,7 +389,7 @@ const downloadExcel = async () => {
   try {
 
     const res = await fetch(
-      'https://smart-compost-production.up.railway.app/history'
+      'https://smart-compost-production-3c44.up.railway.app/history'
     )
 
     const data = await res.json()
