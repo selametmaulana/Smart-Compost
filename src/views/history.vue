@@ -795,7 +795,7 @@ const fetchHistory = async () => {
   try {
 
     const res = await fetch(
-      'https://smart-compost-production.up.railway.app/history'
+      'https://smart-compost-production-3c44.up.railway.app/history'
     )
 
     const data = await res.json()
@@ -813,7 +813,7 @@ const fetchHistory = async () => {
 const fetchNotifications = async () => {
   try {
     const res = await fetch(
-      'https://smart-compost-production.up.railway.app/notifications'
+      'https://smart-compost-production-3c44.up.railway.app/notifications'
     )
 
     const data = await res.json()
@@ -897,7 +897,7 @@ const deleteHistory = async (id) => {
   try {
 
     await fetch(
-      `https://smart-compost-production.up.railway.app/history/${id}`,
+      `https://smart-compost-production-3c44.up.railway.app/history/${id}`,
       {
         method: 'DELETE'
       }
@@ -926,7 +926,7 @@ if (!confirmDelete) return
 try {
 
   await fetch(
-    'https://smart-compost-production.up.railway.app/history',
+    'https://smart-compost-production-3c44.up.railway.app/history',
     {
       method: 'DELETE'
     }

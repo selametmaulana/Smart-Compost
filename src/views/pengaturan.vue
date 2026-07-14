@@ -609,7 +609,7 @@ const loadDevice = async () => {
 try {
 
   const res = await fetch(
-    `https://smart-compost-production.up.railway.app/devices/${currentDeviceId.value}`
+    `https://smart-compost-production-3c44.up.railway.app/devices/${currentDeviceId.value}`
   )
 
   const data = await res.json()
@@ -678,7 +678,7 @@ send_interval:
 }
 
   const res = await fetch(
-    `https://smart-compost-production.up.railway.app/devices/${device.value.device_id}`,
+    `https://smart-compost-production-3c44.up.railway.app/devices/${device.value.device_id}`,
     {
       method: 'PUT',
       headers: {
@@ -734,7 +734,7 @@ await saveDevice()
 const fetchNotifications = async () => {
   try {
     const res = await fetch(
-      'https://smart-compost-production.up.railway.app/notifications'
+      'https://smart-compost-production-3c44.up.railway.app/notifications'
     )
 
     const data = await res.json()

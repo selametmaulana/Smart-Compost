@@ -420,7 +420,7 @@ const deleteNotification = async (id) => {
 try {
 
   await fetch(
-    `https://smart-compost-production.up.railway.app/notifications/${id}`,
+    `https://smart-compost-production-3c44.up.railway.app/notifications/${id}`,
     {
       method: 'DELETE'
     }
@@ -449,7 +449,7 @@ if (!confirmDelete) return
 try {
 
   await fetch(
-    'https://smart-compost-production.up.railway.app/notifications',
+    'https://smart-compost-production-3c44.up.railway.app/notifications',
     {
       method: 'DELETE'
     }
@@ -487,7 +487,7 @@ const fetchNotifications = async () => {
 try {
 
   const res = await fetch(
-    'https://smart-compost-production.up.railway.app/notifications'
+    'https://smart-compost-production-3c44.up.railway.app/notifications'
   )
   const data = await res.json()
   notifications.value = data
@@ -607,7 +607,7 @@ const markAsRead = async (id) => {
 try {
 
   await fetch(
-    `https://smart-compost-production.up.railway.app/notifications/${id}/read`,
+    `https://smart-compost-production-3c44.up.railway.app/notifications/${id}/read`,
     {
       method: 'PUT'
     }

@@ -561,7 +561,7 @@ const loadDeviceSettings = async () => {
 try {
 
   const res = await fetch(
-    'https://smart-compost-production.up.railway.app/devices/device1'
+    'https://smart-compost-production-3c44.up.railway.app/devices/device1'
   )
 
   const data = await res.json()
@@ -690,7 +690,7 @@ const fetchNotifications = async () => {
   try {
 
     const res = await fetch(
-      'https://smart-compost-production.up.railway.app/notifications'
+      'https://smart-compost-production-3c44.up.railway.app/notifications'
     )
 
     const data = await res.json()
@@ -717,7 +717,7 @@ const fetchHistory = async () => {
 try {
 
   const res = await fetch(
-    'https://smart-compost-production.up.railway.app/history'
+    'https://smart-compost-production-3c44.up.railway.app/history'
   )
 
   const data = await res.json()
