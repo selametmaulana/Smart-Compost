@@ -412,13 +412,27 @@ app.get('/sensor-data', (req, res) => {
 app.get('/history', async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT * FROM history_sensor
+      SELECT
+        id,
+        suhu_ruang,
+        suhu_material,
+        kelembapan_udara,
+        kelembapan_kompos,
+        status,
+        usia_hari,
+        label_knn,
+        created_at
+      FROM public.history_sensor
       ORDER BY created_at DESC
     `)
 
-    res.json(result.rows)
+    res.status(200).json(result.rows)
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    console.error('❌ GET HISTORY ERROR:', err.message)
+
+    res.status(500).json({
+      error: err.message
+    })
   }
 })
 
@@ -427,23 +441,44 @@ app.get('/history', async (req, res) => {
 // =====================
 app.delete('/history/:id', async (req, res) => {
   try {
-    await pool.query(
-      'DELETE FROM history_sensor WHERE id=$1',
+    const result = await pool.query(
+      `DELETE FROM public.history_sensor
+      WHERE id = $1
+      RETURNING *`,
       [req.params.id]
     )
 
-    res.json({ message: 'Deleted' })
+    if (result.rowCount === 0) {
+      return res.status(404).json({
+        message: 'Data history tidak ditemukan'
+      })
+    }
+
+    res.json({
+      message: 'Data history berhasil dihapus',
+      data: result.rows[0]
+    })
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({
+      error: err.message
+    })
   }
 })
 
 app.delete('/history', async (req, res) => {
   try {
-    await pool.query('DELETE FROM history_sensor')
-    res.json({ message: 'All deleted' })
+    const result = await pool.query(`
+      DELETE FROM public.history_sensor
+    `)
+
+    res.json({
+      message: 'Semua data history berhasil dihapus',
+      deleted: result.rowCount
+    })
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({
+      error: err.message
+    })
   }
 })
 
@@ -965,9 +1000,6 @@ app.get('/latest-sensor', (req, res) => {
 
 })
 
-app.get('/', (req, res) => {
-  res.send('Backend Smart Compost aktif 🚀')
-})
 
 const PORT = process.env.PORT || 3000
 
